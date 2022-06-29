@@ -11,9 +11,9 @@ $urlsite = 'https://plataformaitavu.tamaulipas.gob.mx'; global $urlsite;
 //DATOS DE CONECCION
 $dbhost = '192.168.159.5';	
 // $dbhost = 'localhost';	
-$dbuser = 'puntoventaadmin';
+$dbuser = 'cubos';
 $dbpass = '515t3m4'; // PmTwrXcxUZ3oML9V
-$dbname = 'puntodeventa';
+$dbname = 'cubos';
 
 	if (function_exists('mysqli_connect')) {
 //mysqli está instalado

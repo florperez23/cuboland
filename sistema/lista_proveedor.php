@@ -16,10 +16,7 @@
 					<thead class="thead-dark">
 						<tr>
 							<th>ID</th>
-							<th>RUC</th>
 							<th>PROVEEDOR</th>
-							<th>TELEFONO</th>
-							<th>DIRECCION</th>
 							<?php if ($_SESSION['rol'] == 1) { ?>
 							<th>ACCIONES</th>
 							<?php } ?>
@@ -35,10 +32,7 @@
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
 									<td><?php echo $data['codproveedor']; ?></td>
-									<td><?php echo $data['contacto']; ?></td>
 									<td><?php echo $data['proveedor']; ?></td>
-									<td><?php echo $data['telefono']; ?></td>
-									<td><?php echo $data['direccion']; ?></td>
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
 										<a href="editar_proveedor.php?id=<?php echo $data['codproveedor']; ?>" class="btn btn-success"><i class='fas fa-edit'></i></a>

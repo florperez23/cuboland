@@ -94,7 +94,7 @@ if ($result_data > 0) {
 		<nav id="sidebar">
 			<!-- Sidebar Header-->
 			<div class="sidebar-header d-flex align-items-center">
-				<div class="avatar"><img src="img/logo.png" alt="..." class="img-fluid rounded-circle"></div>
+				<div class="avatar"><img src="img/imagen1.png" alt="..." class="img-fluid rounded-circle"></div>
 				<div class="title">
 					<h1 class="h5"><?php echo $_SESSION['nombre']; ?></h1>
 					<p><?php if ($_SESSION['rol'] == 1) {
@@ -222,13 +222,13 @@ if ($result_data > 0) {
 				<li class="nav-item">
 					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProveedor" aria-expanded="true" aria-controls="collapseUtilities">
 						<i class="fas fa-hospital"></i>
-						<span>Proveedor</span>
+						<span>Cubos</span>
 						<i class="fas fa-angle-down fa-lg float-right"></i>
 					</a>
 					<div id="collapseProveedor" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
-							<a class="collapse-item" href="registro_proveedor.php">Nuevo Proveedor</a>
-							<a class="collapse-item" href="lista_proveedor.php">Proveedores</a>
+							<a class="collapse-item" href="registro_proveedor.php">Nuevo cubo</a>
+							<a class="collapse-item" href="lista_proveedor.php">Lista de cubos</a>
 						</div>
 					</div>
 				</li>

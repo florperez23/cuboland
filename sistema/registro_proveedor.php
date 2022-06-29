@@ -3,24 +3,21 @@ include_once "includes/header.php";
 include "../conexion.php";
 if (!empty($_POST)) {
     $alert = "";
-    if (empty($_POST['proveedor']) || empty($_POST['contacto']) || empty($_POST['telefono']) || empty($_POST['direccion'])) {
-        mensajeicono('Todos los campos son obligatorios.', 'lista_proveedor.php','','info');
+    if (empty($_POST['proveedor']) ) {
+        mensajeicono('El campo nombre es requerido.', 'lista_proveedor.php','','info');
 
     } else {
         $proveedor = $_POST['proveedor'];
-        $contacto = $_POST['contacto'];
-        $telefono = $_POST['telefono'];
-        $Direccion = $_POST['direccion'];
         $usuario_id = $_SESSION['idUser'];
-        $query = mysqli_query($conexion, "SELECT * FROM proveedor where contacto = '$contacto'");
+        $query = mysqli_query($conexion, "SELECT * FROM proveedor where proveedor = '$proveedor'");
         $result = mysqli_fetch_array($query);
 
         if ($result > 0) {
-            mensajeicono('Ya existe un proveedor con este mismo contacto.', 'lista_proveedor.php','','info');
+            mensajeicono('Ya existe un cubo con este mismo nombre.', 'lista_proveedor.php','','info');
         }else{
         
 
-        $query_insert = mysqli_query($conexion, "INSERT INTO proveedor(proveedor,contacto,telefono,direccion,usuario_id) values ('$proveedor', '$contacto', '$telefono', '$Direccion','$usuario_id')");
+        $query_insert = mysqli_query($conexion, "INSERT INTO proveedor(proveedor,usuario_id) values ('$proveedor', '$usuario_id')");
         if ($query_insert) {
             historia('Se registro el nuevo proveedor '.$proveedor);
             mensajeicono('Se ha registrado con éxito el proveedor!', 'lista_proveedor.php','','exito');
@@ -51,18 +48,7 @@ mysqli_close($conexion);
                         <label for="nombre">NOMBRE</label>
                         <input type="text" placeholder="Ingrese nombre" name="proveedor" id="nombre" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label for="contacto">Nombre del Contacto</label>
-                        <input type="text" placeholder="Ingrese nombre del contacto" name="contacto" id="contacto" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="telefono">TELÉFONO</label>
-                        <input type="number" placeholder="Ingrese teléfono" name="telefono" id="telefono" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label for="direccion">DIRECIÓN</label>
-                        <input type="text" placeholder="Ingrese Direccion" name="direccion" id="direcion" class="form-control">
-                    </div>
+                   
                     <input type="submit" value="Guardar Proveedor" class="btn btn-primary">
                     <a href="lista_proveedor.php" class="btn btn-danger">Regresar</a>
                 </form>

@@ -111,7 +111,7 @@ if (!empty($_SESSION['active'])) {
             <!-- Nested Row within Card Body -->
             <div class="row">
               <div class="col-lg-6 d-none d-lg-block bg-login-image" style="background: white;">
-                <img src="sistema/img/logo.png" class="img-thumbnail" style="position: absolute;  top: 20%;  left: 20%;">
+                <img src="sistema/img/imagen1.png" class="img-thumbnail" style="position: absolute;  top: 0%;  left: 0%; height:100%; width: 100%;">
               </div>
               <div class="col-lg-6">
                 <div class="p-5">
