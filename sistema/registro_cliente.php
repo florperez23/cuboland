@@ -47,7 +47,7 @@ if (!empty($_POST)) {
     <!-- Content Row -->
     <div class="row">
         <div class="col-lg-6 m-auto">
-            <div class="card">
+            <div class="card_div">
                 <div class="card-header bg-primary">
                     Nuevo Cliente
                 </div>

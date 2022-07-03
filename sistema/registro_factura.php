@@ -15,7 +15,7 @@ include "../conexion.php";
             <div class="card-header bg-primary text-white">
                 Registro de gastos
             </div>
-            <div class="card">
+            <div class="card_div">
                 <form enctype="multipart/form-data" action="lista_factura.php" autocomplete="off" method="post" class="card-body p-2">
                     <?php echo isset($alert) ? $alert : ''; ?>
                     

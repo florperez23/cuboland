@@ -14,7 +14,7 @@ include "../conexion.php";
 
             <!--GENERAR CODIGO DE BARRAS-->
             <form action='registro_codigo.php' method='GET'>
-            <div class="card">
+            <div class="card_div">
                 <div id="respuesta"></div>
                 <form action="" autocomplete="off" method="post" class="card-body p-2">
                 <div class="form-group">

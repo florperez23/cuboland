@@ -36,7 +36,7 @@ if (!empty($_POST)) {
             <div class="card-header bg-primary text-white">
                 Registro de Sección
             </div>
-            <div class="card">
+            <div class="card_div">
                 <form action="registro_sec.php" autocomplete="off" method="post" class="card-body p-2">
                     <?php echo isset($alert) ? $alert : ''; ?>
 

@@ -34,7 +34,7 @@ mysqli_close($conexion);
             <div class="card-header bg-primary text-white">
                 Registro de Categoria
             </div>
-            <div class="card">
+            <div class="card_div">
                 <form action="" autocomplete="off" method="post" class="card-body p-2">
                     <?php echo isset($alert) ? $alert : ''; ?>
                     <div class="form-group">

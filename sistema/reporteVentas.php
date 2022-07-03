@@ -30,51 +30,51 @@ $suma = 0;
 echo 'tipopago '.$tipopago.' tipodeventa '.$tipoventa;
 if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
 
-    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO", if(idtipoventa = 2, "CREDITO", "DEVOLUCION")) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
     from factura f
     inner join usuario u on f.usuario = u.idusuario
     WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'"';
 }else if($tipopago <> 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
-    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", "DEVOLUCION")) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
     from factura f
     inner join usuario u on f.usuario = u.idusuario
     WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and idtipopago = "'.$tipopago.'"';
 }else if($tipopago == 0 and $tipoventa <> 0 and $desde <> '' and $hasta <> ''){
-    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", "DEVOLUCION")) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
     from factura f
     inner join usuario u on f.usuario = u.idusuario
     WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and idtipoventa = "'.$tipoventa.'"';
 }else if($tipopago <> 0 and $tipoventa <> 0 and $desde <> '' and $hasta <> ''){
-    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", "DEVOLUCION")) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
     from factura f
     inner join usuario u on f.usuario = u.idusuario
     WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and idtipopago = "'.$tipopago.'" and idtipoventa = "'.$tipoventa.'"';
 }else if($tipopago <> 0 and $tipoventa <> 0 and $desde == '' and $hasta == ''){
-    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", "DEVOLUCION")) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
     from factura f
     inner join usuario u on f.usuario = u.idusuario
     WHERE idtipopago = "'.$tipopago.'" and idtipoventa = "'.$tipoventa.'"';
 }else if($desde == '' and $hasta == '' and $tipoventa <> 0 and $tipopago == 0){
-    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", "DEVOLUCION")) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
     from factura f
     inner join usuario u on f.usuario = u.idusuario
     WHERE idtipoventa = "'.$tipoventa.'"';
 
 }else if($desde == '' and $hasta == '' and $tipoventa == 0 and $tipopago <> 0){
-    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", "DEVOLUCION")) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
     from factura f
     inner join usuario u on f.usuario = u.idusuario
     WHERE idtipopago = "'.$tipopago.'"';
 
 }else{
-    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO","CREDITO") as tipoventa,
+    $sql = 'select *, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", "DEVOLUCION")) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
     from factura f
     inner join usuario u on f.usuario = u.idusuario

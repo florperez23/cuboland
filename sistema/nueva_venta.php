@@ -12,7 +12,7 @@ if(HayCajaAbierta()==0)
                 <a href="#" class="btn btn-primary btn_new_cliente"><i class="fas fa-user-plus"></i> Nuevo Cliente</a>
                 <a href="#" class="btn btn-secondary"  name="btnBuscarCliente" id="btnBuscarCliente"data-toggle="modal" data-target="#modalBusquedacliente"><i class="fas fa-user"></i> Buscar Cliente</a>
             </div>
-            <div class="card">
+            <div class="card_div">
                 <div class="card-body">
                     <form method="post" name="form_new_cliente_venta" id="form_new_cliente_venta" autocomplete="off" >
                         <input type="hidden" name="action" value="addCliente">

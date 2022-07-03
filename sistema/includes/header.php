@@ -199,6 +199,7 @@ if ($result_data > 0) {
 					<div id="collapseCaja" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
 							<a class="collapse-item" href="nueva_venta.php">Caja</a>
+							<a class="collapse-item" href="lista_cortes.php">Corte de caja</a>
 						</div>
 					</div>
 				</li>
@@ -208,12 +209,12 @@ if ($result_data > 0) {
 					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCorte" aria-expanded="true" aria-controls="collapseTwo">
 					<i class="fas fa-solid fa-cash-register"></i>
 					<!--<i class="fas fa-fw fa-cog"></i>-->
-						<span>Corte de Caja</span>
+						<span>Arrendatarios</span>
 						<i class="fas fa-angle-down fa-lg float-right"></i>
 					</a>
 					<div id="collapseCorte" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
-							<a class="collapse-item" href="lista_cortes.php">Corte de caja</a>
+							<a class="collapse-item" href="lista_arrendadores.php">Lista de arrendatarios</a>
 						</div>
 					</div>
 				</li>
