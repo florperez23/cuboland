@@ -214,7 +214,7 @@ if ($result_data > 0) {
 					</a>
 					<div id="collapseCorte" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
-							<a class="collapse-item" href="lista_arrendadores.php">Lista de arrendatarios</a>
+							<a class="collapse-item" href="lista_arrendatarios.php">Lista de arrendatarios</a>
 						</div>
 					</div>
 				</li>
@@ -228,8 +228,8 @@ if ($result_data > 0) {
 					</a>
 					<div id="collapseProveedor" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
-							<a class="collapse-item" href="registro_proveedor.php">Nuevo cubo</a>
-							<a class="collapse-item" href="lista_proveedor.php">Lista de cubos</a>
+							<a class="collapse-item" href="registro_cubo.php">Nuevo cubo</a>
+							<a class="collapse-item" href="lista_cubos.php">Lista de cubos</a>
 						</div>
 					</div>
 				</li>
