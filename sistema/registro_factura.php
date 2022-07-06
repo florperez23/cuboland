@@ -32,6 +32,7 @@ include "../conexion.php";
                         mysqli_close($conexion);
                     ?>
 
+                    <a>Registrar salida</a>
                     <select id="proveedor" name="proveedor" class="form-control">
                         <?php
                         if ($resultado_proveedor > 0) {

@@ -13,12 +13,16 @@ if (!empty($_POST)) {
         $codcubo = $_POST['cubo'];
         $usuario_id = $_SESSION['idUser'];
 
-       $sql = "INSERT INTO arrendatarios(nombre,telefono,codcubo, fechaingreso, registro) values ('$nombre', '$telefono', '$codcubo', '$fecha','$usuario_id')";
+        $idarrendatario = nrentero(TRUE);
+    
+       $sql = "INSERT INTO arrendatarios(idarrendatario, nombre,telefono,codcubo, fechaingreso, registro) values ('$idarrendatario','$nombre', '$telefono', '$codcubo', '$fecha','$usuario_id')";
        echo $sql;
         $query_insert = mysqli_query($conexion, $sql );
         if ($query_insert) {
             historia('Se registro el nuevo arrendatario '.$nombre);
-            $sql_update = mysqli_query($conexion, "UPDATE cubos SET disponible = 1 WHERE codcubo = $codcubo");
+            $sql = "UPDATE cubos SET disponible = 1, idarrendatario = '$idarrendatario'  WHERE codcubo = $codcubo";
+            echo $sql;
+            $sql_update = mysqli_query($conexion, $sql);
 
             if ($sql_update) {
                 historia('Se asocio el cubo '.$codcubo.' con el arrendatario '.$nombre);

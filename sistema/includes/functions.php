@@ -433,4 +433,29 @@ function obtenerDatosFacturaNva($id){
 		 else {return '';}
 	}
 }
+
+function nrentero($consulta){
+	require("..\conexion.php");
+	$sql = "SELECT * FROM contadores WHERE id='1'";		
+	echo $sql;			
+	$rc= $conexion -> query($sql);
+	if($f = $rc -> fetch_array()){
+		if ($consulta==TRUE){
+			return $f['nrentero'];
+		}else{
+		 	// sino es consulta entonces aumentarle
+			$n2 = $f['nrentero'] + 1;
+			$sql="UPDATE contadores SET nrentero='".$n2."' WHERE id='1'";
+			$resultado = $conexion -> query($sql);
+			if ($conexion->query($sql) == TRUE) {
+				return $f['nrentero'];
+			}else{
+				return  FALSE;
+			}
+		}
+	}else{
+		return FALSE;
+	}
+
+}
 ?>
