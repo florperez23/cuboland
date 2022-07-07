@@ -234,7 +234,7 @@ if ($result_data > 0) {
 				<li class="nav-item">
 					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFactura" aria-expanded="true" aria-controls="collapseUtilities">
 						<i class="fas fa-file-invoice"></i>
-						<span>Gastos</span>
+						<span>Egresos</span>
 						<i class="fas fa-angle-down fa-lg float-right"></i>
 					</a>
 					<div id="collapseFactura" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">

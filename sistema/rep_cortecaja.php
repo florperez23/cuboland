@@ -11,10 +11,12 @@ $idcorte = $_GET['idcorte'];
 $fechainicio = fechaCorteAperturaId($idcorte);
 $fechafin = fechaCorteCierreId($idcorte);
 
-  $sql = " SELECT f.nofactura, f.fecha, f.usuario, u.usuario as quien, f.codcliente, c.nombre, f.totalfactura,  if(f.idtipoventa = 1, 'Contado', 'Crédito') as tipoventa, if(f.idtipopago= 1, 'Efectivo',if(f.idtipopago= 2, 'Tarjeta', if(f.idtipopago= 3, 'Transferencia',''))) as tipopago, if(f.cancelado = 0, 'No', 'Si') as cancelado
+  $sql = " SELECT f.nofactura, f.fecha, f.usuario, u.usuario as quien, f.codcliente, c.nombre, f.totalfactura, 
+  if(f.idtipoventa = 1, 'Contado', if(f.idtipoventa = 2, 'Crédito', if(f.idtipoventa = 3, 'Devolución', 'Gasto'))) as tipoventa, if(f.idtipopago= 1, 'Efectivo',if(f.idtipopago= 2, 'Tarjeta', if(f.idtipopago= 3, 'Transferencia',''))) as tipopago, if(f.cancelado = 0, 'No', 'Si') as cancelado, p.proveedor 
   FROM factura f
   left JOIN usuario u on u.idusuario = f.usuario
   left join cliente c on c.idcliente = f.codcliente
+  left join proveedor p on p.codproveedor = f.codcliente
   WHERE f.fecha between '".$fechainicio."' and '".$fechafin."' ";
 
 echo $sql;
@@ -44,7 +46,12 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['nofactura'].'</td>';
         $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
         $tabla = $tabla.'<td>'.$f['quien'].'</td>';
-        $tabla = $tabla.'<td>'.$f['nombre'].'</td>';
+        if($f['nombre'] == ''){
+            $tabla = $tabla.'<td>'.$f['proveedor'].'</td>';
+        }else{
+            $tabla = $tabla.'<td>'.$f['nombre'].'</td>';
+        }
+       
         $tabla = $tabla.'<td>$'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
         $suma = $suma += $f['totalfactura'];
         $tabla = $tabla.'<td>'.$f['tipoventa'].'</td>';

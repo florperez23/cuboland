@@ -1498,10 +1498,14 @@ $('#subtotal').keyup(function(e) {
   if(subtotal == ''){
     subtotal = 0;
   }
-  var iva = $('#iva').val();
-  if(iva == ''){
+  var res = (parseFloat(subtotal) *.16);
+  /*if(iva == ''){
     iva = 0;
-  }
+  }else{
+    iva = iva;
+  }*/
+  $('#iva').val(res);
+  var iva = $('#iva').val();
   suma = (parseFloat(subtotal) + parseFloat(iva));
   $('#total').val(suma);
 });
@@ -1600,4 +1604,27 @@ function seleccionarCliente(dnicliente)
 
 
 
+}
+
+
+$('#rand').click(function(e) {
+  e.preventDefault();
+
+  let cadena = 0;
+  let n1 = random(2, 9) + '';;
+  let n2 = random(2, 9) + '';;
+  let n3 = random(2, 9) + '';;
+  let n4 = random(2, 9) + '';;
+  let n5 = random(2, 9) + '';;
+  let n6 = random(2, 9) + '';;
+  let n7 = random(2, 9) + '';;
+  let n8 = random(2, 9) + '';;
+
+ cadena = n1+n2+n3+n4+n5+n6+n7+n8;
+  $('#data').val(cadena);
+
+});
+
+function random(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }

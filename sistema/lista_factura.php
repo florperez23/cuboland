@@ -19,6 +19,8 @@ if(isset($_FILES['archivo']['name'])){
 	$fecha = $_POST['fecha'];
 	$descripcion = $_POST['descripcion'];
 	$usuario_id = $_SESSION['idUser'];
+
+	$total = 0 - $total ;
 	if (move_uploaded_file($tmp, $subir_archivo)) {
 		//si se guarda en la carpeta hay que guardar en la bd
 		$numarchivo = narchivo(FALSE); 
@@ -26,9 +28,21 @@ if(isset($_FILES['archivo']['name'])){
 		//echo $sql;	
 		$query_insert = mysqli_query($conexion, $sql);
         if ($query_insert) {
-			historia('Se registro un nuevo gasto '.$numarchivo.'_'.$doc);
-			mensajeicono('Se ha registrado con éxito el nuevo gasto!', 'lista_factura.php','','exito');
-			
+
+			//HACER el insert el factura para tomarlo en cuenta en los reportes
+			$sql = "INSERT INTO factura(nofactura,fecha,usuario,codcliente,totalfactura,idtipoventa,idtipopago,	cancelado,totalventa,referencia,pagocon,numcredito,	saldo,fechacancelacion,usuario_id_mod,subtotal,iva) 
+			values ('', now(), '$usuario_id','$proveedor', '$total','4','1',0,'$total','Gasto','','','','','','$subtotal', '$iva')";
+			echo $sql;	
+			$query_insert = mysqli_query($conexion, $sql);
+        	if ($query_insert) {
+
+				historia('Se registro un nuevo gasto '.$numarchivo.'_'.$doc);
+				mensajeicono('Se ha registrado con éxito el nuevo gasto!', 'lista_factura.php','','exito');
+			}else{
+				historia('Error al intentar ingresar un nuevo gasto '.$numarchivo.'_'.$doc);
+				mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_factura.php','','error');
+			}
+
         } else {
 			historia('Error al intentar ingresar un nuevo gasto '.$numarchivo.'_'.$doc);
 			mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_factura.php','','error');

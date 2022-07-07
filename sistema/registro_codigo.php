@@ -22,6 +22,9 @@ include "../conexion.php";
                     <input type="text" placeholder="Ingrese nombre" id="nombre" name="nombre" class="form-control">
                 </div>
                 <div class="form-group">
+                    <a style='color:#f03406;' href="#" name='rand' id = 'rand'>Generar aleatorio</a>
+                </div>
+                <div class="form-group">
                     <label for="nombre">Código del producto</label>
                     <input type="text" id="data" name="data" placeholder="Ingresa un valor" class="form-control"> 
                 </div>
