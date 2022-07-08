@@ -275,7 +275,7 @@ if(HayCajaAbierta()==0)
 						<?php
 						include "../conexion.php";
 
-						$query = mysqli_query($conexion, "SELECT * FROM cliente");
+						$query = mysqli_query($conexion, "SELECT * FROM cliente where idcliente");
 						$result = mysqli_num_rows($query);
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>

@@ -186,7 +186,19 @@ if ($result_data > 0) {
 						</div>
 					</div>
 				</li>
-
+				<li class="nav-item">
+					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDescuento" aria-expanded="true" aria-controls="collapseTwo">
+					<i  class="fa fa-percent" aria-hidden="true"></i>
+						<span>Promociones</span>
+						
+					</a>
+					<div id="collapseDescuento" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+						<div class="bg-white py-2 collapse-inner rounded">
+							<!-- //<a class="collapse-item" href="nueva_venta.php">Creditos</a> -->
+							<a class="collapse-item" href="lista_promociones.php">Promociones</a>
+						</div>
+					</div>
+				 </li>
 				<!-- Nav Item - Pages Collapse Menu -->
 				<li class="nav-item">
 					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCaja" aria-expanded="true" aria-controls="collapseTwo">

@@ -1628,3 +1628,38 @@ $('#rand').click(function(e) {
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+$('input[type=radio][name=clasificacion]').change(function() {
+  var idclasificacion = $(this).val();
+  console.log(idclasificacion);
+ if(idclasificacion==1)
+ { 
+  $('#labelcodigo').html("Codigo del Cubo");
+  $("#codigo").attr("placeholder", "Ingrese el codigo del cubo");
+ 
+}
+
+ else{
+
+  $('#labelcodigo').html("Codigo del Producto");
+  $("#codigo").attr("placeholder", "Ingrese el codigo del producto");
+ }
+});
+
+
+$('input[type=radio][name=tipo]').change(function() {
+  var tipo = $(this).val();
+ 
+ if(tipo==1)
+ { 
+  $('#labelpromocion').html("Porcentaje");
+  $("#promocion").attr("placeholder", "Ingrese el porcentaje");
+ 
+}
+
+ else{
+
+  $('#labelpromocion').html("Precio");
+  $("#promocion").attr("placeholder", "Ingrese el precio");
+ }
+});
