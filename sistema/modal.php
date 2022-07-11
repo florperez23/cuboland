@@ -748,4 +748,26 @@ if ($_POST['action'] == 'nextIdcliente') {
  
   exit;
 }
+
+
+
+
+// Siguiente numero del producto
+if ($_POST['action'] == 'signumero') {
+  $codcubo = $_POST['idcubo'];
+	$sql = "select Max(numsiguiente)+1 as signum from producto where codcubo = '$codcubo' ";
+ // echo $sql;
+    $query = mysqli_query($conexion, $sql);
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($query);
+    if ($result > 0) {
+      $data = mysqli_fetch_assoc($query);     
+     echo $data["signum"];
+      exit;
+    }else{
+      $data = "0";
+    }
+ 
+  exit;
+}
  ?>

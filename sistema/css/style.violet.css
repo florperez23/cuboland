@@ -1738,7 +1738,7 @@ nav#sidebar.shrinked a[aria-expanded="true"]::after {
 }
 
 .form-control:disabled, .form-control[readonly] {
-  background: #444951;
+  background: #DEDBDB;
 }
 
 .form-control-sm {

@@ -19,6 +19,7 @@ if (!empty($_POST)) {
        echo $sql;
         $query_insert = mysqli_query($conexion, $sql );
         if ($query_insert) {
+            nrentero(FALSE);
             historia('Se registro el nuevo arrendatario '.$nombre);
             $sql = "UPDATE cubos SET disponible = 1, idarrendatario = '$idarrendatario'  WHERE codcubo = $codcubo";
             echo $sql;

@@ -25,7 +25,11 @@ include "../conexion.php";
                     </div>
 
                     <div class="form-group">
-                    <label>Proveedor</label>
+                        
+                    </div>
+
+                    <div class="form-group">
+                    <label>Egreso (<a style='color:#1126BF;' href="registro_proveedor.php">Registrar nuevo </a>)</label>
                     <?php
                         $query_proveedor = mysqli_query($conexion, "SELECT codproveedor, proveedor FROM proveedor ORDER BY proveedor ASC");
                         $resultado_proveedor = mysqli_num_rows($query_proveedor);
@@ -56,10 +60,6 @@ include "../conexion.php";
                     <div class="form-group">
                         <label for="contacto">Total</label>
                         <input type="text" placeholder="Ingrese el total de la factura" name="total" id="total" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contacto">Archivo</label>
-                        <input type="file" placeholder="Suba el archivo de la factura" name="archivo" id="archivo" class="form-control" accept="application/pdf" required>
                     </div>
                    
                     <div class="form-group">

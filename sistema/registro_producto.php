@@ -2,29 +2,21 @@
   include "../conexion.php";
   if (!empty($_POST)) {
     $alert = "";
-    if (empty($_POST['proveedor']) || empty($_POST['producto']) || empty($_POST['precioventa']) || $_POST['precioventa'] <  0 || empty($_POST['cantidad'] || $_POST['cantidad'] <  0)) {
-      mensajeicono('Todos los campos son obligatorios.', 'registro_producto.php','','info');
+    if (empty($_POST['codigo']) or empty($_POST['descripcion'])) {
+      mensajeicono('El campo código o descripción no pueden estar vacios.', 'registro_producto.php','','info');
 
     } else {
+      $idcubo = $_POST['cubop'];
+      $nomenclatura = $_POST['nom'];
+      $signum = $_POST['numsig'];
       $codigo = $_POST['codigo'];
-      $proveedor = $_POST['proveedor'];
-      $producto = $_POST['producto'];     
-      $cantidad = $_POST['cantidad'];
-      $usuario_id = $_SESSION['idUser'];
-      $preciocosto = $_POST['preciocosto'];
-      $precio = $_POST['precioventa'];
-      $preciomayoreo = $_POST['preciomayoreo'];
-      $unidadmedida = $_POST['medida'];
-      $categoria = $_POST['categoria'];
-      if(isset($_POST['sec'])){
-        $sec = $_POST['sec'];
-      }else{
-        $sec = "";
-      }
-      
+      $descripcion = $_POST['descripcion'];
+      $precio = $_POST['precio'];
+      $mayoreo = $_POST['mayoreo'];
+      $$usuario_id = $_SESSION['idUser'];
 
-
-      $query_insert = mysqli_query($conexion, "INSERT INTO producto(codigo, proveedor,descripcion,precio,existencia,usuario_id, preciocosto, preciomayoreo, unidadmedida, categoria, seccion, fecha) values ('$codigo','$proveedor', '$producto', '$precio', '$cantidad','$usuario_id', '$preciocosto', '$preciomayoreo', '$unidadmedida', '$categoria', '$sec', now())");
+      $query_insert = mysqli_query($conexion, "INSERT INTO producto(codproducto, nomenclatura,numsiguiente,descripcion,precio,mayoreo, registro, fecha, codcubo) 
+      values ('$codigo','$nomenclatura', '$signum', '$descripcion', '$precio','$mayoreo', '$usuario_id', now(), '$idcubo')");
       if ($query_insert) {
         historia('Se registro el nuevo producto '.$codigo);
         mensajeicono('Se ha registrado con éxito el producto!', 'lista_productos.php','','exito');
@@ -36,22 +28,7 @@
     }
   }
   ?>
-<script>
 
-function cargar_secciones(){
-
-let idcat = $('#categoria').val();
-$.ajax({
-  url: "cargar_secciones.php",
-  type: "post",
-  data: {idcat: idcat},
-  success: function(data){
-      $('#seccion').html(data+"\n");
-  }
-});
-
-}
-</script>
  <!-- Begin Page Content -->
  <div class="container-fluid">
 
@@ -72,76 +49,22 @@ $.ajax({
            <form action="" method="post" autocomplete="off">
              <?php echo isset($alert) ? $alert : ''; ?>
 
-              
-
-
-
-
-
              <div class="form-group">
-               <label for="codigo">Código de Barras</label>
-               <input type="text" placeholder="Ingrese código de barras" name="codigo" id="codigo" class="form-control">
-             </div>
-             <div class="form-group">
-               <label for="producto">Producto</label>
-               <input type="text" placeholder="Ingrese nombre del producto" name="producto" id="producto" class="form-control">
-             </div>
-             
-             <div class="form-group">
-               <label>Proveedor</label>
+               <label>Cubo</label>
                <?php
-                $query_proveedor = mysqli_query($conexion, "SELECT codproveedor, proveedor FROM proveedor ORDER BY proveedor ASC");
-                $resultado_proveedor = mysqli_num_rows($query_proveedor);
+                $query = mysqli_query($conexion, "SELECT * FROM cubos");
+                $res = mysqli_num_rows($query);
                
                 ?>
 
-               <select id="proveedor" name="proveedor" class="form-control">
+               <select id="cubop" name="cubop" class="form-control">
+               <option value="0">Seleccione una opción</option>
                  <?php
-                  if ($resultado_proveedor > 0) {
-                    while ($proveedor = mysqli_fetch_array($query_proveedor)) {
-                      // code...
+                  if ($res > 0) {
+                    while ($f = mysqli_fetch_array($query)) {
+                      
                   ?>
-                     <option value="<?php echo $proveedor['codproveedor']; ?>"><?php echo $proveedor['proveedor']; ?></option>
-                 <?php
-                    }
-                  }
-                  ?>
-               </select>
-             </div>
-             <div class="form-group">
-               <label for="preciocosto">Precio Costo</label>
-               <input type="text" placeholder="Ingrese precio" class="form-control" name="preciocosto" id="preciocosto">
-             </div>
-           
-             <div class="form-group">
-               <label for="precio">Precio Venta</label>
-               <input type="text" placeholder="Ingrese precio" class="form-control" name="precioventa" id="precioventa">
-             </div>
-             <div class="form-group">
-               <label for="preciomayoreo">Precio Mayoreo</label>
-               <input type="text" placeholder="Ingrese precio" class="form-control" name="preciomayoreo" id="preciomayoreo">
-             </div>
-
-             <div class="form-group">
-               <label for="cantidad">Cantidad</label>
-               <input type="number" placeholder="Ingrese cantidad" class="form-control" name="cantidad" id="cantidad">
-             </div>
-
-             <div class="form-group">
-               <label>Unidad de Medida</label>
-               <?php
-                $query_medida = mysqli_query($conexion, "SELECT idunidadmedida, nombrecorto FROM cat_unidadmedida");
-                $resultado_medida = mysqli_num_rows($query_medida);
-               
-                ?>
-
-               <select id="medida" name="medida" class="form-control">
-                 <?php
-                  if ($resultado_medida > 0) {
-                    while ($medida = mysqli_fetch_array($query_medida)) {
-                      // code...
-                  ?>
-                     <option value="<?php echo $medida['idunidadmedida']; ?>"><?php echo $medida['nombrecorto']; ?></option>
+                     <option value="<?php echo $f['codcubo']; ?>"><?php echo $f['cubo']; ?></option>
                  <?php
                     }
                   }
@@ -150,30 +73,32 @@ $.ajax({
              </div>
 
              <div class="form-group">
-               <label>Categoria</label>
-               <?php
-                $query_dptos = mysqli_query($conexion, "SELECT iddepartamento, departamento FROM cat_departamento ORDER BY iddepartamento ASC");
-                $resultado_dptos = mysqli_num_rows($query_dptos);
-               
-                ?>
-
-               <select id="categoria" name="categoria" onchange="cargar_secciones();" class="form-control">
-                 <?php
-                  if ($resultado_dptos > 0) {
-                    while ($dptos = mysqli_fetch_array($query_dptos)) {
-                      // code...
-                  ?>
-                     <option value="<?php echo $dptos['iddepartamento']; ?>"><?php echo $dptos['departamento']; ?></option>
-                 <?php
-                    }
-                  }
-                  ?>
-              </select>
+               <label for="codigo">Nomenclatura</label>
+               <input type="text"  name="nom" id="nom" class="form-control" readonly>
+             </div>
+             <div class="form-group">
+               <label for="codigo">Siguiente número</label>
+               <input type="text"  name="numsig" id="numsig" class="form-control" readonly>
              </div>
 
-            
+             <div class="form-group">
+               <label for="codigo">Código del producto</label>
+               <input type="text"  name="codigo" id="codigo" class="form-control" readonly>
+             </div>
+             <div class="form-group">
+               <label for="producto">Descripción del producto</label>
+               <input type="text" placeholder="Ingrese la descripcion del producto" name="descripcion" id="descripcion" class="form-control">
+             </div>
 
-             <div class="form-group" name='seccion' id='seccion'></div>
+             <div class="form-group">
+               <label for="preciocosto">Precio Producto</label>
+               <input type="text" placeholder="Ingrese precio" class="form-control" name="precio" id="precio">
+             </div>
+
+             <div class="form-group">
+               <label for="preciocosto">Mayoreo</label>
+               <input type="text" placeholder="Ingrese precio" class="form-control" name="mayoreo" id="mayoreo">
+             </div>
              
              <input type="submit" value="Guardar Producto" class="btn btn-primary">
            </form>

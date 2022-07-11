@@ -458,4 +458,22 @@ function nrentero($consulta){
 	}
 
 }
+
+function idcuboanterior($id){
+	include "../conexion.php";
+	$sql = "select codcubo from arrendatarios where idarrendatario = '$id'";			
+	//echo $sql;		
+	$rc= $conexion -> query($sql);
+	if($f = $rc -> fetch_array())
+	{
+		// echo $sql;
+		$rc= $conexion -> query($sql);
+		if($f = $rc -> fetch_array())
+			{		
+						
+				return $f['codcubo'];
+			}
+		 else {return FALSE;}
+	}
+}
 ?>

@@ -4,69 +4,43 @@ ob_start();
 include "../conexion.php";
 require_once('pdf/tcpdf.php');
 
-if(isset($_POST['categoria'])){
-    $cat = $_POST['categoria'];
+$idcubo = $_POST['cubor'];
+//echo $cat.' '.$seccion;+
+
+if($idcubo == 0){
+    $sql = 'select *, c.cubo as nomcubo from producto p
+    inner join cubos c on c.codcubo = p.codcubo';
 }else{
-    $cat = "";
+    $sql = 'select *, c.cubo as nomcubo from producto p
+    inner join cubos c on c.codcubo = p.codcubo 
+    where p.codcubo = '.$idcubo.'';
 }
 
-if(isset($_POST['sec'])){
-    $seccion = $_POST['sec'];
-}else{
-    $seccion = "";
-}
-//echo $cat.' '.$seccion;
-if($cat == 0){
-    $sql = 'select p.*, cd.departamento, cs.seccion as nomseccion
-    from producto p
-    left join cat_departamento cd on cd.iddepartamento = p.categoria
-    left join cat_secciones cs on cs.idseccion = p.seccion
-    ';
-}else if($cat <> '' and $seccion <> ''){
 
-    $sql = 'select p.*, cd.departamento, cs.seccion as nomseccion
-    from producto p
-    left join cat_departamento cd on cd.iddepartamento = p.categoria
-    left join cat_secciones cs on cs.idseccion = p.seccion
-    WHERE p.categoria = '.$cat.' and p.seccion = '.$seccion.'';
-}else if($cat <> '' and $seccion == 0){
-    $sql = 'select p.*, cd.departamento, cs.seccion as nomseccion
-    from producto p
-    left join cat_departamento cd on cd.iddepartamento = p.categoria
-    left join cat_secciones cs on cs.idseccion = p.seccion
-    WHERE p.categoria = '.$cat.'';
-}
+
 echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
 $vuelta = 0;
 if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
-    $tabla = $tabla.'<tr border="1" bgcolor="#FAAC9E">';
+    $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8">';
     $tabla = $tabla.'<th ><b>CODIGO</b></th>';
     $tabla = $tabla.'<th ><b>DESCRIPCION</b></th>';
-    $tabla = $tabla."<th><b>PRECIO COMPRA</b></th>";
-    $tabla = $tabla.'<th ><b>PRECIO COSTO</b></th>';
-    $tabla = $tabla.'<th ><b>EXISTENCIA</b></th>';
-    $tabla = $tabla.'<th ><b>CATEGORÍA</b></th>';
-    $tabla = $tabla.'<th ><b>SECCIÓN</b></th>';
+    $tabla = $tabla."<th><b>PRECIO</b></th>";
+    $tabla = $tabla.'<th ><b>CUBO</b></th>';
     $tabla = $tabla."</tr>";
     while($f = $r -> fetch_array())
     {                  
         if (($vuelta % 2) == 0) {
             $tabla = $tabla.'<tr bgcolor="#FFFFFF">';
         }else{
-            $tabla = $tabla.'<tr bgcolor="#FCD2CB">'; 
+            $tabla = $tabla.'<tr bgcolor="#D7E9F0">'; 
         }
-        $tabla = $tabla.'<td>'.$f['codigo'].'</td>';
+        $tabla = $tabla.'<td>'.$f['codproducto'].'</td>';
         $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['precio'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['preciocosto'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>'.$f['existencia'].'</td>';
-       
-            $tabla = $tabla.'<td>'.$f['departamento'].'</td>';
-        
-        $tabla = $tabla.'<td>'.$f['nomseccion'].'</td>';
+        $tabla = $tabla.'<td>'.$f['nomcubo'].'</td>';
         $tabla = $tabla."</tr>";  
         $vuelta++;               
     }
@@ -78,7 +52,7 @@ if ($r -> num_rows >0){
             <td>
                 
             </td>
-            <td  bgcolor="#FCD2CB">
+            <td  bgcolor="#D7E9F0">
                 TOTAL DE PRODUCTOS MOSTRADOS '.$vuelta.'
             </td>
         </tr>
@@ -88,7 +62,7 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<br><br><br>
     <table  align = "center" >
         <tr>
-            <td  bgcolor="#FCD2CB">
+            <td  bgcolor="#D7E9F0">
                 NO EXISTEN RESULTADOS PARA ESTA CONSULTA
             </td>
         </tr>
@@ -103,10 +77,9 @@ echo $tabla;
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetTitle('PUNTO DE VENTA');
-$pdf->SetKeywords('Punto de Venta');
-//$pdf->SetHeaderData('pdf_logo.jpg', '40','', '');
-$pdf->SetHeaderData('aguira.jpg', '40', 'PRODUCTOS', "Impreso: ".$fecha."");
+$pdf->SetTitle('CUBOLAND');
+$pdf->SetKeywords('Tienda de cubos');
+$pdf->SetHeaderData('Imagen1.jpg', '28', 'PRODUCTOS', "Impreso: ".$fecha."");
 //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '');
 //$link = "http://".$urlnueva[0]."/md_lista.php";
 

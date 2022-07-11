@@ -1,20 +1,5 @@
 <?php include_once "includes/header.php"; ?>
-<script>
 
-function cargar_secciones(){
-
-let idcat = $('#categoria').val();
-$.ajax({
-  url: "cargar_secciones.php",
-  type: "post",
-  data: {idcat: idcat},
-  success: function(data){
-      $('#seccion').html(data+"\n");
-  }
-});
-
-}
-</script>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -34,26 +19,23 @@ $.ajax({
         <div class="row">
 		<div class="col" style='width: 500px;'>
 			<div class="form-group">
-			<label style='color:#000'>Reporte por Categoría</label>
+			<label style='color:#000'>Reporte por Cubos</label>
 			<?php
-			$query_dptos = mysqli_query($conexion, "SELECT iddepartamento, departamento FROM cat_departamento ORDER BY iddepartamento ASC");
-			$resultado_dptos = mysqli_num_rows($query_dptos);
+			$query = mysqli_query($conexion, "SELECT * FROM cubos ORDER BY codcubo ASC");
+			$res = mysqli_num_rows($query);
 			
 			?>
 
-				<select id="categoria" name="categoria" onchange="cargar_secciones();" class="form-control">
+				<select id="cubor" name="cubor"  class="form-control">
+				<option value="0">TODOS</option>
 				<?php
-				if ($resultado_dptos > 0) {
-					while ($dptos = mysqli_fetch_array($query_dptos)) {
-						if($dptos['iddepartamento'] == 0){
+				if ($res > 0) {
+					while ($d = mysqli_fetch_array($query)) {	
 				?>
-					<option value="<?php echo $dptos['iddepartamento']; ?>">TODOS</option>
+					
+					<option value="<?php echo $d['codcubo']; ?>"><?php echo $d['cubo']; ?></option>
 				<?php
-						}else{
-				?>
-					<option value="<?php echo $dptos['iddepartamento']; ?>"><?php echo $dptos['departamento']; ?></option>
-				<?php
-						}
+						
 					}
 				}
 					?>
@@ -83,11 +65,9 @@ $.ajax({
 				<table class="table table-striped table-bordered" id="table">
 					<thead class="thead-dark">
 						<tr>
-							<th>ID</th>
 							<th>CODIGO</th>
-							<th>PRODUCTO</th>
+							<th>DESCRIPCION</th>
 							<th>PRECIO</th>
-							<th>STOCK</th>
 							<?php if ($_SESSION['rol'] == 1) { ?>
 							<th>ACCIONES</th>
 							<?php } ?>
@@ -103,10 +83,8 @@ $.ajax({
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
 									<td><?php echo $data['codproducto']; ?></td>
-									<td><?php echo $data['codigo']; ?></td>
 									<td><?php echo $data['descripcion']; ?></td>
 									<td><?php echo $data['precio']; ?></td>
-									<td><?php echo $data['existencia']; ?></td>
 										<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
 										 <!-- <a href="agregar_producto.php?id=<?php //echo $data['codproducto']; ?>" class="btn btn-primary"><i class='fas fa-audio-description'></i></a>-->

@@ -9,13 +9,34 @@ if (!empty($_POST)) {
     $fecha = $_POST['fecha'];
     $cubo = $_POST['cubo'];
 
-  $sql = "UPDATE arrendatarios SET nombre = '$nombre', telefono = '$telefono', fechaingreso = '$fecha', codcubo = '$cubo' WHERE idarrendatario = $idarrendatario";
-  echo $sql;
-    $sql_update = mysqli_query($conexion, $sql);
+    $cuboant = idcuboanterior($idarrendatario);
 
+    $sql = "UPDATE arrendatarios SET nombre = '$nombre', telefono = '$telefono', fechaingreso = '$fecha', codcubo = '$cubo' WHERE idarrendatario = $idarrendatario";
+    echo $sql;
+    $sql_update = mysqli_query($conexion, $sql);
     if ($sql_update) {
-      historia('Se ha actualizado el arrendatario '.$idarrendatario);
-      mensajeicono('Se ha actualizado el arrendatario con éxito!', 'lista_arrendatarios.php','','exito');
+
+      $sql = "UPDATE cubos SET disponible = 0, idarrendatario = 0 WHERE codcubo = $cuboant";
+      echo $sql;
+      $sql_update = mysqli_query($conexion, $sql);
+      if ($sql_update) {
+
+        $sql = "UPDATE cubos SET disponible = 1, idarrendatario = '$idarrendatario' WHERE codcubo = $cubo";
+        echo $sql;
+        $sql_update = mysqli_query($conexion, $sql);
+        if ($sql_update) {
+          historia('Se ha actualizado el arrendatario '.$idarrendatario);
+          mensajeicono('Se ha actualizado el arrendatario con éxito!', 'lista_arrendatarios.php','','exito');
+        
+        }else{
+          historia('Error al actualizar el arrendatario '.$idarrendatario);
+          mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_arrendatarios.php','','error');
+        }
+
+      }else{
+        historia('Error al actualizar el arrendatario '.$idarrendatario);
+        mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_arrendatarios.php','','error');
+      }
     } else {
       historia('Error al actualizar el arrendatario '.$idarrendatario);
       mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_arrendatarios.php','','error');

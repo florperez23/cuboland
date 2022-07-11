@@ -1663,3 +1663,37 @@ $('input[type=radio][name=tipo]').change(function() {
   $("#promocion").attr("placeholder", "Ingrese el precio");
  }
 });
+
+$('#cubop').change(function(e) {
+  e.preventDefault();
+
+  var idcubo = $('#cubop').val();
+  if(idcubo == 0){
+    $('#nom').val('Seleccione una opción');
+  }else{
+    $('#nom').val('C'+idcubo);
+  }
+
+  var action = 'signumero';
+  $.ajax({
+    url: 'modal.php',
+    type: "POST",
+    async: true,
+    data: {action:action, idcubo: idcubo},
+    success: function(response) {
+      console.log(response);
+      document.getElementById('numsig').value = response;
+      $('#codigo').val('C'+idcubo+response);
+      //$('#numsig').val(response);
+    },
+    error: function(error) {
+    }
+  });
+
+
+  
+  
+ 
+
+});
+

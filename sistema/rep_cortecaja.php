@@ -26,7 +26,7 @@ $vuelta = 0;
 $suma = 0;
 if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
-    $tabla = $tabla.'<tr border="1" bgcolor="#FAAC9E">';
+    $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8">';
     $tabla = $tabla.'<th ><b>N. VENTA</b></th>';
     $tabla = $tabla.'<th ><b>FECHA CAPTURA</b></th>';
     $tabla = $tabla."<th><b>USUARIO</b></th>";
@@ -41,7 +41,7 @@ if ($r -> num_rows >0){
         if (($vuelta % 2) == 0) {
             $tabla = $tabla.'<tr bgcolor="#FFFFFF">';
         }else{
-            $tabla = $tabla.'<tr bgcolor="#FCD2CB">'; 
+            $tabla = $tabla.'<tr bgcolor="#D7E9F0">'; 
         }
         $tabla = $tabla.'<td>'.$f['nofactura'].'</td>';
         $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
@@ -71,7 +71,7 @@ $tabla = $tabla.'<br><br><br>
         <td>
             
         </td>
-        <td  bgcolor="#FCD2CB">
+        <td  bgcolor="#D7E9F0">
             MONTO TOTAL RECUPERADO $'.number_format($suma, 2, '.', ',').'
         </td>
     </tr>
@@ -82,10 +82,9 @@ echo $tabla;
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
-$pdf->SetTitle('PUNTO DE VENTA');
-$pdf->SetKeywords('Punto de Venta');
-//$pdf->SetHeaderData('pdf_logo.jpg', '40','', '');
-$pdf->SetHeaderData('aguira.jpg', '40', 'CORTE DE CAJA', "Impreso: ".$fecha."");
+$pdf->SetTitle('CUBOLAND');
+$pdf->SetKeywords('Tienda de cubos');
+$pdf->SetHeaderData('Imagen1.jpg', '28', 'CORTE DE CAJA', "Impreso: ".$fecha."");
 //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '');
 //$link = "http://".$urlnueva[0]."/md_lista.php";
 
