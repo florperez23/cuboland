@@ -6,7 +6,9 @@
       mensajeicono('Todos los campos son obligatorios.', 'registro_promocion.php','','info');
 
     } else {
-      $clasificacion = $_POST['clasificacion'];
+      $clasificacion = $_POST['clasificacion']; 
+
+     
       $tipo = $_POST['tipo'];
       $promocion = $_POST['promocion'];     
       $fechainicio = $_POST['desde'];
@@ -22,6 +24,11 @@
         $identificador = $_POST['codigopro'];
       }
 
+      if($identificador ==0 || $identificador==''){
+        mensajeicono('Todos los campos son obligatorios.', 'registro_promocion.php','','info');
+      
+      
+      }else{
      echo $sql= "INSERT INTO promociones(idclasificacion, ididentificador,idtipo,promocion,fechainicio,fechatermino,usuario_id, fecha) values ('$clasificacion','$identificador', '$tipo', '$promocion', '$fechainicio','$fechatermino','$usuario', now())";
        echo $sql;
       $query_insert = mysqli_query($conexion, $sql);
@@ -33,6 +40,7 @@
         historia('Error al intentar registrar la promocion ');
         mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_promociones.php','','error');
       }
+    }
     }
   }
   ?>
