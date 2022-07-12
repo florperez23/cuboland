@@ -9,7 +9,8 @@ if (!empty($_POST)) {
   if ($_POST['action'] == 'infoProducto') {
       $data = "";
     $producto_id = $_POST['producto'];
-    $query = mysqli_query($conexion, "SELECT codproducto, descripcion, precio, existencia FROM producto WHERE codigo = $producto_id");
+  
+    $query = mysqli_query($conexion, "SELECT codproducto, descripcion, precio, existencia FROM producto WHERE codproducto = '".$producto_id."'");
 
     $result = mysqli_num_rows($query);
     if ($result > 0) {
@@ -85,7 +86,8 @@ if ($_POST['action'] == 'addProductoDetalle') {
     $cantidad = $_POST['cantidad'];
     $token = md5($_SESSION['idUser']);
     $query_iva = mysqli_query($conexion, "SELECT igv FROM configuracion");
-    $result_iva = mysqli_num_rows($query_iva);    
+    $result_iva = mysqli_num_rows($query_iva); 
+    echo "CALL add_detalle_temp ($codproducto,$cantidad,'$token')";   
     $query_detalle_temp = mysqli_query($conexion, "CALL add_detalle_temp ($codproducto,$cantidad,'$token')");
     $result = mysqli_num_rows($query_detalle_temp);
 
@@ -109,7 +111,7 @@ if ($_POST['action'] == 'addProductoDetalle') {
             <td>'.$data['codproducto'].'</td>
             <td colspan="2">'.$data['descripcion'].'</td>
             <td class="textcenter">'.$data['cantidad'].'</td>
-            <td class="textright">'.$data['precio_venta'].'</td>
+            <td class="textright">'.$data['precio'].'</td>
             <td class="textright">'.number_format($precioTotal, 2, '.', ',').'</td>
             <td>
                 <a href="#" class="btn btn-danger" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
@@ -164,7 +166,7 @@ if ($_POST['action'] == 'searchForDetalle') {
       $iva = $info_iva['igv'];
     }
     while ($data = mysqli_fetch_assoc($query)) {
-      $precioTotal = round($data['cantidad'] * $data['precio_venta'], 2);
+      $precioTotal = round($data['cantidad'] * $data['precio'], 2);
       $sub_total = round($sub_total + $precioTotal, 2);
       $total = round($total + $precioTotal, 2);
 
@@ -172,7 +174,7 @@ if ($_POST['action'] == 'searchForDetalle') {
             <td>'.$data['codproducto'].'</td>
             <td colspan="2">'.$data['descripcion'].'</td>
             <td class="textcenter">'.$data['cantidad'].'</td>
-            <td class="textright">'.$data['precio_venta'].'</td>
+            <td class="textright">'.$data['precio'].'</td>
             <td class="textright">'.number_format($precioTotal, 2, '.', ',').'</td>
             <td>
                 <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
@@ -308,7 +310,7 @@ if ($_POST['action'] == 'delProductoDetalle') {
       $iva = $info_iva['igv'];
     }
     while ($data = mysqli_fetch_assoc($query_detalle_tmp)) {
-      $precioTotal = round($data['cantidad'] * $data['precio_venta'], 2);
+      $precioTotal = round($data['cantidad'] * $data['precio'], 2);
       $sub_total = round($sub_total + $precioTotal, 2);
       $total = round($total + $precioTotal, 2);
 
@@ -316,7 +318,7 @@ if ($_POST['action'] == 'delProductoDetalle') {
             <td>'.$data['codproducto'].'</td>
             <td colspan="2">'.$data['descripcion'].'</td>
             <td class="textcenter">'.$data['cantidad'].'</td>
-            <td class="textright">'.$data['precio_venta'].'</td>
+            <td class="textright">'.$data['precio'].'</td>
             <td class="textright">'.number_format($precioTotal, 2, '.', ',').'</td>
             <td>
                 <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');">Eliminar</a>
@@ -770,6 +772,4 @@ if ($_POST['action'] == 'signumero') {
  
   exit;
 }
-
  ?>
-

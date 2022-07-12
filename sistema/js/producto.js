@@ -248,6 +248,7 @@ $('#txt_cod_pro').keyup(function(e) {
     async: true,
     data: {action:action,producto:productos},
     success: function(response){
+      
       if(response == 0) {
         $('#txt_descripcion').html('-');
         $('#txt_existencia').html('-');
@@ -262,6 +263,7 @@ $('#txt_cod_pro').keyup(function(e) {
 
 
       }else{
+      
         var info = JSON.parse(response);
         if (info.existencia < 1) {
           $('#txt_descripcion').html(info.descripcion);
@@ -369,6 +371,7 @@ $('#add_product_venta').click(function(e) {
       data: {action:action,producto:codproducto,cantidad:cantidad},
       success: function(response) {        
         if (response != 'error') {
+          console.log(response);
           var info = JSON.parse(response);
           $('#detalle_venta').html(info.detalle);
           $('#detalle_totales').html(info.totales);
