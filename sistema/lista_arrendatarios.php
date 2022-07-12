@@ -19,7 +19,7 @@
 							<th>ID</th>
 							<th>NOMBRE</th>
 							<th>TELEFONO</th>
-							<th>IDCUBO</th>
+							
 							<?php if ($_SESSION['rol'] == 1) { ?>
 							<th>ACCIONES</th>
 							<?php } ?>
@@ -37,7 +37,7 @@
 									<td><?php echo $data['idarrendatario']; ?></td>
 									<td><?php echo $data['nombre']; ?></td>
 									<td><?php echo $data['telefono']; ?></td>
-									<td><?php echo $data['codcubo']; ?></td>
+									
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
 										<a href="editar_arrendatario.php?id=<?php echo $data['idarrendatario']; ?>" class="btn btn-success"><i class='fas fa-edit'></i></a>

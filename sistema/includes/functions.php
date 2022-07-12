@@ -437,7 +437,7 @@ function obtenerDatosFacturaNva($id){
 function nrentero($consulta){
 	require("..\conexion.php");
 	$sql = "SELECT * FROM contadores WHERE id='1'";		
-	echo $sql;			
+	//echo $sql;			
 	$rc= $conexion -> query($sql);
 	if($f = $rc -> fetch_array()){
 		if ($consulta==TRUE){
