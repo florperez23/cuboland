@@ -8,9 +8,11 @@ if (!empty($_POST)) {
     $descripcion = $_POST['descripcion'];
     $precio = $_POST['precio'];
     $mayoreo = $_POST['mayoreo'];
+    $cant_may = $_POST['cant'];
+    $existencia = $_POST['existencia'];
     $moduser = $_SESSION['idUser'];
 
-    $query_update = mysqli_query($conexion, "UPDATE producto SET  descripcion = '".$descripcion."', precio = '".$precio."', mayoreo = '$mayoreo', modifico='$moduser' WHERE codproducto = '$codproducto'");
+    $query_update = mysqli_query($conexion, "UPDATE producto SET  descripcion = '".$descripcion."', precio = '".$precio."', mayoreo = '$mayoreo', modifico='$moduser', cantidad_mayoreo='$cant_may', existencia='$existencia' WHERE codproducto = '$codproducto'");
     if ($query_update) {
       historia('Se actualizo el producto '.$codproducto);
       mensajeicono('Se ha registrado con éxito la modificacion del producto!', 'lista_productos.php','','exito');
@@ -43,6 +45,8 @@ if (empty($_REQUEST['id'])) {
       $precio = $data['precio'];
       $mayoreo = $data['mayoreo'];
       $codcubo = $data['codcubo'];
+      $cant_may = $data['cantidad_mayoreo'];
+      $existencia = $data['existencia'];
     }
   } 
 }
@@ -103,9 +107,20 @@ if (empty($_REQUEST['id'])) {
              </div>
 
              <div class="form-group">
-               <label for="preciocosto">Mayoreo</label>
-               <input type="text" placeholder="Ingrese precio" class="form-control" name="mayoreo" id="mayoreo" value="<?php echo $mayoreo; ?>">
+               <label for="cant">Cantidad Mayoreo</label>
+               <input type="text" placeholder="Ingrese precio" class="form-control" name="cant" id="cant" value="<?php echo $cant_may ?>">
              </div>
+
+             <div class="form-group">
+               <label for="mayoreo">Precio Mayoreo</label>
+               <input type="text" placeholder="Ingrese precio" class="form-control" name="mayoreo" id="mayoreo" value="<?php echo $mayoreo ?>">
+             </div>
+
+             <div class="form-group">
+               <label for="existencia">Existencia</label>
+               <input type="text" placeholder="Ingrese existencia" class="form-control" name="existencia" id="existencia" value="<?php echo $existencia ?>">
+             </div>
+             
             <input type="submit" value="Actualizar Producto" class="btn btn-primary">
           </form>
         </div>

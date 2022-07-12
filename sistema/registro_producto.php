@@ -13,10 +13,12 @@
       $descripcion = $_POST['descripcion'];
       $precio = $_POST['precio'];
       $mayoreo = $_POST['mayoreo'];
-      $$usuario_id = $_SESSION['idUser'];
+      $cant_may = $_POST['cant'];
+      $existencia = $_POST['existencia'];
+      $usuario_id = $_SESSION['idUser'];
 
-      $query_insert = mysqli_query($conexion, "INSERT INTO producto(codproducto, nomenclatura,numsiguiente,descripcion,precio,mayoreo, registro, fecha, codcubo) 
-      values ('$codigo','$nomenclatura', '$signum', '$descripcion', '$precio','$mayoreo', '$usuario_id', now(), '$idcubo')");
+      $query_insert = mysqli_query($conexion, "INSERT INTO producto(codproducto, nomenclatura,numsiguiente,descripcion,precio,mayoreo, registro, fecha, codcubo, cantidad_mayoreo, existencia) 
+      values ('$codigo','$nomenclatura', '$signum', '$descripcion', '$precio','$mayoreo', '$usuario_id', now(), '$idcubo', '$cant_may', '$existencia')");
       if ($query_insert) {
         historia('Se registro el nuevo producto '.$codigo);
         mensajeicono('Se ha registrado con éxito el producto!', 'lista_productos.php','','exito');
@@ -96,9 +98,20 @@
              </div>
 
              <div class="form-group">
-               <label for="preciocosto">Mayoreo</label>
+               <label for="cant">Cantidad Mayoreo</label>
+               <input type="text" placeholder="Ingrese precio" class="form-control" name="cant" id="cant">
+             </div>
+
+             <div class="form-group">
+               <label for="mayoreo">Precio Mayoreo</label>
                <input type="text" placeholder="Ingrese precio" class="form-control" name="mayoreo" id="mayoreo">
              </div>
+
+             <div class="form-group">
+               <label for="existencia">Existencia</label>
+               <input type="text" placeholder="Ingrese existencia" class="form-control" name="existencia" id="existencia">
+             </div>
+             
              
              <input type="submit" value="Guardar Producto" class="btn btn-primary">
            </form>

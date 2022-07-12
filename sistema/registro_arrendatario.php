@@ -2,7 +2,7 @@
 include "../conexion.php";
 if (!empty($_POST)) {
     $alert = "";
-    if (empty($_POST['nombre']) || empty($_POST['telefono']) || empty($_POST['fecha']) || empty($_POST['cubo'])) {
+    if (empty($_POST['nombre']) || empty($_POST['telefono']) || empty($_POST['fecha']) ) {
         mensajeicono('Todos los campos son obligatorios.', 'registro_arrendatario.php','','info');
 
     } else {
@@ -10,27 +10,17 @@ if (!empty($_POST)) {
         $nombre = $_POST['nombre'];
         $telefono = $_POST['telefono'];
         $direccion = $_POST['fecha'];
-        $codcubo = $_POST['cubo'];
         $usuario_id = $_SESSION['idUser'];
 
         $idarrendatario = nrentero(TRUE);
     
-       $sql = "INSERT INTO arrendatarios(idarrendatario, nombre,telefono,codcubo, fechaingreso, registro) values ('$idarrendatario','$nombre', '$telefono', '$codcubo', '$fecha','$usuario_id')";
-       echo $sql;
+       $sql = "INSERT INTO arrendatarios(idarrendatario, nombre,telefono, fechaingreso, registro) values ('$idarrendatario','$nombre', '$telefono',  '$fecha','$usuario_id')";
+       //echo $sql;
         $query_insert = mysqli_query($conexion, $sql );
         if ($query_insert) {
             nrentero(FALSE);
             historia('Se registro el nuevo arrendatario '.$nombre);
-            $sql = "UPDATE cubos SET disponible = 1, idarrendatario = '$idarrendatario'  WHERE codcubo = $codcubo";
-            echo $sql;
-            $sql_update = mysqli_query($conexion, $sql);
-
-            if ($sql_update) {
-                historia('Se asocio el cubo '.$codcubo.' con el arrendatario '.$nombre);
-                mensajeicono('Se ha registrado con éxito el nuevo arrendatario!', 'lista_arrendatarios.php','','exito');
-
-            }
-           
+            mensajeicono('Se ha registrado con éxito el nuevo arrendatario!', 'lista_arrendatarios.php','','exito');         
         } else {
             historia('Error al intentar registrar el nuevo arrendatario '.$nombre);
             mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_arrendatarios.php','','error');
@@ -72,26 +62,7 @@ if (!empty($_POST)) {
                             <label for="telefono">Teléfono</label>
                             <input type="number" placeholder="Ingrese Teléfono" name="telefono" id="telefono" class="form-control">
                         </div>
-                        <div class="form-group">
-                        <label >Cubo asociado (a rentar)</label>
-                        <?php
-                        $query = mysqli_query($conexion, "SELECT * FROM cubos WHERE disponible = 0 ORDER BY codcubo ASC");
-                        $res = mysqli_num_rows($query);
-                        ?>
-
-                        <select id="cubo" name="cubo" class="form-control">
-                            <?php
-                            if ($res > 0) {
-                            while ($f = mysqli_fetch_array($query)) {
-                            ?>  
-                                <option value="<?php echo $f['codcubo']; ?>"><?php echo $f['cubo']; ?></option>
-                            <?php
-                                }
-                            }
-
-                            ?>
-                        </select>
-                        </div>
+                       
                         <input type="submit" value="Guardar arrendador" class="btn btn-primary">
                     </form>
                 </div>
@@ -103,3 +74,14 @@ if (!empty($_POST)) {
 </div>
 <!-- /.container-fluid -->
 <?php include_once "includes/footer.php"; ?>
+
+
+<!-- $sql = "UPDATE cubos SET disponible = 1, idarrendatario = '$idarrendatario'  WHERE codcubo = $codcubo";
+            echo $sql;
+            $sql_update = mysqli_query($conexion, $sql);
+
+            if ($sql_update) {
+                historia('Se asocio el cubo '.$codcubo.' con el arrendatario '.$nombre);
+                mensajeicono('Se ha registrado con éxito el nuevo arrendatario!', 'lista_arrendatarios.php','','exito');
+
+            } -->

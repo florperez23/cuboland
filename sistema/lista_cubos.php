@@ -18,6 +18,8 @@
 							<th>ID</th>
 							<th>Cubo</th>
 							<th>Precio Renta</th>
+							<th>Disponible</th>
+							<th>Arrendatario</th>
 							<?php if ($_SESSION['rol'] == 1) { ?>
 							<th>ACCIONES</th>
 							<?php } ?>
@@ -27,7 +29,8 @@
 						<?php
 						include "../conexion.php";
 
-						$query = mysqli_query($conexion, "SELECT * FROM cubos");
+						$query = mysqli_query($conexion, "SELECT c.*, a.nombre FROM cubos c
+						left join arrendatarios a on a.idarrendatario = c.idarrendatario");
 						$result = mysqli_num_rows($query);
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
@@ -35,6 +38,8 @@
 									<td><?php echo $data['codcubo']; ?></td>
 									<td><?php echo $data['cubo']; ?></td>
 									<td><?php echo $data['renta']; ?></td>
+									<td><?php echo $data['disponible']; ?></td>
+									<td><?php echo $data['nombre']; ?></td>
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
 										<a href="editar_cubo.php?id=<?php echo $data['codcubo']; ?>" class="btn btn-success"><i class='fas fa-edit'></i></a>
