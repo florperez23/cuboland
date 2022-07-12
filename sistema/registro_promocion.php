@@ -52,7 +52,7 @@
    <!-- Page Heading -->
    <div class="d-sm-flex align-items-center justify-content-between mb-4">
      <h1 class="h3 mb-0 text-gray-800">Registrar Promocion</h1>
-     <a href="lista_productos.php" class="btn btn-primary">Regresar</a>
+     <a href="lista_promociones.php" class="btn btn-primary">Regresar</a>
    </div>
 
    <!-- Content Row -->
