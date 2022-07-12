@@ -135,7 +135,7 @@ if(HayCajaAbierta()==0)
         </div>
         <div class="modal-body">      
         <div>
-          <div class="card">
+          <div class="card_div">
               <div class="card-body">
                   <form id="formulario" onsubmit="registrarCliVenta(event);" autocomplete="off">
                   <div class="row">              
@@ -251,7 +251,7 @@ if(HayCajaAbierta()==0)
         </div>
         <div class="modal-body">      
         <div>
-          <div class="card">
+          <div class="card_div">
               <div class="card-body">
                   <form id="formulario" >
                   <div class="row">

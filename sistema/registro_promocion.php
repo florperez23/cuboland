@@ -2,55 +2,41 @@
   include "../conexion.php";
   if (!empty($_POST)) {
     $alert = "";
-    if (empty($_POST['proveedor']) || empty($_POST['producto']) || empty($_POST['precioventa']) || $_POST['precioventa'] <  0 || empty($_POST['cantidad'] || $_POST['cantidad'] <  0)) {
-      mensajeicono('Todos los campos son obligatorios.', 'registro_producto.php','','info');
+    if (empty($_POST['clasificacion']) || empty($_POST['tipo']) || empty($_POST['promocion']) || empty($_POST['desde']) || empty($_POST['hasta'])) {
+      mensajeicono('Todos los campos son obligatorios.', 'registro_promocion.php','','info');
 
     } else {
-      $codigo = $_POST['codigo'];
-      $proveedor = $_POST['proveedor'];
-      $producto = $_POST['producto'];     
-      $cantidad = $_POST['cantidad'];
-      $usuario_id = $_SESSION['idUser'];
-      $preciocosto = $_POST['preciocosto'];
-      $precio = $_POST['precioventa'];
-      $preciomayoreo = $_POST['preciomayoreo'];
-      $unidadmedida = $_POST['medida'];
-      $categoria = $_POST['categoria'];
-      if(isset($_POST['sec'])){
-        $sec = $_POST['sec'];
-      }else{
-        $sec = "";
+      $clasificacion = $_POST['clasificacion'];
+      $tipo = $_POST['tipo'];
+      $promocion = $_POST['promocion'];     
+      $fechainicio = $_POST['desde'];
+      $fechatermino = $_POST['hasta'];
+      $fechainicio = date("Y/m/d", strtotime($fechainicio));
+      $fechatermino = date("Y/m/d", strtotime($fechatermino));
+      $usuario = $_SESSION['idUser'];
+      if($clasificacion==1)
+      {
+        $identificador = $_POST['codigocub'];
+      }else
+      {
+        $identificador = $_POST['codigopro'];
       }
-      
 
-
-      $query_insert = mysqli_query($conexion, "INSERT INTO producto(codigo, proveedor,descripcion,precio,existencia,usuario_id, preciocosto, preciomayoreo, unidadmedida, categoria, seccion, fecha) values ('$codigo','$proveedor', '$producto', '$precio', '$cantidad','$usuario_id', '$preciocosto', '$preciomayoreo', '$unidadmedida', '$categoria', '$sec', now())");
+     echo $sql= "INSERT INTO promociones(idclasificacion, ididentificador,idtipo,promocion,fechainicio,fechatermino,usuario_id, fecha) values ('$clasificacion','$identificador', '$tipo', '$promocion', '$fechainicio','$fechatermino','$usuario', now())";
+       echo $sql;
+      $query_insert = mysqli_query($conexion, $sql);
       if ($query_insert) {
-        historia('Se registro el nuevo producto '.$codigo);
-        mensajeicono('Se ha registrado con éxito el producto!', 'lista_productos.php','','exito');
+        historia('Se registro la prmocion ');
+        mensajeicono('Se ha registrado con éxito la promocion!', 'lista_promociones.php','','exito');
 
       } else {
-        historia('Error al intentar registrar el nuevo producto '.$codigo);
-        mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_productos.php','','error');
+        historia('Error al intentar registrar la promocion ');
+        mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_promociones.php','','error');
       }
     }
   }
   ?>
-<script>
 
-function cargar_secciones(){
-
-let idcat = $('#categoria').val();
-$.ajax({
-  url: "cargar_secciones.php",
-  type: "post",
-  data: {idcat: idcat},
-  success: function(data){
-      $('#seccion').html(data+"\n");
-  }
-});
-
-}
 </script>
  <!-- Begin Page Content -->
  <div class="container-fluid">
@@ -87,9 +73,15 @@ $.ajax({
 
 
 
-             <div class="form-group">
+             <div class="form-group" >
                <label for="codigo" id="labelcodigo" name="labelcodigo">Codigo</label>
-               <input type="text" placeholder="Codigo" name="codigo" id="codigo" class="form-control">
+               <div  id="cubo" name="cubo"> </div>
+               <div  id="prod" name="prod">
+               <table  width=100% ></tr>
+               <td width=95%>   <input type="text" placeholder="Codigo" name="codigopro" id="codigopro" class="form-control"  ></td>
+               <td width=5% ><center> <a href="#" class="btn btn-secondary"  name="btnBuscarProducto" id="btnBuscarProducto"data-toggle="modal" data-target="#modalBusquedaProducto"><i class="fa fa-search" aria-hidden="true"></i></center></td>          
+               </tr></table>
+               </div>          
              </div>
 
              <div class="form-group">
@@ -114,21 +106,91 @@ $.ajax({
             
              <div class="form-group">
                <label for="codigo">Fecha Termino</label>
-               <input type="date" name="desde" id="hasta" class="form-control" value="<?php echo date("Y-m-d");?>">
+               <input type="date" name="hasta" id="hasta" class="form-control" value="<?php echo date("Y-m-d");?>">
              </div>
 
-         
-
-            
-
-             <div class="form-group" name='seccion' id='seccion'></div>
+      
              
-             <input type="submit" value="Guardar Producto" class="btn btn-primary">
+             <input type="submit" value="Guardar promocion" class="btn btn-primary">
            </form>
          </div>
        </div>
      </div>
    </div>
  </div>
+
+
+
+ <div class="modal fade" id="modalBusquedaProducto" tabindex="-1" role="dialog" aria-labelledby="modalBusquedaProductoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="width: 120%;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Buscar Producto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">      
+        <div>
+          <div class="card_div">
+              <div class="card-body">
+                  <form id="formulario" >
+                  <div class="row">
+		<div class="col-lg-12">
+
+			<div class="table-responsive">
+				<table class="table table-striped table-bordered" id="table">
+					<thead class="thead-dark">
+						<tr>
+							<!-- <th>ID</th> -->
+							<th>CODIGO</th>
+							<th>PRODUCTO</th>
+              <th>CUBO</th>					
+							<th></th>						
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						include "../conexion.php";
+
+						$query = mysqli_query($conexion, "SELECT * FROM producto");
+						$result = mysqli_num_rows($query);
+						if ($result > 0) {
+							while ($data = mysqli_fetch_assoc($query)) { ?>
+								<tr>
+									<td><?php echo $data['codproducto']; ?></td>
+									<td><?php echo $data['descripcion']; ?></td>
+									<td><?php echo $data['codcubo']; ?></td>
+																
+									<td> <center>
+										<a class="btn btn-success" onclick="seleccionarProducto('<?php echo $data['codproducto']; ?>');"><i class='fa fa-reply' style="color:white"></i></a>
+									  </center>
+									</td>
+									
+								</tr>
+						<?php }
+						} ?>
+					</tbody>
+
+				</table>
+			</div>
+
+		</div>
+	</div>
+                    </form>                  
+                </div>
+          </div>
+      </div>
+        </div>
+        <div class="alert alertCambio"></div>
+        <div class="modal-footer">    
+        <button type="button" style="text-align: center;" class="btn btn-danger" data-dismiss="modal" id="btnCerrar" name="btnCerrar">Close</button>
+      
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
  <!-- /.container-fluid -->
  <?php include_once "includes/footer.php"; ?>
