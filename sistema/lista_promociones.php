@@ -59,14 +59,38 @@
 						?>
 								<tr>
 									<td><?php echo $dato['idpromocion']; ?></td>   
-                                    <td><?php echo $dato['idclasificacion']; ?></td>   
-                                    <td><?php echo $dato['ididentificador']; ?></td>
-                                    <td><?php echo $dato['idtipo']; ?></td>                                 
-                                    <td><?php echo $dato['promocion']; ?></td> 
+                                     
+									<td>
+                                        <?php if( $dato['idclasificacion'] =='1')
+                                    {
+                                    echo '<span>Cubo</span>';
+                                    }
+									else
+                                    {
+                                        echo '<span>Producto</span>';
+                                    }
+                                    ?>
+                                  
+                                    
+									<td><?php echo $dato['ididentificador']; ?></td> 
+
+								  <td>
+                                        <?php if( $dato['idtipo'] =='1')
+                                    {
+                                    echo '<span>'.$dato['promocion'].'%</span>';
+                                    }
+									else
+                                    {
+                                        echo '<span>'.$dato['promocion'].'</span>';
+                                    }
+                                    ?>
+                                  </td>
+                               
+                                    
+                                    <td><?php echo date_format( date_create($dato['fechainicio']), 'd/m/Y');?></td>
                                     <td><?php echo date_format( date_create($dato['fechatermino']), 'd/m/Y');?></td>
-                                    <td><?php echo date_format( date_create($dato['fechavencimiento']), 'd/m/Y');?></td>
                                     <td>
-                                        <?php if( $dato['estado'] =='1')
+                                        <?php if( $dato['activo'] =='1')
                                     {
                                     echo '<span class="badge bg-success" style="color:white;">Activo</span>';
                                     }else
@@ -77,7 +101,7 @@
                                   </td>
 									<td>
                                    
-                                <form action="eliminar_credito.php?id=<?php echo $dato['numcredito']; ?>" method="post" class="cancelar d-inline">
+                                <form action="eliminar_promocion.php?id=<?php echo $dato['idpromocion']; ?>" method="post" class="confirmar d-inline">
 											<button  title="Cancelar" class="btn btn-danger" type="submit"><i class="fa fa-ban"></i> </button>
 										</form>
         

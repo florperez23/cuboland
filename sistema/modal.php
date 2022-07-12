@@ -770,4 +770,6 @@ if ($_POST['action'] == 'signumero') {
  
   exit;
 }
+
  ?>
+

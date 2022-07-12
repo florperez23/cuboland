@@ -1635,12 +1635,25 @@ $('input[type=radio][name=clasificacion]').change(function() {
  if(idclasificacion==1)
  { 
   $('#labelcodigo').html("Codigo del Cubo");
+ console.log("");
+  action='cargocubo';
+$.ajax({
+  url: "cargar_cubos.php",
+  type: "post",
+  success: function(data){
+      $('#cubo').html(data+"\n");
+  }
+});
+
+$('#cubo').slideDown();
+  $('#prod').slideUp();  
   $("#codigo").attr("placeholder", "Ingrese el codigo del cubo");
  
 }
 
  else{
-
+  $('#cubo').slideUp();
+  $('#prod').slideDown(); 
   $('#labelcodigo').html("Codigo del Producto");
   $("#codigo").attr("placeholder", "Ingrese el codigo del producto");
  }
@@ -1697,3 +1710,9 @@ $('#cubop').change(function(e) {
 
 });
 
+function seleccionarProducto(idproducto)
+{
+  console.log("entro");
+  $('#codigopro').val(idproducto);
+  $('#modalBusquedaProducto').modal('hide');
+}
