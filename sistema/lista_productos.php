@@ -68,6 +68,7 @@
 							<th>CODIGO</th>
 							<th>DESCRIPCION</th>
 							<th>PRECIO</th>
+							
 							<?php if ($_SESSION['rol'] == 1) { ?>
 							<th>ACCIONES</th>
 							<?php } ?>
@@ -82,11 +83,13 @@
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
-									<td><?php echo $data['codproducto']; ?></td>
+									<td><input type='hidden' name='codigob<?php echo $data['codproducto']; ?>' id='codigob<?php echo $data['codproducto']; ?>' value='<?php echo $data['codproducto']; ?>'><?php echo $data['codproducto']; ?></td>
 									<td><?php echo $data['descripcion']; ?></td>
 									<td><?php echo $data['precio']; ?></td>
+									
+									<td><button type="button" id="generar_barcode" onclick="cb('<?php echo $data['codproducto']; ?>');" class="btn btn-info" ><i class="fas fa-solid fa-barcode"></i></button>
 										<?php if ($_SESSION['rol'] == 1) { ?>
-									<td>
+									
 										 <!-- <a href="agregar_producto.php?id=<?php //echo $data['codproducto']; ?>" class="btn btn-primary"><i class='fas fa-audio-description'></i></a>-->
 
 										<a href="editar_producto.php?id=<?php echo $data['codproducto']; ?>" class="btn btn-success"><i class='fas fa-edit'></i></a>
@@ -94,8 +97,9 @@
 										<form action="eliminar_producto.php?id=<?php echo $data['codproducto']; ?>" method="post" class="confirmar d-inline">
 											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
 										</form>
-									</td>
+									
 										<?php } ?>
+									</td>
 								</tr>
 						<?php }
 						} ?>
@@ -103,12 +107,35 @@
 
 				</table>
 			</div>
-
 		</div>
 	</div>
 
 </div>
 <!-- /.container-fluid -->
+<script>
+    function cb(cod) {
+        var data = $("#codigob"+cod).val();
 
+        $.post( "guardarImagen.php", { filepath: "codigosGenerados/"+data+".png", text:data }  )
+            .done(function( respuesta ) {
+				location.href = "codigoimprimir.php?codigo="+data;
+
+                /*Swal.fire({
+                    icon: 'success',
+                    title: 'Hecho!',
+                    text: 'Se ha registrado con éxito el código!',
+                    footer: ''
+                })*/
+            }
+        );
+
+		
+       // $("#imagen"+data).html('<img src="barcode\\barcode.php?text='+data+'&size=60&codetype=Code39&print=true"/><a href="codigoimprimir.php?codigo='+data+'" class="btn btn-success"><i class=" fas fa-solid fa-print"></i></a>');
+      
+    }
+
+    
+
+  </script>
 
 <?php include_once "includes/footer.php"; ?>
