@@ -493,7 +493,7 @@ function ExiteUnaPromocion($codproducto){
 			if($tipo==1)
 			{
 				//cantidad/total
-				$precio=$promocion / (100 x $precio);
+				//$precio=$promocion / (100 x $precio);
 			}else
 			{
 				$precio=$promocion;
