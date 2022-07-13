@@ -7,36 +7,16 @@ if (!empty($_POST)) {
     $nombre = $_POST['nombre'];
     $telefono = $_POST['telefono'];
     $fecha = $_POST['fecha'];
-    $cubo = $_POST['cubo'];
-
-    $cuboant = idcuboanterior($idarrendatario);
-
-    $sql = "UPDATE arrendatarios SET nombre = '$nombre', telefono = '$telefono', fechaingreso = '$fecha', codcubo = '$cubo' WHERE idarrendatario = $idarrendatario";
-    echo $sql;
+  
+   
+    $sql = "UPDATE arrendatarios SET nombre = '$nombre', telefono = '$telefono', fechaingreso = '$fecha' WHERE idarrendatario = $idarrendatario";
+   // echo $sql;
     $sql_update = mysqli_query($conexion, $sql);
     if ($sql_update) {
+     
+      historia('Se ha actualizado el arrendatario '.$idarrendatario);
+      mensajeicono('Se ha actualizado el arrendatario con éxito!', 'lista_arrendatarios.php','','exito');  
 
-      $sql = "UPDATE cubos SET disponible = 0, idarrendatario = 0 WHERE codcubo = $cuboant";
-      echo $sql;
-      $sql_update = mysqli_query($conexion, $sql);
-      if ($sql_update) {
-
-        $sql = "UPDATE cubos SET disponible = 1, idarrendatario = '$idarrendatario' WHERE codcubo = $cubo";
-        echo $sql;
-        $sql_update = mysqli_query($conexion, $sql);
-        if ($sql_update) {
-          historia('Se ha actualizado el arrendatario '.$idarrendatario);
-          mensajeicono('Se ha actualizado el arrendatario con éxito!', 'lista_arrendatarios.php','','exito');
-        
-        }else{
-          historia('Error al actualizar el arrendatario '.$idarrendatario);
-          mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_arrendatarios.php','','error');
-        }
-
-      }else{
-        historia('Error al actualizar el arrendatario '.$idarrendatario);
-        mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_arrendatarios.php','','error');
-      }
     } else {
       historia('Error al actualizar el arrendatario '.$idarrendatario);
       mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_arrendatarios.php','','error');
@@ -58,7 +38,7 @@ if ($result_sql == 0) {
     $nombre = $data['nombre'];
     $fecha = $data['fechaingreso'];
     $telefono = $data['telefono'];
-    $cubo = $data['codcubo'];
+
   }
 }
 ?>
@@ -87,34 +67,6 @@ if ($result_sql == 0) {
               <label for="telefono">Teléfono</label>
               <input type="number" placeholder="Ingrese Teléfono" name="telefono" class="form-control" id="telefono" value="<?php echo $telefono; ?>">
             </div>
-            <div class="form-group">
-               <label>Cubo asociado (a rentar)</label>
-               <?php
-                $query = mysqli_query($conexion, "select * from cubos where codcubo = ".$cubo."
-                union 
-                select * from cubos where disponible = 0");
-                $res = mysqli_num_rows($query);
-                ?>
-
-               <select id="cubo" name="cubo" class="form-control">
-                 <?php
-                  if ($res > 0) {
-                    while ($f = mysqli_fetch_array($query)) {
-                      if($f['codcubo']==$cubo){
-                      // code...
-                  ?>
-                    <option value="<?php echo $f['codcubo']; ?>" selected><?php echo $f['cubo']; ?></option>
-                  <?php
-                      }else{
-                  ?>
-                     <option value="<?php echo $f['codcubo']; ?>"><?php echo $f['cubo']; ?></option>
-                 <?php
-                    }
-                  }
-                }
-                  ?>
-               </select>
-             </div>
             <button type="submit" class="btn btn-primary"><i class="fas fa-user-edit"></i> Editar arrendatario</button>
           </form>
         </div>

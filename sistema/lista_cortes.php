@@ -69,13 +69,11 @@
 		(
 			SELECT SUM(f.totalfactura)  as total, count(f.nofactura) as TotalVentas
 				FROM factura f
-				WHERE f.fecha between '".$fechaCorte."' and now() and idtipoventa = 1
-				union all
-				SELECT SUM(pago) as total, count(nofactura) as TotalVentas 
-				FROM abonos WHERE fecha between '".$fechaCorte."' and now() 
+				WHERE f.fecha between '".$fechaCorte."' and now() 
+				
 		) t";
 
-		//echo $sql;
+		echo $sql;
 		$query = mysqli_query($conexion, $sql);
 		$result = mysqli_num_rows($query);
 	  

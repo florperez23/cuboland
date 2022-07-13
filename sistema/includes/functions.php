@@ -461,7 +461,7 @@ function nrentero($consulta){
 
 function idcuboanterior($id){
 	include "../conexion.php";
-	$sql = "select codcubo from arrendatarios where idarrendatario = '$id'";			
+	$sql = "select idcubo from rentas where id = '$id'";			
 	//echo $sql;		
 	$rc= $conexion -> query($sql);
 	if($f = $rc -> fetch_array())
@@ -471,7 +471,7 @@ function idcuboanterior($id){
 		if($f = $rc -> fetch_array())
 			{		
 						
-				return $f['codcubo'];
+				return $f['idcubo'];
 			}
 		 else {return FALSE;}
 	}

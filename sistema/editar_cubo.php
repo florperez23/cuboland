@@ -10,15 +10,8 @@ if (!empty($_POST)) {
     $idcubo = $_GET['id'];
     $cubo = $_POST['cubo'];
     $renta = $_POST['renta'];
-    $idarr = $_POST['rentero'];
 
-    if($idarr == 0){
-      $sql_update = mysqli_query($conexion, "UPDATE cubos SET cubo = '$cubo', renta = '$renta', idarrendatario = 0, disponible = 0  WHERE codcubo = $idcubo");
-
-    }else{
-      $sql_update = mysqli_query($conexion, "UPDATE cubos SET cubo = '$cubo', renta = '$renta', idarrendatario = '$idarr', disponible = 1  WHERE codcubo = $idcubo");
-
-    }
+    $sql_update = mysqli_query($conexion, "UPDATE cubos SET cubo = '$cubo', renta = '$renta'  WHERE codcubo = $idcubo");
 
     if ($sql_update) {
       historia('Se actualizo el cubo '.$idcubo);
@@ -49,8 +42,6 @@ if ($result_sql == 0) {
     $cubo = $data['cubo'];
     $renta = $data['renta'];
     $disponible = $data['disponible'];
-    $idarr = $data['idarrendatario'];
-
   }
 }
 ?>
@@ -78,34 +69,7 @@ if ($result_sql == 0) {
               <input type="text" placeholder="Ingrese el monto de la renta" name="renta" class="form-control" id="renta" value="<?php echo $renta; ?>">
             </div>
 
-            <div class="form-group">
-               <label>Arrendatario asociado</label>
-               <?php
-                $query = mysqli_query($conexion, "select * from arrendatarios");
-                $res = mysqli_num_rows($query);
-                ?>
-
-               <select id="rentero" name="rentero" class="form-control">
-               <option value="0">Sin especificar</option>
-                 <?php
-                  if ($res > 0) {
-                    while ($f = mysqli_fetch_array($query)) {
-                      if($f['idarrendatario']==$idarr){
-                      // code...
-                  ?>
-                    <option value="<?php echo $f['idarrendatario']; ?>" selected><?php echo $f['nombre']; ?></option>
-                  <?php
-                      }else{
-                  ?>
-                     <option value="<?php echo $f['idarrendatario']; ?>"><?php echo $f['nombre']; ?></option>
-                 <?php
-                    }
-                  }
-                }
-                  ?>
-               </select>
-             </div>
-
+            
             <input type="submit" value="Editar Cubo" class="btn btn-primary">
           </form>
         </div>
