@@ -81,6 +81,7 @@ if(HayCajaAbierta()==0)
                             <th>Stock</th>
                             <th width="100px">Cantidad</th>
                             <th class="textright">Precio</th>
+                            <th class="textright">Descuento</th>
                             <th class="textright">Precio Total</th>
                             <th>Acciones</th>
                         </tr>
@@ -92,6 +93,7 @@ if(HayCajaAbierta()==0)
                             <td id="txt_existencia">-</td>
                             <td><input type="text" name="txt_cant_producto" id="txt_cant_producto" value="0" min="1" disabled></td>
                             <td id="txt_precio" class="textright">0.00</td>
+                            <td id="txt_descuento" class="textright">0.00</td>
                             <td id="txt_precio_total" class="txtright">0.00</td>
                             <td><a href="#" id="add_product_venta" class="btn btn-dark" style="display: none;">Agregar</a></td>
                         </tr>
@@ -100,6 +102,7 @@ if(HayCajaAbierta()==0)
                             <th colspan="2">Descripción</th>
                             <th>Cantidad</th>
                             <th class="textright">Precio</th>
+                            <th class="textright">Descuento</th>
                             <th class="textright">Precio Total</th>
                             <th>Acciones</th>
                         </tr>
@@ -128,7 +131,7 @@ if(HayCajaAbierta()==0)
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title text-white" id="exampleModalLabel">Forma de Pago</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Forma de Pago</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -244,7 +247,7 @@ if(HayCajaAbierta()==0)
     <div class="modal-dialog" role="document">
       <div class="modal-content" style="width: 120%;">
         <div class="modal-header">
-          <h5 class="modal-title text-white" id="exampleModalLabel">BuscarCliente</h5>
+          <h5 class="modal-title" id="exampleModalLabel">BuscarCliente</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

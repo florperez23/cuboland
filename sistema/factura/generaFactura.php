@@ -31,7 +31,9 @@
 			//echo $sql;
 			$productos = mysqli_query($conexion, $sql);
 		}else{
-			$productos = mysqli_query($conexion, "SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.descripcion, p.precio FROM detallefactura d INNER JOIN producto p ON d.nofactura = $noFactura WHERE d.codproducto = p.codproducto GROUP BY p.codproducto");
+			$sql="SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.descripcion, p.precio FROM detallefactura d INNER JOIN producto p ON d.nofactura = $noFactura WHERE d.codproducto = p.codproducto GROUP BY p.codproducto";
+			//echo $sql;
+			$productos = mysqli_query($conexion, $sql);
 		}
 
 		
@@ -62,7 +64,7 @@
 
 		}
 
-		$pdf->image("img/aguira.jpg", 50, 18, 25, 10, 'JPG');
+		$pdf->image("img/icono.jpg", 50, 15, 25, 20, 'JPG');
 		$pdf->SetFont('Arial', 'B', 7);
 		$pdf->Cell(15, 5, "Ruc: ", 0, 0, 'L');
 		$pdf->SetFont('Arial', '', 7);

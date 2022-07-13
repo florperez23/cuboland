@@ -476,4 +476,34 @@ function idcuboanterior($id){
 		 else {return FALSE;}
 	}
 }
+
+function ExiteUnaPromocion($codproducto){
+	require("..\conexion.php");
+
+
+	$sql = "select * from promociones inner join producto on promociones.ididentificador=producto.codproducto 
+	where promociones.ididentificador='".$codproducto."'"; 	
+	$r = $conexion -> query($sql);
+	if ($r -> num_rows >0) {
+		while($f = $r -> fetch_array())
+		{
+			$tipo= $f['tipo'];
+			$promocion=$f['promocion'];
+			$precio=$f['precio'];
+			if($tipo==1)
+			{
+				//cantidad/total
+				//$precio=$promocion / (100 x $precio);
+			}else
+			{
+				$precio=$promocion;
+
+			}
+		}
+		 
+	}else{
+		return 0;
+	}
+					
+}
 ?>
