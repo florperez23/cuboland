@@ -343,7 +343,8 @@ $('#add_product_venta').click(function(e) {
       async: true,
       data: {action:action,producto:codproducto},
       success: function(response) {    
-       
+       console.log(response);
+       console.log((parseInt(response)+parseInt(cantidad))>parseInt(existencia));
        if((parseInt(response)+parseInt(cantidad))>parseInt(existencia))
        {
         Swal.fire({
@@ -369,10 +370,11 @@ $('#add_product_venta').click(function(e) {
       type: 'POST',
       async: true,
       data: {action:action,producto:codproducto,cantidad:cantidad},
-      success: function(response) {        
-        if (response != 'error') {
-          console.log(response);
+      success: function(response) {    
+        console.log(response);    
+        if (response != 'error') {          
           var info = JSON.parse(response);
+         
           $('#detalle_venta').html(info.detalle);
           $('#detalle_totales').html(info.totales);
           $('#totalmodal').val(  MASK('', (info.totalmodal),'$##,###,##0.00',1));             
@@ -682,9 +684,9 @@ function searchForDetalle(id) {
     type: "POST",
     async: true,
     data: {action:action,user:user},
-    success: function(response) {
-      if (response == 0) {
-        console.log(response);
+    success: function(response) {   
+      //console.log(response); 
+      if (response == 0) {       
       }else {
         var info = JSON.parse(response);
         $('#detalle_venta').html(info.detalle);
@@ -1196,7 +1198,7 @@ $('#tipopago').on('change', function() {
   var total=$('#totalmodal').val();
   var totalC=$('#totalmodalC').val();
    console.log(total);  
-   if$('#tipoven').val()==1
+   if ($('#tipoven').val()==1)
   {
     document.getElementById('pagar_con').value=total;
     document.getElementById('pagar_conC').value=totalC;

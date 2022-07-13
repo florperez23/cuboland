@@ -87,10 +87,10 @@ if ($_POST['action'] == 'addProductoDetalle') {
     $token = md5($_SESSION['idUser']);
     $query_iva = mysqli_query($conexion, "SELECT igv FROM configuracion");
     $result_iva = mysqli_num_rows($query_iva); 
-    echo "CALL add_detalle_temp ($codproducto,$cantidad,'$token')";   
-    $query_detalle_temp = mysqli_query($conexion, "CALL add_detalle_temp ($codproducto,$cantidad,'$token')");
+    $sql="CALL add_detalle_temp ('$codproducto',$cantidad,'$token')";
+   // echo $sql;
+    $query_detalle_temp = mysqli_query($conexion, $sql);
     $result = mysqli_num_rows($query_detalle_temp);
-
     $detalleTabla = '';
     $sub_total = 0;
     $iva = 0;
@@ -103,7 +103,7 @@ if ($_POST['action'] == 'addProductoDetalle') {
       $iva = $info_iva['igv'];
     }
     while ($data = mysqli_fetch_assoc($query_detalle_temp)) {
-      $precioTotal = round($data['cantidad'] * $data['precio_venta'], 2);
+      $precioTotal = round($data['cantidad'] * $data['precio'], 2);
       $sub_total = round($sub_total + $precioTotal, 2);
       $total = round($total + $precioTotal, 2);
 
@@ -114,7 +114,7 @@ if ($_POST['action'] == 'addProductoDetalle') {
             <td class="textright">'.$data['precio'].'</td>
             <td class="textright">'.number_format($precioTotal, 2, '.', ',').'</td>
             <td>
-                <a href="#" class="btn btn-danger" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
+                <a href="#" class="btn btn-danger" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar1</a>
             </td>
         </tr>';
     }
@@ -143,17 +143,16 @@ if ($_POST['action'] == 'searchForDetalle') {
     echo 'error';
   }else {
     $token = md5($_SESSION['idUser']);
-
-    $query = mysqli_query($conexion, "SELECT tmp.correlativo, tmp.token_user,
-      sum(tmp.cantidad) as cantidad, tmp.precio_venta, p.codproducto, p.descripcion
-      FROM detalle_temp tmp INNER JOIN producto p ON tmp.codproducto = p.codproducto
-      where token_user = '$token' 		GROUP BY tmp.codproducto" );
-    $result = mysqli_num_rows($query);
+$sql="SELECT tmp.correlativo, tmp.token_user,
+sum(tmp.cantidad) as cantidad, tmp.precio_venta, p.codproducto, p.descripcion,p.precio
+FROM detalle_temp tmp INNER JOIN producto p ON tmp.codproducto = p.codproducto
+where token_user = '$token' 		GROUP BY tmp.codproducto";
+//echo $sql;
+    $query = mysqli_query($conexion, $sql);      
+      $result = mysqli_num_rows($query);
 
     $query_iva = mysqli_query($conexion, "SELECT igv FROM configuracion");
     $result_iva = mysqli_num_rows($query_iva);
-
-
     $detalleTabla = '';
     $sub_total = 0;
     $iva = 0;
@@ -211,8 +210,7 @@ if ($_POST['action'] == 'searchClienteCredito') {
     // code...
   }else
   {
-    $idcliente = $_POST['cliente'];
-  
+    $idcliente = $_POST['cliente'];  
      $sql="SELECT numcredito, creditos.fecha,totalventa as total,totalventa-(select SUM(totalfactura) from factura where numcredito=creditos.numcredito GROUP BY NUMCREDITO) AS  adeudo,fechavencimiento,estado,nombre 
      FROM creditos inner join cliente on cliente.idcliente=creditos.idcliente 
      WHERE creditos.estado=1 and  cliente.idcliente = '$idcliente'" ;
@@ -410,7 +408,7 @@ if ($_POST['action'] == 'procesarVenta') {
 
   if ($result > 0) {
   $sql="CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagocon','$newDate',$tipopago,'$referencia','$numcredito')";
- // echo $sql;    
+    //echo $sql;    
   $query_procesar = mysqli_query($conexion, $sql,);
     $result_detalle = mysqli_num_rows($query_procesar);
     if ($result_detalle > 0) {    
@@ -469,7 +467,7 @@ if ($_POST['action'] == 'procesarVenta') {
     }
 
     if ($result > 0) {
-      $query_procesar = mysqli_query($conexion, "CALL procesar_boleta($usuario,$codcliente,'$token')");
+      $query_procesar = mysqli_query($conexion, "($usuario,$codcliente,'$token')");
       $result_detalle = mysqli_num_rows($query_procesar);
       if ($result_detalle > 0) {
         $data = mysqli_fetch_assoc($query_procesar);
@@ -715,8 +713,8 @@ if ($_POST['action'] == 'productoDetalleValida') {
         }else { 
           $codproducto = $_POST['producto'];
        $token = md5($_SESSION['idUser']);
-      $sql="select sum(cantidad) as cantidad   from detalle_temp where codproducto=".$codproducto."";
-    //echo $sql;
+      $sql="select sum(cantidad) as cantidad   from detalle_temp where codproducto='".$codproducto."'";
+    echo $sql;
      $query = mysqli_query($conexion, $sql);
      mysqli_close($conexion);
      $result = mysqli_num_rows($query);
