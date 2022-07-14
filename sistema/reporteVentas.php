@@ -189,6 +189,6 @@ $pdf->writeHTML($html, true, false, true, false, '');
 // reset pointer to the last page
 $pdf->lastPage();
 //Close and output PDF document}
-//ob_end_clean();
+ob_end_clean();
 $pdf->Output('reporte.pdf', 'I');
 ?>

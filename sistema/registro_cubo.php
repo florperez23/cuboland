@@ -9,7 +9,6 @@ if (!empty($_POST)) {
     } else {
         $cubo = $_POST['nombre'];
         $renta = $_POST['renta'];
-        $idarr = $_POST['rentero'];
         $usuario_id = $_SESSION['idUser'];
         $query = mysqli_query($conexion, "SELECT * FROM cubos where cubo = '$cubo'");
         $result = mysqli_fetch_array($query);
@@ -18,11 +17,9 @@ if (!empty($_POST)) {
             mensajeicono('Ya existe un cubo con este mismo nombre.', 'lista_cubos.php','','info');
         }else{
         
-            if($idarr == 0){
-                $sql = "INSERT INTO cubos(cubo,renta, disponible, idarrendatario) values ('$cubo', '$renta',0, 0)";
-            }else{
-                $sql = "INSERT INTO cubos(cubo,renta, disponible, idarrendatario) values ('$cubo', '$renta',1, '$idarr')";
-            }
+          
+            $sql = "INSERT INTO cubos(cubo, renta, disponible) values ('$cubo', '$renta',0)";
+           
             $query_insert = mysqli_query($conexion, $sql);
             if ($query_insert) {
                 historia('Se registro el nuevo cubo '.$cubo);
@@ -56,28 +53,6 @@ if (!empty($_POST)) {
                     <div class="form-group">
                         <label for="nombre">RENTA</label>
                         <input type="text" placeholder="Ingrese renta" name="renta" id="renta" class="form-control">
-                    </div>
-
-                    <div class="form-group">
-                    <label>Arrendatario asociado</label>
-                    <?php
-                        $query = mysqli_query($conexion, "select * from arrendatarios");
-                        $res = mysqli_num_rows($query);
-                    ?>
-
-                    <select id="rentero" name="rentero" class="form-control">
-                    <option value="0">Sin especificar</option>
-                        <?php
-                        if ($res > 0) {
-                            while ($f = mysqli_fetch_array($query)) {
-                        ?>
-                            <option value="<?php echo $f['idarrendatario']; ?>"><?php echo $f['nombre']; ?></option>
-                        <?php
-                            }
-                        }
-                        
-                        ?>
-                    </select>
                     </div>
                    
                     <input type="submit" value="Guardar Cubo" class="btn btn-primary">

@@ -12,13 +12,14 @@ $codigo = $_GET['codigo'];
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 // set document information
-$pdf->SetCreator('Punto de Venta');
-$pdf->SetAuthor('Punto de Venta');
+$pdf->SetCreator('CUBOLAND');
+$pdf->SetAuthor('CUBOLAND');
 $pdf->SetTitle('Código de Barras');
-$pdf->SetKeywords('Punto Venta');
+$pdf->SetKeywords('CUBOLAND');
 
 // set default header data
-$pdf->SetHeaderData(K_PATH_IMAGES.'logoca.jpg', PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.'', PDF_HEADER_STRING);
+//$pdf->SetHeaderData(K_PATH_IMAGES.'logoca.jpg', PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.'', PDF_HEADER_STRING);
+$pdf->SetHeaderData('Imagen1.jpg', '28', 'Código de barras', "Impreso: ".$fecha."");
 
 // set header and footer fonts
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
