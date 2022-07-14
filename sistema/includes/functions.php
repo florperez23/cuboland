@@ -479,26 +479,31 @@ function idcuboanterior($id){
 
 function ExiteUnaPromocion($codproducto){
 	require("..\conexion.php");
-
-
-	$sql = "select * from promociones inner join producto on promociones.ididentificador=producto.codproducto 
-	where promociones.ididentificador='".$codproducto."'"; 	
+	
+	$sql="select * from promociones inner join producto on promociones.ididentificador=producto.codproducto 
+	or promociones.ididentificador= producto.codcubo	
+	where promociones.ididentificador='".$codproducto."' or  promociones.ididentificador= ( select codcubo from producto where codproducto='".$codproducto."')
+	AND (DATE(promociones.fechainicio) <=CURRENT_DATE() AND DATE(promociones.fechatermino) >DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY))";
+	//echo $sql;
 	$r = $conexion -> query($sql);
 	if ($r -> num_rows >0) {
 		while($f = $r -> fetch_array())
 		{
-			$tipo= $f['tipo'];
+			$idclasificacion= $f['idclasificacion'];
+			$tipo= $f['idtipo'];
 			$promocion=$f['promocion'];
 			$precio=$f['precio'];
 			if($tipo==1)
 			{
-				//cantidad/total
-				//$precio=$promocion / (100 x $precio);
+				//cantidad/total				
+				$newPrecio=$precio-floatval (($precio*$promocion)/100);
 			}else
 			{
-				$precio=$promocion;
+				$newPrecio=$promocion;
 
 			}
+			$newPrecio=number_format($newPrecio, 2, '.', ',');
+			return $newPrecio."|".$idclasificacion."|".$tipo."|".$promocion."|".$f['descripcion']."|".$f['existencia']."|".$f['precio']."|".$f['codproducto'];
 		}
 		 
 	}else{
