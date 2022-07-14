@@ -80,9 +80,9 @@ if(HayCajaAbierta()==0)
                             <th>Des.</th>
                             <th>Stock</th>
                             <th width="100px">Cantidad</th>
-                            <th class="textright">Precio</th>
-                            <th class="textright">Descuento</th>
-                            <th class="textright">Precio Total</th>
+                            <th class="text-center">Precio</th>
+                            <th class="text-center" id="tipo" name="tipo">Descuento</th>
+                            <th class="text-center">Precio Total</th>
                             <th>Acciones</th>
                         </tr>
                         <tr>
@@ -92,18 +92,18 @@ if(HayCajaAbierta()==0)
                             <td id="txt_descripcion">-</td>
                             <td id="txt_existencia">-</td>
                             <td><input type="text" name="txt_cant_producto" id="txt_cant_producto" value="0" min="1" disabled></td>
-                            <td id="txt_precio" class="textright">0.00</td>
-                            <td id="txt_descuento" class="textright">0.00</td>
-                            <td id="txt_precio_total" class="txtright">0.00</td>
+                            <td id="txt_precio" class="text-center">0.00</td>
+                            <td id="txt_descuento" class="text-center">0.00</td>
+                            <td id="txt_precio_total" class="text-center">0.00</td>
                             <td><a href="#" id="add_product_venta" class="btn btn-dark" style="display: none;">Agregar</a></td>
                         </tr>
                         <tr>
                             <th>Id</th>
                             <th colspan="2">Descripción</th>
                             <th>Cantidad</th>
-                            <th class="textright">Precio</th>
-                            <th class="textright">Descuento</th>
-                            <th class="textright">Precio Total</th>
+                            <th class="text-center">Precio</th>
+                            <th class="text-center">Descuento</th>
+                            <th class="text-center">Precio Total</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>

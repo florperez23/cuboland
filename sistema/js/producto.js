@@ -22,8 +22,8 @@ $(document).ready(function(){
         type: 'POST',
         async: true,
         data: {action:action,producto:producto},
-
-        success: function(response) {
+        success: function(response) {        
+          //console.log(response); 
         if (response != 0) {
           var info = JSON.parse(response);
         //  $('#producto_id').val(info.codproducto);
@@ -62,9 +62,9 @@ $('.del_product').click(function(e) {
     url: 'modal.php',
     type: 'POST',
     async: true,
-    data: {action:action,producto:producto},
-
+    data: {action:action,producto:producto},  
     success: function(response) {
+      //console.log(response);
     if (response != 0) {
       var info = JSON.parse(response);
     //  $('#producto_id').val(info.codproducto);
@@ -248,7 +248,7 @@ $('#txt_cod_pro').keyup(function(e) {
     async: true,
     data: {action:action,producto:productos},
     success: function(response){
-      
+      //console.log(response); 
       if(response == 0) {
         $('#txt_descripcion').html('-');
         $('#txt_existencia').html('-');
@@ -269,21 +269,52 @@ $('#txt_cod_pro').keyup(function(e) {
           $('#txt_descripcion').html(info.descripcion);
           $('#txt_cod_producto').val(info.codproducto);
           $('#txt_existencia').html(info.existencia);
+          $('#txt_descuento').html(info.descuento);
         
+          if(info.tipo==1)
+          { $('#tipo').html("Descuento");
+            $('#txt_descuento').html(info.descuento+"%");
+          }else  if(info.tipo==2)
+          {
+            $('#tipo').html("Precio de promocion");
+            $('#txt_descuento').html(info.descuento);
+          }else
+          {
+            $('#tipo').html("Descuento");
+            $('#txt_descuento').html(0);
+          }
+
           $('#txt_precio').html(info.precio);
-          $('#txt_precio_total').html(info.precio);
+          $('#txt_precio_total').html(info.newprecio)
+
+
           //Bloquear Cantidad
           $('#txt_cant_producto').attr('disabled', 'disabled');
           // Ocultar Boto Agregar
           $('#add_product_venta').slideUp();
         }else{
           $('#txt_descripcion').html(info.descripcion);
-          $('#txt_existencia').html(info.existencia);
-         
+          $('#txt_existencia').html(info.existencia);         
           $('#txt_cod_producto').val(info.codproducto);
           $('#txt_cant_producto').val('1');
           $('#txt_precio').html(info.precio);
-          $('#txt_precio_total').html(info.precio);
+          $('#txt_descuento').html(info.descuento);
+
+          if(info.tipo==1)
+          { $('#tipo').html("Descuento");
+            $('#txt_descuento').html(info.descuento+"%");
+          }else  if(info.tipo==2)
+          {
+            $('#tipo').html("Precio de promocion");
+            $('#txt_descuento').html(info.descuento);
+          }else
+          {
+            $('#tipo').html("Descuento");
+            $('#txt_descuento').html(0);
+          }
+
+          $('#txt_precio').html(info.precio);
+          $('#txt_precio_total').html(info.newprecio)
           // Activar Cantidad
           $('#txt_cant_producto').removeAttr('disabled');
           // Mostar boton Agregar
@@ -343,8 +374,8 @@ $('#add_product_venta').click(function(e) {
       async: true,
       data: {action:action,producto:codproducto},
       success: function(response) {    
-       console.log(response);
-       console.log((parseInt(response)+parseInt(cantidad))>parseInt(existencia));
+       //console.log(response);
+       //console.log((parseInt(response)+parseInt(cantidad))>parseInt(existencia));
        if((parseInt(response)+parseInt(cantidad))>parseInt(existencia))
        {
         Swal.fire({
@@ -371,7 +402,7 @@ $('#add_product_venta').click(function(e) {
       async: true,
       data: {action:action,producto:codproducto,cantidad:cantidad},
       success: function(response) {    
-        console.log(response);    
+        //console.log(response);    
         if (response != 'error') {          
           var info = JSON.parse(response);
          
@@ -474,9 +505,9 @@ $('#btn_facturar_venta').click(function(e) {
       data: {action:action,codcliente:codcliente,tipoventa:tipoventa, pago:pago,fechaven:fechaven,tipopago:tipopago,referencia:referencia,numcredito:numcredito},
       success: function(response) {
       (response); 
-      console.log(response);
+      //console.log(response);
       if (response != 0) {
-        console.log(response);
+        //console.log(response);
         var info = JSON.parse(response);        
         generarPDF(info.codcliente,info.nofactura);
         location.reload();
@@ -498,7 +529,7 @@ $('#btn_facturar_venta').click(function(e) {
     async: true,
     data: {action:action,codcliente:codcliente,tipoventa:tipoventa,total:total, pago:pago,fechaven:fechaven,tipopago:tipopago,referencia:referencia,numcredito:numcredito},
     success: function(response) {
-      console.log(response);
+      //console.log(response);
     if (response != 0) {
       var info = JSON.parse(response);        
       generarPDF(info.codcliente,info.nofactura);
@@ -632,6 +663,7 @@ function del_product_detalle(correlativo) {
     async: true,
     data: {action:action,id_detalle:id_detalle},
     success: function(response) {
+     // console.log(response);
         if (response != 0) {
         
          
@@ -1110,7 +1142,7 @@ $('#btn_cerrarcorte').click(function(e) {
     data: {action:action,montoinicial: montoinicial, montofinal:montofinal,totalventas:totalventas, idcorte:idcorte, montogral:montogral},
     success: function(response) {
       if(response.includes('ok')==true){
-        console.log(response);
+        //console.log(response);
         $('#cerrarcorte').modal('hide');
         Swal.fire({
           icon: 'success',
@@ -1218,7 +1250,7 @@ $('#tipopago').on('change', function() {
      async: true,
      data: $('#form_new_abono_creditos').serialize(),
      success: function(response) {
-      console.log(response);
+      //console.log(response);
       //  // Agregar id a inp
        if (response  != 0) {
        
@@ -1399,7 +1431,7 @@ $('#btn_guardarajuste').click(function(e) {
       success: function(response) {
         
         if(response.includes('ok')==true){
-          console.log(response);
+          //console.log(response);
           $('#ajusteinventario').modal('hide');
           Swal.fire({
             icon: 'success',
@@ -1463,8 +1495,8 @@ $('#txt_cant_producto').keyup(function() {
     async: true,
     data: {action:action,producto:codproducto},
     success: function(response) {  
-      console.log(response);
-      console.log(parseInt(response)+parseInt(cantidad))  ;
+      //console.log(response);
+      //console.log(parseInt(response)+parseInt(cantidad))  ;
      if((parseInt(response)+parseInt(cantidad))>parseInt(existencia))
      {
       Swal.fire({
@@ -1699,7 +1731,7 @@ $('#cubop').change(function(e) {
     async: true,
     data: {action:action, idcubo: idcubo},
     success: function(response) {
-      console.log(response);
+      //console.log(response);
       document.getElementById('numsig').value = response;
       $('#codigo').val('C'+idcubo+response);
       //$('#numsig').val(response);
