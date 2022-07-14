@@ -85,7 +85,7 @@
 
              <div class="form-group">
                <label for="codigo">Código del producto</label>
-               <input type="text"  name="codigo" id="codigo" class="form-control" readonly>
+               <input type="text"  name="codigo" id="codigo" class="form-control">
              </div>
              <div class="form-group">
                <label for="producto">Descripción del producto</label>

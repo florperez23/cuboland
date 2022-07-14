@@ -506,4 +506,6 @@ function ExiteUnaPromocion($codproducto){
 	}
 					
 }
+
+
 ?>

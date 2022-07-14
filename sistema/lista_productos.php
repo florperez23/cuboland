@@ -78,7 +78,7 @@
 						<?php
 						include "../conexion.php";
 
-						$query = mysqli_query($conexion, "SELECT * FROM producto");
+						$query = mysqli_query($conexion, "SELECT * FROM producto WHERE activo = 0");
 						$result = mysqli_num_rows($query);
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>

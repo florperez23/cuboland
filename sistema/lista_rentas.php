@@ -32,7 +32,7 @@
 
 						$query = mysqli_query($conexion, "SELECT r.*, c.cubo, a.nombre FROM rentas r
                         inner join cubos c on c.codcubo = r.idcubo
-                        inner join  arrendatarios a on a.idarrendatario = r.idarrendatario");
+                        inner join  arrendatarios a on a.idarrendatario = r.idarrendatario where r.cancelado = 0");
 						$result = mysqli_num_rows($query);
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
@@ -46,7 +46,7 @@
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
 										<a href="editar_renta.php?id=<?php echo $data['id']; ?>" class="btn btn-success"><i class='fas fa-edit'></i></a>
-										<form action="eliminar_cubo.php?id=<?php echo $data['codcubo']; ?>" method="post" class="confirmar d-inline">
+										<form action="eliminar_renta.php?id=<?php echo $data['id']; ?>" method="post" class="confirmar d-inline">
 											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
 										</form>
 									</td>
