@@ -10,7 +10,7 @@ if (!empty($_POST)) {
       $data = "";
     $producto_id = $_POST['producto'];
   
-
+   //echo ExiteUnaPromocion($producto_id);
     if(ExiteUnaPromocion($producto_id)!=0)   
     {
       $datos=ExiteUnaPromocion($producto_id);
@@ -40,10 +40,10 @@ if (!empty($_POST)) {
     
 
     }else{
-      $sql="SELECT codproducto, descripcion, precio, existencia, precio, as newprecio, FROM producto WHERE codproducto = '".$producto_id."'";
+      $sql="SELECT codproducto, descripcion, precio, existencia, precio as newprecio FROM producto WHERE codproducto = '".$producto_id."'";
     
-
-    $query = mysqli_query($conexion, );
+//echo $sql;
+    $query = mysqli_query($conexion, $sql);
 
     $result = mysqli_num_rows($query);
     if ($result > 0) {

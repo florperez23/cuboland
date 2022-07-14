@@ -64,7 +64,7 @@ $('.del_product').click(function(e) {
     async: true,
     data: {action:action,producto:producto},  
     success: function(response) {
-      //console.log(response);
+    //  console.log(response);
     if (response != 0) {
       var info = JSON.parse(response);
     //  $('#producto_id').val(info.codproducto);
@@ -248,7 +248,7 @@ $('#txt_cod_pro').keyup(function(e) {
     async: true,
     data: {action:action,producto:productos},
     success: function(response){
-      //console.log(response); 
+      console.log(response); 
       if(response == 0) {
         $('#txt_descripcion').html('-');
         $('#txt_existencia').html('-');
