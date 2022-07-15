@@ -830,4 +830,132 @@ if ($_POST['action'] == 'signumero') {
  
   exit;
 }
+
+
+// agregar producto a detalle temporal
+if ($_POST['action'] == 'addProductoSalida') {
+  if (empty($_POST['producto']) || empty($_POST['cantidad'])){
+    echo 'error';
+  }else {    
+
+    $codproducto = $_POST['producto'];
+    $cantidad = $_POST['cantidad'];
+    $token = md5($_SESSION['idUser']);
+
+    $sql="CALL add_detalle_temp_salidas ('$codproducto',$cantidad,'$token')";
+   //echo $sql;
+    $query_detalle_temp = mysqli_query($conexion, $sql);
+    $result = mysqli_num_rows($query_detalle_temp);
+    $detalleTabla = '';
+   
+    $arrayData = array();
+    if ($result > 0) {
+        
+   
+    while ($data = mysqli_fetch_assoc($query_detalle_temp)) {
+      
+
+      $detalleTabla .= '<tr>
+      <td>'.$data['codproducto'].'</td>
+      <td colspan="2">'.$data['descripcion'].'</td>
+      <td class="textcenter">'.$data['cantidad'].'</td>';
+
+      
+      $detalleTabla .='
+      <td>
+          <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
+      </td>
+  </tr>';
+    }
+    
+    
+  
+    $arrayData['detalle'] = $detalleTabla;
+    
+    
+    echo json_encode($arrayData,JSON_UNESCAPED_UNICODE);
+  }else {
+    echo 'error';
+  }
+  mysqli_close($conexion);
+
+  }
+  exit;
+}
+
+if ($_POST['action'] == 'infoProducto2') {
+  $data = "";
+  $producto_id = $_POST['producto'];
+
+  $sql="SELECT codproducto, descripcion, precio, existencia FROM producto WHERE codproducto = '".$producto_id."'";
+  
+ 
+ //echo $sql;
+  $query = mysqli_query($conexion, $sql);
+
+  $result = mysqli_num_rows($query);
+  if ($result > 0) {
+    $data = mysqli_fetch_assoc($query);
+    echo json_encode($data,JSON_UNESCAPED_UNICODE);
+    exit;
+  }else {
+    $data = 0;
+  }
+}
+
+// VALIDAR QUE NO SE REBASE EL STOCK
+if ($_POST['action'] == 'productoDetalleValidaSalida') {
+  $data = "";
+  if (empty($_POST['producto']) ){
+        echo 'error';
+        }else { 
+          $codproducto = $_POST['producto'];
+       $token = md5($_SESSION['idUser']);
+      $sql="select sum(cantidad) as cantidad   from detalle_temp_salidas where codproducto='".$codproducto."'";
+    echo $sql;
+     $query = mysqli_query($conexion, $sql);
+     mysqli_close($conexion);
+     $result = mysqli_num_rows($query);
+     if ($result > 0) {
+       $data = mysqli_fetch_assoc($query);     
+      echo $data["cantidad"];
+       exit;
+     }else{
+       $data = "";
+     }
+}
+exit;
+}
+
+//procesarVenta
+if ($_POST['action'] == 'procesarVentaSalida') {
+
+  $token = md5($_SESSION['idUser']);
+   
+  $query = mysqli_query($conexion, "SELECT * FROM detalle_temp_salidas WHERE token_user = '$token' ");
+  $result = mysqli_num_rows($query);
+  /*EVALUAMOS  SI EXISTE UN NUMERO DE CREDITO QUIERE DECIR QUE ES UN ABONO*/
+    
+  if ($result > 0) {
+
+    //si ya hay datos en el array genero el pdf y luego actualizo el inventario 
+    
+
+
+    $sql="CALL salida_inventario('$token')";  
+    $query_procesar = mysqli_query($conexion, $sql,);
+    $result_detalle = mysqli_num_rows($query_procesar);
+    if ($result_detalle > 0) {    
+      $data = mysqli_fetch_assoc($query_procesar);
+      echo json_encode($data,JSON_UNESCAPED_UNICODE);
+    }else {
+      echo "error2";
+    }
+  }else {
+    echo "error1";
+  }
+  mysqli_close($conexion);
+  exit;
+}
+
  ?>
