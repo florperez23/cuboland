@@ -1753,3 +1753,181 @@ function seleccionarProducto(idproducto)
   $('#codigopro').val(idproducto);
   $('#modalBusquedaProducto').modal('hide');
 }
+
+
+$('#add_product_salida').click(function(e) {
+  e.preventDefault(); 
+  if ($('#txt_cant_producto').val() > 0) {
+    var existencia= parseInt($('#txt_existencia').html());
+    var action = 'productoDetalleValidaSalida';
+    var codproducto = $('#txt_cod_producto').val();   
+    var cantidad=$('#txt_cant_producto').val();
+    $.ajax({
+      url: 'modal.php',
+      type: 'POST',
+      async: true,
+      data: {action:action,producto:codproducto},
+      success: function(response) {    
+       //console.log(response);
+       //console.log((parseInt(response)+parseInt(cantidad))>parseInt(existencia));
+       if((parseInt(response)+parseInt(cantidad))>parseInt(existencia))
+       {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '¡Ya no puede agregar mas productos, revasaria el stock exitente!',
+          footer: ''
+        });
+        return;
+      }
+       
+       
+      },
+      error: function(error) {
+    
+      }
+    });
+
+
+    var action = 'addProductoSalida';
+    $.ajax({
+      url: 'modal.php',
+      type: 'POST',
+      async: true,
+      data: {action:action,producto:codproducto,cantidad:cantidad},
+      success: function(response) {    
+        //console.log(response);    
+        if (response != 'error') {          
+          var info = JSON.parse(response);
+         
+          $('#detalle_venta_salida').html(info.detalle);
+          // Ocultar boton agregar
+          $('#add_product_salida').slideUp();
+        }else {
+          console.log('No hay dato');
+        }
+        viewProcesar();
+      },
+      error: function(error) {
+
+      }
+    });
+  }
+});
+
+// buscar producto = Ventas
+$('#cod_pro').keyup(function(e) {
+  e.preventDefault();
+  var productos = $(this).val();
+  if (productos == "") {
+    $('#txt_descripcion').html('-');
+    $('#txt_existencia').html('-');
+    $('#txt_cant_producto').val('0');
+   
+    //Bloquear Cantidad
+    $('#txt_cant_producto').attr('disabled', 'disabled');
+    // Ocultar Boto Agregar
+    $('#add_product_salida').slideUp();
+  }
+
+  var action = 'infoProducto2';
+  if (productos != '') {
+  $.ajax({
+    url: 'modal.php',
+    type: "POST",
+    async: true,
+    data: {action:action,producto:productos},
+    success: function(response){
+      console.log(response); 
+      if(response == 0) {
+     
+        $('#txt_descripcion').html('-');
+        $('#txt_existencia').html('-');
+        $('#txt_cant_producto').val('0');
+       
+        //Bloquear Cantidad
+        $('#txt_cant_producto').attr('disabled','disabled');
+        // Ocultar Boto Agregar
+        $('#add_product_salida').slideUp();
+
+
+      }else{
+        
+        var info = JSON.parse(response);
+        
+        if (info.existencia < 1) {
+        
+          $('#txt_descripcion').html(info.descripcion);
+          $('#txt_cod_producto').val(info.codproducto);
+          $('#txt_existencia').html(info.existencia);
+          
+          //Bloquear Cantidad
+          $('#txt_cant_producto').attr('disabled', 'disabled');
+          // Ocultar Boto Agregar
+          $('#add_product_salida').slideUp();
+        }else{
+          
+          $('#txt_descripcion').html(info.descripcion);
+          $('#txt_existencia').html(info.existencia);         
+          $('#txt_cod_producto').val(info.codproducto);
+          
+         
+          // Activar Cantidad
+          $('#txt_cant_producto').removeAttr('disabled');
+          // Mostar boton Agregar
+          $('#add_product_salida').slideDown();
+        }
+
+      }
+    },
+    error: function(error) {
+    }
+  });
+
+  }
+
+ 
+});
+
+// mostrar/ ocultar boton Procesar
+function viewProcesar() {
+  if ($('#detalle_venta_salida tr').length > 0){
+    $('#procesarVentaSalida').show();
+    $('#btn_anular_venta_salida').show();
+  }else {
+    $('#procesarVentaSalida').hide();
+    $('#btn_anular_venta_salida').hide();
+  }
+}
+
+// facturar venta
+$('#procesarVentaSalida').click(function(e) {
+  e.preventDefault();
+  var rows = $('#detalle_venta tr').length;  
+  var action = 'procesarVentaSalida';
+
+  if (rows > 0) {
+    $.ajax({
+      url: 'modal.php',
+      type: 'POST',
+      async: true,
+      data: {action:action,codcliente:codcliente},
+      success: function(response) {
+      (response); 
+      //console.log(response);
+      if (response != 0) {
+        //console.log(response);
+        var info = JSON.parse(response);        
+        generarPDF(info.codcliente,info.nofactura);
+        location.reload();
+      }else {
+        console.log('no hay dato');
+      }
+      },
+      error: function(error) {
+
+      }
+    });
+  }
+
+});
