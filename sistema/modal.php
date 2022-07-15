@@ -10,7 +10,7 @@ if (!empty($_POST)) {
       $data = "";
     $producto_id = $_POST['producto'];
   
-
+   //echo ExiteUnaPromocion($producto_id);
     if(ExiteUnaPromocion($producto_id)!=0)   
     {
       $datos=ExiteUnaPromocion($producto_id);
@@ -40,10 +40,10 @@ if (!empty($_POST)) {
     
 
     }else{
-      $sql="SELECT codproducto, descripcion, precio, existencia, precio, as newprecio, FROM producto WHERE codproducto = '".$producto_id."'";
+      $sql="SELECT codproducto, descripcion, precio, existencia, precio as newprecio FROM producto WHERE codproducto = '".$producto_id."'";
     
-
-    $query = mysqli_query($conexion, );
+//echo $sql;
+    $query = mysqli_query($conexion, $sql);
 
     $result = mysqli_num_rows($query);
     if ($result > 0) {
@@ -147,16 +147,16 @@ if ($_POST['action'] == 'addProductoDetalle') {
       $detalleTabla .= '<tr>
       <td>'.$data['codproducto'].'</td>
       <td colspan="2">'.$data['descripcion'].'</td>
-      <td class="textcenter">'.$data['cantidad'].'</td>
-      <td class="textright">'.$data['precio'].'</td>';
+      <td class="text-center">'.$data['cantidad'].'</td>
+      <td class="text-center">'.$data['precio'].'</td>';
       if($data['idtipopromocion']==1)
       {
-      $detalleTabla .= '<td class="textright">'.$data['promocion'].'%</td>';
+      $detalleTabla .= '<td class="text-center">'.$data['promocion'].'%</td>';
       }else{
-        $detalleTabla .= '<td class="textright">'.$data['promocion'].'</td>';
+        $detalleTabla .= '<td class="text-center">'.$data['promocion'].'</td>';
       
       }
-      $detalleTabla .='<td class="textright">'.number_format($precioTotal, 2, '.', ',').'</td>
+      $detalleTabla .='<td class="text-center">'.number_format($precioTotal, 2, '.', ',').'</td>
       <td>
           <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
       </td>
@@ -164,8 +164,8 @@ if ($_POST['action'] == 'addProductoDetalle') {
     }
     $total = round($sub_total, 2);
     $detalleTotales ='<tr>
-        <td colspan="5" class="textright">Total S/.</td>
-        <td class="textright">'.number_format($total, 2, '.', ',').'</td>
+        <td colspan="6" class="textright">Total S/.</td>
+        <td class="text-center">'.number_format($total, 2, '.', ',').'</td>
     </tr>';
   
     $arrayData['detalle'] = $detalleTabla;
@@ -221,12 +221,12 @@ where token_user = '$token' 		GROUP BY tmp.codproducto";
             <td class="textright">'.$data['precio'].'</td>';
             if($data['idtipopromocion']==1)
             {
-            $detalleTabla .= '<td class="textright">'.$data['promocion'].'%</td>';
+            $detalleTabla .= '<td class="text-center">'.$data['promocion'].'%</td>';
             }else{
-              $detalleTabla .= '<td class="textright">'.$data['promocion'].'</td>';
+              $detalleTabla .= '<td class="text-center">'.$data['promocion'].'</td>';
             
             }
-            $detalleTabla .='<td class="textright">'.number_format($precioTotal, 2, '.', ',').'</td>
+            $detalleTabla .='<td class="text-center">'.number_format($precioTotal, 2, '.', ',').'</td>
             <td>
                 <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
             </td>
@@ -234,8 +234,8 @@ where token_user = '$token' 		GROUP BY tmp.codproducto";
     }
     $total = round($sub_total, 2);
     $detalleTotales = '<tr>
-        <td colspan="5" class="textright">Total S/.</td>
-        <td class="textright">'.number_format($total, 2, '.', ',').'</td>
+        <td colspan="6" class="textright">Total S/.</td>      
+        <td class="text-center">'.number_format($total, 2, '.', ',').'</td>
     </tr>';
 
     $arrayData['detalle'] = $detalleTabla;
@@ -367,16 +367,16 @@ if ($_POST['action'] == 'delProductoDetalle') {
         $detalleTabla .= '<tr>
             <td>'.$data['codproducto'].'</td>
             <td colspan="2">'.$data['descripcion'].'</td>
-            <td class="textcenter">'.$data['cantidad'].'</td>
-            <td class="textright">'.$data['precio'].'</td>';
+            <td class="text-center">'.$data['cantidad'].'</td>
+            <td class="text-center">'.$data['precio'].'</td>';
             if($data['idtipopromocion']==1)
             {
-            $detalleTabla .= '<td class="textright">'.$data['promocion'].'%</td>';
+            $detalleTabla .= '<td class="text-center">'.$data['promocion'].'%</td>';
             }else{
-              $detalleTabla .= '<td class="textright">'.$data['promocion'].'</td>';
+              $detalleTabla .= '<td class="text-center">'.$data['promocion'].'</td>';
             
             }
-            $detalleTabla .='<td class="textright">'.number_format($precioTotal, 2, '.', ',').'</td>
+            $detalleTabla .='<td class="text-center">'.number_format($precioTotal, 2, '.', ',').'</td>
             <td>
                 <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
             </td>
@@ -388,8 +388,8 @@ if ($_POST['action'] == 'delProductoDetalle') {
     $total = round($tl_sniva + $impuesto, 2);
 
     $detalleTotales = '<tr>
-        <td colspan="5" class="textright">Total S/.</td>
-        <td class="textright">'.number_format($total, 2, '.', ',').'</td>
+        <td colspan="6" class="textright">Total S/.</td>
+        <td class="text-center">'.number_format($total, 2, '.', ',').'</td>
     </tr>';
 
     $arrayData['detalle'] = $detalleTabla;
