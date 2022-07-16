@@ -654,6 +654,7 @@ function generarPDF(cliente,factura) {
   url = 'factura/generaFactura.php?cl='+cliente+'&f='+factura;
   window.open(url, '_blank');
 }
+
 function del_product_detalle(correlativo) {
   var action = 'delProductoDetalle';
   var id_detalle = correlativo;
@@ -1757,6 +1758,7 @@ function seleccionarProducto(idproducto)
 
 $('#add_product_salida').click(function(e) {
   e.preventDefault(); 
+
   if ($('#txt_cant_producto').val() > 0) {
     var existencia= parseInt($('#txt_existencia').html());
     var action = 'productoDetalleValidaSalida';
@@ -1768,6 +1770,7 @@ $('#add_product_salida').click(function(e) {
       async: true,
       data: {action:action,producto:codproducto},
       success: function(response) {    
+        
        //console.log(response);
        //console.log((parseInt(response)+parseInt(cantidad))>parseInt(existencia));
        if((parseInt(response)+parseInt(cantidad))>parseInt(existencia))
@@ -1796,13 +1799,25 @@ $('#add_product_salida').click(function(e) {
       async: true,
       data: {action:action,producto:codproducto,cantidad:cantidad},
       success: function(response) {    
-        //console.log(response);    
-        if (response != 'error') {          
-          var info = JSON.parse(response);
          
-          $('#detalle_venta_salida').html(info.detalle);
-          // Ocultar boton agregar
-          $('#add_product_salida').slideUp();
+        //alert(response);
+        if (response != 'error') {   
+
+          var info = JSON.parse(response);
+
+          if(info.detalle == '0'){
+            Swal.fire({
+              icon: 'error',
+              title: 'Opss',
+              text: 'No puedes agregar productos de diferentes cubos en una misma salida!.',
+              footer: ''
+            });
+          }else{
+         
+            $('#detalle_venta_salida').html(info.detalle);
+            // Ocultar boton agregar
+            $('#add_product_salida').slideUp();
+          }
         }else {
           console.log('No hay dato');
         }
@@ -1818,6 +1833,7 @@ $('#add_product_salida').click(function(e) {
 // buscar producto = Ventas
 $('#cod_pro').keyup(function(e) {
   e.preventDefault();
+  
   var productos = $(this).val();
   if (productos == "") {
     $('#txt_descripcion').html('-');
@@ -1839,6 +1855,7 @@ $('#cod_pro').keyup(function(e) {
     data: {action:action,producto:productos},
     success: function(response){
       console.log(response); 
+      
       if(response == 0) {
      
         $('#txt_descripcion').html('-');
@@ -1849,8 +1866,6 @@ $('#cod_pro').keyup(function(e) {
         $('#txt_cant_producto').attr('disabled','disabled');
         // Ocultar Boto Agregar
         $('#add_product_salida').slideUp();
-
-
       }else{
         
         var info = JSON.parse(response);
@@ -1900,34 +1915,98 @@ function viewProcesar() {
   }
 }
 
-// facturar venta
+
 $('#procesarVentaSalida').click(function(e) {
   e.preventDefault();
-  var rows = $('#detalle_venta tr').length;  
-  var action = 'procesarVentaSalida';
+  var rows = $('#detalle_venta_salida tr').length;  
 
   if (rows > 0) {
+    window.location.href = 'salidas_pdf.php';
+  }
+});
+
+
+function eliminar_salida(correlativo) {
+  var action = 'delProductoDetalleSalida';
+  var id_detalle = correlativo;
+  $.ajax({
+    url: 'modal.php',
+    type: "POST",
+    async: true,
+    data: {action:action,id_detalle:id_detalle},
+    success: function(response) {
+     // console.log(response);
+        if (response != 0) {
+        
+         
+        var info = JSON.parse(response);
+        $('#detalle_venta_salida').html(info.detalle);
+        
+        // Bloquear cantidad
+        $('#txt_cant_producto').attr('disabled','disabled');
+
+        // Ocultar boton agregar
+        $('#add_product_venta').slideUp();
+      }else {
+        $('#detalle_venta_salida').html('');
+      
+
+      }
+      viewProcesar();
+    },
+    error: function(error) {
+      
+    }
+  });
+}
+
+$('#btn_anular_venta_salida').click(function(e) {
+  e.preventDefault();
+  var rows = $('#detalle_venta_salida tr').length;  
+  var action = 'eliminarSalidas';
+  
+  if(rows == 0){
+    Swal.fire({
+      icon: 'error',
+      title: 'Opss',
+      text: 'No hay registros que anular!.',
+      footer: ''
+    });
+  }else{
     $.ajax({
       url: 'modal.php',
-      type: 'POST',
+      type: "POST",
       async: true,
-      data: {action:action,codcliente:codcliente},
+      data: {action:action},
       success: function(response) {
-      (response); 
-      //console.log(response);
-      if (response != 0) {
-        //console.log(response);
-        var info = JSON.parse(response);        
-        generarPDF(info.codcliente,info.nofactura);
-        location.reload();
-      }else {
-        console.log('no hay dato');
-      }
+      //alert(response);
+        if (response.includes('ok')==true) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Hecho!',
+            text: 'Se ha anulado la salida de productos con éxito!',
+            footer: ''
+          });
+          $('#detalle_venta_salida').html('');
+       
+
+        }else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Opss',
+            text: 'Ocurrio un error, intente nuevamente!.',
+            footer: ''
+          });
+          $('#detalle_venta_salida').html('');
+        
+  
+        }
+        viewProcesar();
       },
       error: function(error) {
-
+        
       }
     });
   }
-
+  
 });

@@ -4,21 +4,28 @@ ob_start();
 include "../conexion.php";
 require_once('pdf/tcpdf.php');
 
-$sql = 'select *, sum(cantidad) as total from detalle_temp_salidas where token_user = '$token' GROUP BY codproducto';
+$sql = 'SELECT
+dts.*,
+sum( dts.cantidad ) AS total,
+p.descripcion, a.nombre
+FROM
+detalle_temp_salidas dts
+inner join producto p on p.codproducto = dts.codproducto
+INNER JOIN rentas r on r.idcubo = p.codcubo
+INNER JOIN arrendatarios a on a.idarrendatario = r.idarrendatario
+GROUP BY dts.codproducto';
 //echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
+
 $vuelta = 1;
 if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8">';
     $tabla = $tabla.'<th ><b>No.</b></th>';
-    $tabla = $tabla.'<th ><b>PROVEEDOR</b></th>';
-    $tabla = $tabla."<th><b>FECHA</b></th>";
-    $tabla = $tabla.'<th ><b>SUBTOTAL</b></th>';
-    $tabla = $tabla.'<th ><b>IVA</b></th>';
-    $tabla = $tabla.'<th ><b>TOTAL</b></th>';
+    $tabla = $tabla.'<th ><b>CODIGO PRODUCTO</b></th>';
     $tabla = $tabla.'<th ><b>DESCRIPCION</b></th>';
+    $tabla = $tabla."<th><b>CANTIDAD</b></th>";  
     $tabla = $tabla."</tr>";
     while($f = $r -> fetch_array())
     {                  
@@ -28,33 +35,30 @@ if ($r -> num_rows >0){
             $tabla = $tabla.'<tr bgcolor="#D7E9F0">'; 
         }
         $tabla = $tabla.'<td>'.$vuelta.'</td>';
-        $tabla = $tabla.'<td>'.$f['nomprov'].'</td>';
-        $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['subtotal'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['iva'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>$'.number_format(abs($f['total']), 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>'.$f['codproducto'].'</td>';
         $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
-        $suma = $suma += abs($f['total']);
-        $sumaiva = $sumaiva += $f['iva'];
-        $sumasub = $sumasub += $f['subtotal'];
+        $tabla = $tabla.'<td>$'.$f['total'].'</td>';
         $tabla = $tabla."</tr>";  
-        $vuelta++;               
+        $vuelta++;   
+        $nombre = $f['nombre'];            
     }
     $tabla = $tabla.'</table>';
 }
 
 
-$tabla = $tabla.'<br><br><br>
+$tabla = $tabla.'<br><br><br><br><br>
 <table  align = "center" >
     <tr>
-        <td></td>
-        <td></td>
-        <td><b>TOTALES</b></td>
-        <td bgcolor="#D7E9F0">$'.number_format($sumasub, 2, '.', ',').'</td>
-        <td bgcolor="#D7E9F0">$'.number_format($sumaiva, 2, '.', ',').'</td>
-        <td bgcolor="#D7E9F0">$'.number_format($suma, 2, '.', ',').'</td>
        
         <td></td>
+        <td></td>
+        <td style="font-size:12px; border-top: 1px solid #000;">Dueño(a) del Cubo '.$nombre.'</td>
+    </tr>
+    <tr>
+    
+        <td></td>
+        <td></td>
+        <td>Firma de conformidad</td>
     </tr>
     
 </table>';
@@ -65,7 +69,7 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetTitle('CUBOLAND');
 $pdf->SetKeywords('Tienda de cubos');
-$pdf->SetHeaderData('Imagen1.jpg', '28', 'LISTADO DE EGRESOS', "Impreso: ".$fecha."");
+$pdf->SetHeaderData('Imagen1.jpg', '28', 'SALIDA DE PRODUCTOS DEL INVENTARIO', "Impreso: ".$fecha."");
 //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '');
 //$link = "http://".$urlnueva[0]."/md_lista.php";
 
