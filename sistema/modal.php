@@ -1017,4 +1017,25 @@ if ($_POST['action'] == 'eliminarSalidas') {
   mysqli_close($conexion);
   exit;
 }
+
+
+
+if ($_POST['action'] == 'buscarArrendatario') {
+  $idcubo = $_POST['idcubo'];
+  $sql = "Select idarrendatario From rentas Where idcubo = ".$idcubo."";
+  //echo $sql;
+  $query = mysqli_query($conexion,$sql);
+  mysqli_close($conexion);
+  $result = mysqli_num_rows($query);
+  if ($result > 0) {
+    $data = mysqli_fetch_assoc($query);
+    echo $data['idarrendatario'];
+    exit;
+  }else{
+    $data = "-1";
+    echo $data;
+  }
+
+  exit;
+}
  ?>

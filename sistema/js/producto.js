@@ -1741,6 +1741,31 @@ $('#cubop').change(function(e) {
     }
   });
 
+  //validar que no tenga arrendatario el cubo
+  var action = 'buscarArrendatario';
+  $.ajax({
+    url: 'modal.php',
+    type: "POST",
+    async: true,
+    data: {action:action, idcubo: idcubo},
+    success: function(response) {
+      console.log(response);
+      if(response.trim() == '-1'){
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '¡No es posible agregar productos a este cubo por que no esta asociado a un arrendador!',
+          footer: ''
+        });
+        $('#guardarProductobtn').attr('disabled', 'disabled');
+      }
+
+      
+      
+    },
+    error: function(error) {
+    }
+  });
 
   
   
@@ -1915,7 +1940,7 @@ function viewProcesar() {
   }
 }
 
-
+/*
 $('#procesarVentaSalida').click(function(e) {
   e.preventDefault();
   var rows = $('#detalle_venta_salida tr').length;  
@@ -1923,7 +1948,7 @@ $('#procesarVentaSalida').click(function(e) {
   if (rows > 0) {
     window.location.href = 'salidas_pdf.php';
   }
-});
+});*/
 
 
 function eliminar_salida(correlativo) {

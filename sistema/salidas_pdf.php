@@ -1,8 +1,13 @@
 <?php
+@session_start();
 ob_start();
 
 include "../conexion.php";
 require_once('pdf/tcpdf.php');
+
+
+$token = md5($_SESSION['idUser']);
+
 
 $sql = 'SELECT
 dts.*,
@@ -37,7 +42,7 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$vuelta.'</td>';
         $tabla = $tabla.'<td>'.$f['codproducto'].'</td>';
         $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
-        $tabla = $tabla.'<td>$'.$f['total'].'</td>';
+        $tabla = $tabla.'<td>'.$f['total'].'</td>';
         $tabla = $tabla."</tr>";  
         $vuelta++;   
         $nombre = $f['nombre'];            
@@ -52,7 +57,7 @@ $tabla = $tabla.'<br><br><br><br><br>
        
         <td></td>
         <td></td>
-        <td style="font-size:12px; border-top: 1px solid #000;">Dueño(a) del Cubo '.$nombre.'</td>
+        <td style="font-size:12px; border-top: 1px solid #000;">Arrendatario del Cubo '.$nombre.'</td>
     </tr>
     <tr>
     
@@ -62,6 +67,29 @@ $tabla = $tabla.'<br><br><br><br><br>
     </tr>
     
 </table>';
+
+//SI ENTRO AQUI QUIERE DECIR QUE YA SE HARÁ LA SALIDA, ES HORA DE ACTUALIZAR EL SCTOCK DEL INVENTARIO
+
+   $sql = "SELECT * FROM detalle_temp_salidas WHERE token_user = '$token' ";
+   //echo $sql;
+  $query = mysqli_query($conexion, $sql);
+  $result = mysqli_num_rows($query);
+
+  if ($result > 0) {
+
+    //si ya hay datos en el array genero el pdf y luego actualizo el inventario 
+    $sql="CALL salida_inventario('$token')";  
+    //echo $sql;
+    $query_procesar = mysqli_query($conexion, $sql);
+    if ($query_procesar) {    
+      
+    }else {
+      echo "error2";
+    }
+  }else {
+    echo "error1";
+  }
+  mysqli_close($conexion);
 
 echo $tabla;
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);

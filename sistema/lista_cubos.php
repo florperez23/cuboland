@@ -37,7 +37,15 @@
 									<td><?php echo $data['codcubo']; ?></td>
 									<td><?php echo $data['cubo']; ?></td>
 									<td><?php echo $data['renta']; ?></td>
-									<td><?php echo $data['disponible']; ?></td>
+									<td><?php 
+									if($data['disponible'] == 0){
+										echo '<span class="badge bg-success" style="color:white;">Disponible</span>';
+									}else{
+										echo '<span class="badge bg-danger" style="color:white;">Ocupado</span>';
+									}
+									
+									
+									?></td>
 									
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
