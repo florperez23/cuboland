@@ -511,6 +511,28 @@ function ExiteUnaPromocion($codproducto){
 }
 
 
+
+
+function ValidarExiteUnaPromocion($ididentificador){
+	require("..\conexion.php");
+	
+	$sql="select * from promociones where ididentificador='".$ididentificador."'";
+	//echo $sql;
+	$r = $conexion -> query($sql);
+	if ($r -> num_rows >0) {
+		while($f = $r -> fetch_array())
+		{
+			return 'Existe';
+		}
+		 
+	}else{
+		return 'No Existe';
+	}
+			
+}
+
+
+
 function cubo_producto_anterior(){
 	include "../conexion.php";
 	$sql = "select codcubo from detalle_temp_salidas limit 1";			

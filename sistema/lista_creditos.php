@@ -90,7 +90,7 @@
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" style='color: #fff;' id="exampleModalLongTitle">Abonos </h5>
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Abonos </h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">X</span>
                                         </button>
@@ -114,10 +114,12 @@
                                                     <tbody>
                                                         <?php
                                                         require "../conexion.php";
-                                                        $sql=" SELECT numcredito, creditos.fecha,totalventa as total, (select totalfactura from factura where numcredito=creditos.numcredito) as pago,
-                                                        totalventa-(select SUM(totalfactura) from factura where numcredito=creditos.numcredito GROUP BY NUMCREDITO) AS  adeudo, 
+                                                        $sql=" SELECT numcredito, creditos.fecha,totalventa as total, (select totalfactura from factura where numcredito=creditos.numcredito GROUP BY numcredito) as pago,
+                                                        totalventa-(select SUM(totalfactura) from factura where numcredito=creditos.numcredito GROUP BY numcredito) AS  adeudo, 
                                                          fechavencimiento,estado,nombre   FROM creditos inner join cliente on cliente.idcliente=creditos.idcliente 
                                                         WHERE creditos.estado=1 and  creditos.numcredito = '". $dato['numcredito']."'" ;
+
+                                                        //echo $sql;
                                                         $query1 = mysqli_query($conexion, $sql);
                                                         mysqli_close($conexion);
                                                         $cli1 = mysqli_num_rows($query1);

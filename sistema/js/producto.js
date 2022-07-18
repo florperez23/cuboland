@@ -11,7 +11,8 @@ $(document).ready(function(){
   });
 
 
-  $("#rdproducto").prop("checked", true);;
+  $("#rdproducto").prop("checked", true);
+  $("#rdtipo").prop("checked", true);
 
   $('nav ul li').click(function() {
     $('nav ul li ul').slideUp();
@@ -305,6 +306,10 @@ $('#txt_cod_pro').keyup(function(e) {
           $('#txt_precio').html(info.precio);
           $('#txt_descuento').html(info.descuento);
 
+          $('#txt_cantidad_mayoreo').val(info.cantidad_mayoreo);
+          $('#txt_precio_mayoreo').val(info.mayoreo);         
+          $('#txt_precio_normal').val(info.precio); 
+
           if(info.tipo==1)
           { $('#tipo').html("Descuento");
             $('#txt_descuento').html(info.descuento+"%");
@@ -354,8 +359,32 @@ $('#txt_cod_pro').keyup(function(e) {
 // calcular el Total
 $('#txt_cant_producto').keyup(function(e) {
   e.preventDefault();
+
+ 
+
   var precio_total = $(this).val() * $('#txt_precio').html();
   var existencia = parseInt($('#txt_existencia').html());
+
+   
+
+   if($(this).val() >= parseInt($('#txt_cantidad_mayoreo').val())){
+    $('#tipo').html("Precio de mayoreo");
+     $('#txt_descuento').html($('#txt_precio_mayoreo').val());
+     var precio_total = $(this).val() * $('#txt_precio_mayoreo').val();
+
+     Swal.fire({
+      icon: 'info',
+      title: '',
+      text: '¡Has alcanzado el precio de mayoreo!',
+      footer: ''
+    });
+
+   }else{
+    $('#tipo').html("Descuento");
+    $('#txt_descuento').html('');
+   }
+    
+   
   $('#txt_precio_total').html(precio_total);
   // Ocultat el boton Agregar si la cantidad es menor que 1
   if (($(this).val() < 1 || isNaN($(this).val())) || ($(this).val() > existencia)){
@@ -410,7 +439,7 @@ $('#add_product_venta').click(function(e) {
         console.log(response);    
         if (response != 'error') {          
           var info = JSON.parse(response);
-         
+         console.log(response);
           $('#detalle_venta').html(info.detalle);
           $('#detalle_totales').html(info.totales);
           $('#totalmodal').val(  MASK('', (info.totalmodal),'$##,###,##0.00',1));             
@@ -421,7 +450,8 @@ $('#add_product_venta').click(function(e) {
           $('#txt_cant_producto').val('0');
           $('#txt_precio').html('0.00');
           $('#txt_precio_total').html('0.00');
-
+          $('#tipo').html("Descuento");
+          $('#txt_descuento').html('');
           // Bloquear cantidad
           $('#txt_cant_producto').attr('disabled','disabled');
           // Ocultar boton agregar
@@ -560,6 +590,70 @@ $('.view_factura').click(function(e) {
   var noFactura = $(this).attr('f');
   generarPDF(codCliente,noFactura);
 });
+
+
+
+
+
+
+
+
+
+
+
+$('#btn_facturar_renta').click(function(e) {
+  e.preventDefault();
+ 
+  var action = 'procesarVenta';
+  var codcliente = $('#idrrendatario').val();
+  var tipoventa = $('#tipoven').val();    
+  var tipopago = $('#tipopago').val();   
+  var referencia = $('#numreferencia').val();   
+ 
+
+  console.log(codcliente);
+  console.log("entro");
+  var tipoventa = $('#tipoven').val();    
+  if( tipoventa==1 )
+  { 
+    pago = document.getElementById("pagar_con").value;
+    fechaven = new Date();
+    total=document.getElementById("totalmodal").value;
+  }
+  else
+  {
+    pago = document.getElementById("pagar_conC").value; 
+    total=document.getElementById("totalmodal").value;
+    fechaven = $('#fechav').val();
+    } 
+    numcredito = document.getElementById("numcredito").value; 
+   
+ 
+
+    // $.ajax({
+    //   url: 'modal.php',
+    //   type: 'POST',
+    //   async: true,
+    //   data: {action:action,codcliente:codcliente,tipoventa:tipoventa, pago:pago,fechaven:fechaven,tipopago:tipopago,referencia:referencia,numcredito:numcredito},
+    //   success: function(response) {
+    //   (response); 
+    //   //console.log(response);
+    //   if (response != 0) {
+    //     //console.log(response);
+    //     var info = JSON.parse(response);        
+    //     generarPDF(info.codcliente,info.nofactura);
+    //     location.reload();
+    //   }else {
+    //     console.log('no hay dato');
+    //   }
+    //   },
+    //   error: function(error) {
+
+    //   }
+    // });
+  
+});
+
 
 // Cambiar contraseña
 $('.newPass').keyup(function() {

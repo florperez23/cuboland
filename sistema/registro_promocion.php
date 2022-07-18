@@ -24,15 +24,20 @@
       {
         $identificador = $_POST['codigopro'];
       }
-      echo $clasificacion;
+  
 
       if($identificador =='0' || empty($identificador)){
-        mensajeicono('Todos los campos son obligatorios111.', 'registro_promocion.php','','info');
-      
+        mensajeicono('Todos los campos son obligatorios.', 'registro_promocion.php','','info');    
       
       }else{
-     echo $sql= "INSERT INTO promociones(idclasificacion, ididentificador,idtipo,promocion,fechainicio,fechatermino,usuario_id, fecha) values ('$clasificacion','$identificador', '$tipo', '$promocion', '$fechainicio','$fechatermino','$usuario', now())";
-       echo $sql;
+       // echo ValidarExiteUnaPromocion($identificador);
+      if(ValidarExiteUnaPromocion($identificador)=='Existe')
+      {
+        mensajeicono('Ya existe una promocion para este producto/cubo', 'registro_promocion.php','','info');    
+      
+      }else{
+      echo $sql= "INSERT INTO promociones(idclasificacion, ididentificador,idtipo,promocion,fechainicio,fechatermino,usuario_id, fecha) values ('$clasificacion','$identificador', '$tipo', '$promocion', '$fechainicio','$fechatermino','$usuario', now())";
+      echo $sql;
       $query_insert = mysqli_query($conexion, $sql);
       if ($query_insert) {
         historia('Se registro la prmocion ');
@@ -42,6 +47,7 @@
         historia('Error al intentar registrar la promocion ');
         mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_promociones.php','','error');
       }
+    }
     }
     }
   }
@@ -98,7 +104,7 @@
              <div class="form-group">
              <label for="codigo">Especifique que tipo de promocion se aplicará</label><br>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="tipo"  value="1">
+                    <input class="form-check-input" type="radio" name="tipo"  id="rdtipo" value="1">
                     <label class="form-check-label" for="inlineRadio1">Porcentaje (%)</label>
                 </div>
                 <div class="form-check form-check-inline">

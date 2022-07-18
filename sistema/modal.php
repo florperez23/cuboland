@@ -40,7 +40,7 @@ if (!empty($_POST)) {
     
 
     }else{
-      $sql="SELECT codproducto, descripcion, precio, existencia, precio as newprecio FROM producto WHERE codproducto = '".$producto_id."'";
+      $sql="SELECT codproducto, descripcion, precio, existencia, precio as newprecio,cantidad_mayoreo, mayoreo FROM producto WHERE codproducto = '".$producto_id."'";
     
 //echo $sql;
     $query = mysqli_query($conexion, $sql);
@@ -125,7 +125,7 @@ if ($_POST['action'] == 'addProductoDetalle') {
     $query_iva = mysqli_query($conexion, "SELECT igv FROM configuracion");
     $result_iva = mysqli_num_rows($query_iva); 
     $sql="CALL add_detalle_temp ('$codproducto',$cantidad,'$token')";
-   echo $sql;
+   //echo $sql;
     $query_detalle_temp = mysqli_query($conexion, $sql);
     $result = mysqli_num_rows($query_detalle_temp);
     $detalleTabla = '';
@@ -147,8 +147,17 @@ if ($_POST['action'] == 'addProductoDetalle') {
       $detalleTabla .= '<tr>
       <td>'.$data['codproducto'].'</td>
       <td colspan="2">'.$data['descripcion'].'</td>
-      <td class="text-center">'.$data['cantidad'].'</td>
-      <td class="text-center">'.$data['precio'].'</td>';
+      <td class="text-center">'.$data['cantidad'].'</td>';
+ 
+
+      if($data['mayoreo']>0)
+      {
+      $detalleTabla .= '<td class="text-center">'.$data['mayoreo'].'</td>';
+      }else{
+        $detalleTabla .= '<td class="text-center">'.$data['precio'].'</td>';
+      
+      }
+
       if($data['idtipopromocion']==1)
       {
       $detalleTabla .= '<td class="text-center">'.$data['promocion'].'%</td>';
@@ -189,7 +198,7 @@ if ($_POST['action'] == 'searchForDetalle') {
     $token = md5($_SESSION['idUser']);
 $sql="SELECT tmp.correlativo, tmp.token_user,
 sum(tmp.cantidad) as cantidad, tmp.precio_venta, p.codproducto, p.descripcion,p.precio,
-tmp.precio_promocion,tmp.promocion,tmp.idtipopromocion
+tmp.precio_promocion,tmp.promocion,tmp.idtipopromocion, p.mayoreo, p.cantidad_mayoreo
 FROM detalle_temp tmp INNER JOIN producto p ON tmp.codproducto = p.codproducto
 where token_user = '$token' 		GROUP BY tmp.codproducto";
 //echo $sql;
@@ -217,8 +226,16 @@ where token_user = '$token' 		GROUP BY tmp.codproducto";
         $detalleTabla .= '<tr>
             <td>'.$data['codproducto'].'</td>
             <td colspan="2">'.$data['descripcion'].'</td>
-            <td class="textcenter">'.$data['cantidad'].'</td>
-            <td class="textright">'.$data['precio'].'</td>';
+            <td class="textcenter">'.$data['cantidad'].'</td>';
+ 
+            if($data['mayoreo']>0)
+            {
+            $detalleTabla .= '<td class="text-center">'.$data['mayoreo'].'</td>';
+            }else{
+              $detalleTabla .= '<td class="text-center">'.$data['precio'].'</td>';
+            
+            }
+
             if($data['idtipopromocion']==1)
             {
             $detalleTabla .= '<td class="text-center">'.$data['promocion'].'%</td>';
@@ -367,8 +384,15 @@ if ($_POST['action'] == 'delProductoDetalle') {
         $detalleTabla .= '<tr>
             <td>'.$data['codproducto'].'</td>
             <td colspan="2">'.$data['descripcion'].'</td>
-            <td class="text-center">'.$data['cantidad'].'</td>
-            <td class="text-center">'.$data['precio'].'</td>';
+            <td class="text-center">'.$data['cantidad'].'</td>';
+
+            if($data['mayoreo']>0)
+            {
+            $detalleTabla .= '<td class="text-center">'.$data['mayoreo'].'</td>';
+            }else{
+              $detalleTabla .= '<td class="text-center">'.$data['precio'].'</td>';
+            
+            }
             if($data['idtipopromocion']==1)
             {
             $detalleTabla .= '<td class="text-center">'.$data['promocion'].'%</td>';
@@ -1036,6 +1060,25 @@ if ($_POST['action'] == 'buscarArrendatario') {
     echo $data;
   }
 
+  exit;
+}
+
+// Siguiente numero del producto
+if ($_POST['action'] == 'preciomayoreo') {
+  $codcubo = $_POST['idcubo'];
+	$sql = "select * from producto where codcubo = '$codcubo' ";
+ // echo $sql;
+    $query = mysqli_query($conexion, $sql);
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($query);
+    if ($result > 0) {
+      $data = mysqli_fetch_assoc($query);     
+     echo $data["mayoreo"];
+      exit;
+    }else{
+      $data = "0";
+    }
+ 
   exit;
 }
  ?>

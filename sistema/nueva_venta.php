@@ -87,7 +87,10 @@ if(HayCajaAbierta()==0)
                         </tr>
                         <tr>
                             <td><input type="hidden" name="txt_cod_producto" id="txt_cod_producto">
-                                <input type="text" name="txt_cod_pro" id="txt_cod_pro">
+                            <input type="hidden" name="txt_cantidad_mayoreo" id="txt_cantidad_mayoreo">
+                            <input type="hidden" name="txt_precio_mayoreo" id="txt_precio_mayoreo">
+                            <input type="hidden" name="txt_precio_normal" id="txt_precio_normal">
+                            <input type="text" name="txt_cod_pro" id="txt_cod_pro">
                             </td>
                             <td id="txt_descripcion">-</td>
                             <td id="txt_existencia">-</td>
