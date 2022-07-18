@@ -463,10 +463,7 @@ function idcuboanterior($id){
 	include "../conexion.php";
 	$sql = "select idcubo from rentas where id = '$id'";			
 	//echo $sql;		
-	$rc= $conexion -> query($sql);
-	if($f = $rc -> fetch_array())
-	{
-		// echo $sql;
+	// echo $sql;
 		$rc= $conexion -> query($sql);
 		if($f = $rc -> fetch_array())
 			{		
@@ -474,7 +471,7 @@ function idcuboanterior($id){
 				return $f['idcubo'];
 			}
 		 else {return FALSE;}
-	}
+	
 }
 
 function ExiteUnaPromocion($codproducto){
@@ -510,8 +507,38 @@ function ExiteUnaPromocion($codproducto){
 	}else{
 		return 0;
 	}
-					
+			
 }
 
 
+function cubo_producto_anterior(){
+	include "../conexion.php";
+	$sql = "select codcubo from detalle_temp_salidas limit 1";			
+	//echo $sql;		
+
+		// echo $sql;
+		$rc= $conexion -> query($sql);
+		if($f = $rc -> fetch_array())
+			{		
+						
+				return $f['codcubo'];
+			}
+		 else {return FALSE;}
+	
+}
+
+function cubo_producto($codproducto){
+	include "../conexion.php";
+	$sql = "select codcubo from producto where codproducto = '$codproducto'";			
+	//echo $sql;		
+
+	$rc= $conexion -> query($sql);
+	if($f = $rc -> fetch_array())
+		{		
+					
+			return $f['codcubo'];
+		}
+		else {return FALSE;}
+	
+}
 ?>

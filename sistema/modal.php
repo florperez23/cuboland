@@ -842,44 +842,48 @@ if ($_POST['action'] == 'addProductoSalida') {
     $cantidad = $_POST['cantidad'];
     $token = md5($_SESSION['idUser']);
 
-    $sql="CALL add_detalle_temp_salidas ('$codproducto',$cantidad,'$token')";
-   //echo $sql;
-    $query_detalle_temp = mysqli_query($conexion, $sql);
-    $result = mysqli_num_rows($query_detalle_temp);
+    //antes de agregar analizamos de que cubo son las ya agregadas
+    $idcuboant = cubo_producto_anterior();
+    $codcubonvo = cubo_producto($codproducto);
+
     $detalleTabla = '';
-   
-    $arrayData = array();
-    if ($result > 0) {
-        
-   
-    while ($data = mysqli_fetch_assoc($query_detalle_temp)) {
-      
 
-      $detalleTabla .= '<tr>
-      <td>'.$data['codproducto'].'</td>
-      <td colspan="2">'.$data['descripcion'].'</td>
-      <td class="textcenter">'.$data['cantidad'].'</td>';
-
+    //si son iguales entra o si es la primera vez 
+    if($idcuboant == $codcubonvo or $idcuboant == ''){
+      //echo 'entro';
+      $sql="CALL add_detalle_temp_salidas('$codproducto',$cantidad,'$token')";
+    //echo $sql;
+      $query_detalle_temp = mysqli_query($conexion, $sql);
+      $result = mysqli_num_rows($query_detalle_temp);
       
-      $detalleTabla .='
-      <td>
-          <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
-      </td>
-  </tr>';
-    }
     
+      $arrayData = array();
+      if ($result > 0) {
+          
     
+        while ($data = mysqli_fetch_assoc($query_detalle_temp)) {
+          
+          $detalleTabla .= '<tr>
+          <td>'.$data['codproducto'].'</td>
+          <td colspan="2">'.$data['descripcion'].'</td>
+          <td class="textcenter">'.$data['cantidad'].'</td>';
+
+          $detalleTabla .='
+          <td>
+              <a href="#" class="link_delete" onclick="event.preventDefault(); eliminar_salida('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
+          </td>
+      </tr>';
+        }
+      }
+    }else{
+      //echo 'entro else';
+      $detalleTabla .= '0';
+    } 
   
     $arrayData['detalle'] = $detalleTabla;
-    
-    
     echo json_encode($arrayData,JSON_UNESCAPED_UNICODE);
-  }else {
-    echo 'error';
   }
   mysqli_close($conexion);
-
-  }
   exit;
 }
 
@@ -888,9 +892,6 @@ if ($_POST['action'] == 'infoProducto2') {
   $producto_id = $_POST['producto'];
 
   $sql="SELECT codproducto, descripcion, precio, existencia FROM producto WHERE codproducto = '".$producto_id."'";
-  
- 
- //echo $sql;
   $query = mysqli_query($conexion, $sql);
 
   $result = mysqli_num_rows($query);
@@ -912,7 +913,7 @@ if ($_POST['action'] == 'productoDetalleValidaSalida') {
           $codproducto = $_POST['producto'];
        $token = md5($_SESSION['idUser']);
       $sql="select sum(cantidad) as cantidad   from detalle_temp_salidas where codproducto='".$codproducto."'";
-    echo $sql;
+      //echo $sql;
      $query = mysqli_query($conexion, $sql);
      mysqli_close($conexion);
      $result = mysqli_num_rows($query);
@@ -958,4 +959,83 @@ if ($_POST['action'] == 'procesarVentaSalida') {
   exit;
 }
 
+
+// extrae datos del detalle temp
+if ($_POST['action'] == 'delProductoDetalleSalida') {
+  if (empty($_POST['id_detalle'])){
+    echo 'error';
+    // code...
+  }else {
+    $id_detalle = $_POST['id_detalle'];
+    $token = md5($_SESSION['idUser']);
+
+    $query_detalle_tmp = mysqli_query($conexion, "CALL del_detalle_temp_salida($id_detalle,'$token')");
+    $result = mysqli_num_rows($query_detalle_tmp);
+
+    $detalleTabla = '';
+
+    $arrayDatadata = array();
+    if ($result > 0) {
+    
+      while ($data = mysqli_fetch_assoc($query_detalle_tmp)) {
+      
+
+          $detalleTabla .= '<tr>
+              <td>'.$data['codproducto'].'</td>
+              <td colspan="2">'.$data['descripcion'].'</td>
+              <td class="text-center">'.$data['cantidad'].'</td>';
+            $detalleTabla .= '
+              <td>
+                  <a href="#" class="link_delete" onclick="event.preventDefault(); eliminar_salida('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
+              </td>
+          </tr>';
+      
+      }
+   
+
+      $arrayData['detalle'] = $detalleTabla;
+      echo json_encode($arrayData,JSON_UNESCAPED_UNICODE);
+    }else {
+      $data = 0;
+    }
+  mysqli_close($conexion);
+
+  }
+  exit;
+}
+
+//eliminarSalidas
+
+if ($_POST['action'] == 'eliminarSalidas') {
+  $query = mysqli_query($conexion, "DELETE FROM detalle_temp_salidas");
+  
+  if ($query ) {
+   echo 'ok';
+  }else {
+    echo "error";
+  }
+  mysqli_close($conexion);
+  exit;
+}
+
+
+
+if ($_POST['action'] == 'buscarArrendatario') {
+  $idcubo = $_POST['idcubo'];
+  $sql = "Select idarrendatario From rentas Where idcubo = ".$idcubo."";
+  //echo $sql;
+  $query = mysqli_query($conexion,$sql);
+  mysqli_close($conexion);
+  $result = mysqli_num_rows($query);
+  if ($result > 0) {
+    $data = mysqli_fetch_assoc($query);
+    echo $data['idarrendatario'];
+    exit;
+  }else{
+    $data = "-1";
+    echo $data;
+  }
+
+  exit;
+}
  ?>

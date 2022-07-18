@@ -17,6 +17,12 @@
       $existencia = $_POST['existencia'];
       $usuario_id = $_SESSION['idUser'];
 
+      //validamos si lleva la nomenclatura de la C
+      $empieza = substr($codigo, 0); 
+      if($empieza <> 'C'){
+        $signum = '';
+      }
+
       $query_insert = mysqli_query($conexion, "INSERT INTO producto(codproducto, nomenclatura,numsiguiente,descripcion,precio,mayoreo, registro, fecha, codcubo, cantidad_mayoreo, existencia) 
       values ('$codigo','$nomenclatura', '$signum', '$descripcion', '$precio','$mayoreo', '$usuario_id', now(), '$idcubo', '$cant_may', '$existencia')");
       if ($query_insert) {
@@ -113,7 +119,7 @@
              </div>
              
              
-             <input type="submit" value="Guardar Producto" class="btn btn-primary">
+             <input type="submit" name='guardarProductobtn' id='guardarProductobtn' value="Guardar Producto" class="btn btn-primary">
            </form>
          </div>
        </div>
