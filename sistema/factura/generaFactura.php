@@ -20,18 +20,17 @@
 		$result_venta = mysqli_fetch_assoc($ventas);
 		$clientes = mysqli_query($conexion, "SELECT * FROM cliente WHERE idcliente = $codCliente");
 		$result_cliente = mysqli_fetch_assoc($clientes);
-
 		$credito = mysqli_query($conexion, "SELECT * FROM creditos WHERE idcliente = ".$codCliente." and numcredito=".$result_venta['numcredito']."");
 		$result_credito = mysqli_fetch_assoc($credito);
 		
 
 		if($result_venta['numcredito']!= '' and $result_venta['numcredito']!=0)
 		{
-			$sql="SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.descripcion, p.precio FROM detallefactura d INNER JOIN producto p ON d.nofactura = ".$result_credito['nofacturaorigen']." WHERE d.codproducto = p.codproducto GROUP BY p.codproducto";
+			$sql="SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.descripcion, p.precio,d.precio_promocion, d.promocion, d.idtipopromocion FROM detallefactura d INNER JOIN producto p ON d.nofactura = ".$result_credito['nofacturaorigen']." WHERE d.codproducto = p.codproducto GROUP BY p.codproducto";
 			//echo $sql;
 			$productos = mysqli_query($conexion, $sql);
 		}else{
-			$sql="SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.descripcion, p.precio FROM detallefactura d INNER JOIN producto p ON d.nofactura = $noFactura WHERE d.codproducto = p.codproducto GROUP BY p.codproducto";
+			$sql="SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.descripcion, p.precio, d.precio_promocion, d.promocion , d.idtipopromocion FROM detallefactura d INNER JOIN producto p ON d.nofactura = $noFactura WHERE d.codproducto = p.codproducto GROUP BY p.codproducto";
 			//echo $sql;
 			$productos = mysqli_query($conexion, $sql);
 		}
@@ -130,18 +129,35 @@
 		$pdf->Cell(75, 5, "Detalle de Productos", 0, 1, 'C');
 		$pdf->Cell(78, 5,'********************************************************************************', 0, 1, 'C');
 		$pdf->SetTextColor(0, 0, 0);
-		$pdf->SetFont('Arial', 'B', 7);
-		$pdf->Cell(42, 5, 'Nombre', 0, 0, 'L');
+		$pdf->SetFont('Arial', 'B', 6);
+		$pdf->Cell(39, 5, 'Nombre', 0, 0, 'L');
 		$pdf->Cell(8, 5, 'Cant', 0, 0, 'L');
-		$pdf->Cell(15, 5, 'Precio', 0, 0, 'L');
-		$pdf->Cell(15, 5, 'Total', 0, 1, 'L');
-		$pdf->SetFont('Arial', '', 7);
+		$pdf->Cell(10, 5, 'Precio', 0, 0, 'L');
+		$pdf->Cell(10, 5, 'Prom.', 0, 0, 'L');
+		
+		
+
+
+		$pdf->Cell(12, 5, 'Total', 0, 1, 'L');
+		$pdf->SetFont('Arial', '', 6);
 		while ($row = mysqli_fetch_assoc($productos)) {
-			$pdf->Cell(42, 5, utf8_decode($row['descripcion']), 0, 0, 'L');
+			$pdf->Cell(39, 5, utf8_decode($row['descripcion']), 0, 0, 'L');
 			$pdf->Cell(8, 5, $row['cantidad'], 0, 0, 'L');
-			$pdf->Cell(15, 5, '$'.number_format($row['precio'], 2, '.', ','), 0, 0, 'L');
-			$importe = number_format($row['cantidad'] * $row['precio'], 2, '.', ',');
-			$pdf->Cell(15, 5, '$'.$importe, 0, 1, 'L');
+			$pdf->Cell(10, 5, '$'.number_format($row['precio'], 2, '.', ','), 0, 0, 'L');
+		
+
+
+			if($row['idtipopromocion']==1)
+			{
+				$pdf->Cell(10, 5, number_format($row['promocion'], 2, '.', ',').'%', 0, 0, 'L');
+			}
+			else 
+			{
+				$pdf->Cell(10, 5, '$'.number_format($row['promocion'], 2, '.', ','), 0, 0, 'L');
+			}
+
+			$importe = number_format($row['cantidad'] * $row['precio_promocion'], 2, '.', ',');
+			$pdf->Cell(12, 5, '$'.$importe, 0, 1, 'L');
 		}
 		$pdf->Ln();
 		$pdf->SetFont('Arial', 'B', 8);

@@ -482,7 +482,8 @@ function ExiteUnaPromocion($codproducto){
 	
 	$sql="select * from promociones inner join producto on promociones.ididentificador=producto.codproducto 
 	or promociones.ididentificador= producto.codcubo	
-	where promociones.ididentificador='".$codproducto."' or  promociones.ididentificador= ( select codcubo from producto where codproducto='".$codproducto."')
+	where (promociones.ididentificador='".$codproducto."' or  promociones.ididentificador= ( select codcubo from producto where codproducto='".$codproducto."'))
+	and producto.codproducto='".$codproducto."'
 	AND (DATE(promociones.fechainicio) <=CURRENT_DATE() AND DATE(promociones.fechatermino) >DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY))";
 	//echo $sql;
 	$r = $conexion -> query($sql);

@@ -16,6 +16,7 @@
       $fechainicio = date("Y/m/d", strtotime($fechainicio));
       $fechatermino = date("Y/m/d", strtotime($fechatermino));
       $usuario = $_SESSION['idUser'];
+      
       if($clasificacion==1)
       {
         $identificador = $_POST['codigocub'];
@@ -23,9 +24,10 @@
       {
         $identificador = $_POST['codigopro'];
       }
+      echo $clasificacion;
 
-      if($identificador ==0 || $identificador==''){
-        mensajeicono('Todos los campos son obligatorios.', 'registro_promocion.php','','info');
+      if($identificador =='0' || empty($identificador)){
+        mensajeicono('Todos los campos son obligatorios111.', 'registro_promocion.php','','info');
       
       
       }else{
@@ -69,13 +71,14 @@
               
              <div class="form-group">
              <label for="codigo">Especifique como se aplicará la promoción</label><br>
+                
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="clasificacion"   value="1">
-                    <label class="form-check-label" for="inlineRadio1">Cubo</label>
+                    <input class="form-check-input" type="radio" name="clasificacion" id="rdproducto"  value="2">
+                 <label class="form-check-label" for="inlineRadio2">Producto</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="clasificacion"  value="2">
-                 <label class="form-check-label" for="inlineRadio2">Producto</label>
+                    <input class="form-check-input" type="radio" name="clasificacion"  id="rdcubo"   value="1">
+                    <label class="form-check-label" for="inlineRadio1">Cubo</label>
                 </div>
             </div>
 

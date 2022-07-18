@@ -125,7 +125,7 @@ if ($_POST['action'] == 'addProductoDetalle') {
     $query_iva = mysqli_query($conexion, "SELECT igv FROM configuracion");
     $result_iva = mysqli_num_rows($query_iva); 
     $sql="CALL add_detalle_temp ('$codproducto',$cantidad,'$token')";
-   //echo $sql;
+   echo $sql;
     $query_detalle_temp = mysqli_query($conexion, $sql);
     $result = mysqli_num_rows($query_detalle_temp);
     $detalleTabla = '';
@@ -272,9 +272,9 @@ if ($_POST['action'] == 'searchClienteCredito') {
      if ($result > 0) {
   // $detalleTabla .= '<span>'.$id_detalle.'</span>';
    $detalleTabla .= ' <div class="col-lg-12"> <div class="form-group">
-   <h4 class="text-center">Creditos Activos</h4> 
+   <br><h4 class="text-center">Creditos Activos</h4> 
    </div>
-   <div class="card">
+   <div class="card_div">
    <div class="card-body">
    <div class="table-responsive">
 				<table class="table table-striped table-bordered" id="table">

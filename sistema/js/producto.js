@@ -6,7 +6,12 @@ $(document).ready(function(){
     }else {
       $('nav').addClass('viewMenu');
     }
+
+   
   });
+
+
+  $("#rdproducto").prop("checked", true);;
 
   $('nav ul li').click(function() {
     $('nav ul li ul').slideUp();
@@ -402,7 +407,7 @@ $('#add_product_venta').click(function(e) {
       async: true,
       data: {action:action,producto:codproducto,cantidad:cantidad},
       success: function(response) {    
-        //console.log(response);    
+        console.log(response);    
         if (response != 'error') {          
           var info = JSON.parse(response);
          
@@ -988,9 +993,11 @@ $('#txt_cod_pro').keyup(function(e) {
  } 
 });
 
+
 $('#pagar_con').keyup(function(e) {
   e.preventDefault();
-  if (e.which == 13) {  
+  //if (e.which == 13) {  
+
 
     pagar_con = document.getElementById("pagar_con").value.replace('$',''); //Quitamos el signo de pesos 
     total = document.getElementById("totalmodal").value.replace('$','');//Quitamos el signo de pesos 
@@ -1001,28 +1008,30 @@ $('#pagar_con').keyup(function(e) {
     const cambio =(parseFloat(pagar_con)-parseFloat(total));
     tipopago= document.getElementById("tipopago").value;
     const tipoventa = document.getElementById("tipoven").value;    
-  
+ 
     if(tipopago==1)
     {
       $('#btn_facturar_venta').slideUp();
-          if (cambio >= 0 ) {       
+          if (cambio >= 0 ) {    
+             
           document.getElementById("cambio").value=MASK('', (cambio),'$##,###,##0.00',1);
           $('.alertCambio').html('<p style="color : red;"></p>');
           $('#btn_facturar_venta').slideDown();      
           } else {
-            document.getElementById("pagar_con").value=pagar_con;        
-           Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Error la cantidad a pagar debe ser mayor o igual al total!',
-            footer: ''
-          })
-          $('#exampleModal').modal('hide');
+            $('.alertCambio').html('<p style="color : red;">Error la cantidad con la que paga debe ser mayor o igual al total!</p>');
+          //   document.getElementById("pagar_con").value=pagar_con;        
+          //  Swal.fire({
+          //   icon: 'error',
+          //   title: 'Oops...',
+          //   text: 'Error la cantidad con la que paga debe ser mayor o igual al total!',
+          //   footer: ''
+          // })
+         // $('#exampleModal').modal('hide');
            $('#btn_facturar_venta').slideUp();    
             document.getElementById('pagar_con').focus();
             
           }
-    } 
+ //   } 
   
 }
 });
@@ -1035,6 +1044,7 @@ $('#tipoven').on('change', function() {
   { 
     $('#ventacredito').slideUp();
     $('#ventacontado').slideDown();   
+ 
  }
   else{  
    $('#ventacontado').slideUp();
