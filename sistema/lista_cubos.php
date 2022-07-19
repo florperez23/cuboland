@@ -68,8 +68,33 @@
 										<div class="modal-body">      
 										<div>
 									<div class="card_div">
-										<div class="card-body">
-										<input id="idarrendatario"  name="idarrendatario" class="form-control" type="text"   value="<?php echo $data['idarrendatario']; ?>"  >
+										<div class="card-body"> 
+										<label>Arrendatario</label>
+										<select id="idarrendatario" name="idarrendatario" class="form-control" >
+										
+										<?php
+										$query1 = mysqli_query($conexion, "SELECT * FROM arrendatarios ");
+										$res = mysqli_num_rows($query);
+									
+										?>
+										<?php
+										if ($res > 0) {
+											while ($f = mysqli_fetch_array($query1)) {
+												
+											if($f['idarrendatario'] == $data['idarrendatario']){
+												?>
+												<option value="<?php echo $f['idarrendatario']; ?>" selected><?php echo $f['nombre']; ?></option>
+											<?php
+											}else{
+											?>        
+											<option value="<?php echo $f['idarrendatario']; ?>"><?php echo $f['nombre']; ?></option>
+										<?php
+											}
+											}
+										}
+										?>
+									</select>
+										<input id="disponible"  name="disponible" class="form-control" type="text"   value="<?php echo $data['disponible']; ?>"  >
 											<div class="row">              
 												<div class="col-md-6">
 													<div class="form-group">

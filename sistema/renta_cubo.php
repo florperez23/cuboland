@@ -24,6 +24,7 @@
     $tipopago = $_POST['tipopago'];
     $newDate = date("Y/m/d", strtotime($fechaven));
     $totalrenta=$_POST['totalmodal'];
+    $estado=$_POST['disponible'];
 
     if(isset($_POST['pago'])){
       $pagocon = $_POST['pago'];
@@ -49,9 +50,16 @@
  
    $fproximopago=FechaProximoPago($fechaprox);
 
- 
+    if($estado==0)
+    {
     $sql = "INSERT INTO rentas(idarrendatario,idcubo,fechacontrato,fechaultimopago,fechaproximopago,usuario) values ( '$idarrendatario', '$codcubo', '$fecha', '$fecha', '$fproximopago', '".$usuario."')";
-    echo $sql;	
+    } 
+    else
+    {
+        $sql="Update rentas set fechaultimopago='".$fecha."' , fechaproximopago='".$fproximopago."' where idcubo='".$codcubo. "'";
+    }
+  
+  echo $sql;	
      $query_insert = mysqli_query($conexion, $sql);
      if ($query_insert) {
 
