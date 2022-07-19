@@ -122,6 +122,17 @@
 		$pdf->SetFont('Arial', '', 7);
 		$pdf->Cell(25, 5, date_format( date_create($result_venta['fecha']), 'd/m/Y') , 0, 1, 'R');
 		}
+		if($tipo=='5')
+		{		$pdf->Ln();	
+		$pdf->SetFont('Arial', 'B', 7);
+		$pdf->Cell(15, 5, "Tipo: ", 0, 0, 'L');
+		$pdf->SetFont('Arial', '', 7);
+		$pdf->Cell(20, 5, 'Renta', 0, 0, 'L');
+		$pdf->SetFont('Arial', 'B', 7);
+		// $pdf->Cell(16, 5, "Vencimiento: ", 0, 0, 'R');		
+		// $pdf->SetFont('Arial', '', 7);
+		// $pdf->Cell(25, 5, date_format( date_create($result_venta['fecha']), 'd/m/Y') , 0, 1, 'R');
+		}
 
 		$pdf->Cell(78, 5,'', 0, 1, 'C');
 		$pdf->Cell(78, 5,'********************************************************************************', 0, 1, 'C');
@@ -185,7 +196,7 @@
 				$pdf->Cell(76, 5, 'Resta: $' . number_format(($saldo-$pagocon), 2, '.', ','), 0, 1, 'R');
 			
 			
-		}else /*VENTA DEVOLUCION*/
+		}else if($tipo==3) /*VENTA DEVOLUCION*/
 		{
 			
 			$pdf->Cell(76, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
@@ -193,6 +204,10 @@
 			$pdf->Cell(76, 5, 'Referencia:' . $referencia, 0, 1, 'R');	
 		
 			
+			
+		}else{
+			$pdf->Cell(76, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
+			$pdf->Cell(76, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');	
 			
 		}
 		

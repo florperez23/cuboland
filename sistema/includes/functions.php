@@ -577,27 +577,27 @@ if($f = $rc -> fetch_array())
 				
 		$dia= $f['dia'];
 	
-// $result = mysql_query($sql);
-// $fila = mysql_fetch_row($result);
-// $dia = $fila[0];
-if (($dia == 0) or ($dia == 6))
-{
-	if($dia == 0)
+	// $result = mysql_query($sql);
+	// $fila = mysql_fetch_row($result);
+	// $dia = $fila[0];
+	if (($dia == 0) or ($dia == 6))
 	{
-		$fechaproximopago=date("Y-m-d",strtotime($probandofecha."+ 1 day")); // si es domingo le sumamos 1 dia para el lunes
-	}else
-	{echo "entro";
-		//echo date("Y-m-d",strtotime($probandofecha."+ 2 day"));
-		$fechaproximopago=date("Y-m-d",strtotime($probandofecha."+ 2 day")); // si es sabado le sumamos 2 dias para el lunes
+		if($dia == 0)
+		{
+			$fechaproximopago=date("Y-m-d",strtotime($probandofecha."+ 1 day")); // si es domingo le sumamos 1 dia para el lunes
+		}else
+		{echo "entro";
+			//echo date("Y-m-d",strtotime($probandofecha."+ 2 day"));
+			$fechaproximopago=date("Y-m-d",strtotime($probandofecha."+ 2 day")); // si es sabado le sumamos 2 dias para el lunes
+		}
+
+
+	return $fechaproximopago;
 	}
-
-
-return $fechaproximopago;
-}
-else
-{
-return $fechaproximopago=$probandofecha;
-}
+	else
+	{
+	return $fechaproximopago=$probandofecha;
+	}
 }
 }
 ?>
@@ -605,4 +605,3 @@ return $fechaproximopago=$probandofecha;
 
 
 
-}

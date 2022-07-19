@@ -53,8 +53,17 @@
 										<form action="eliminar_cubo.php?id=<?php echo $data['codcubo']; ?>" method="post" class="confirmar d-inline">
 											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
 										</form>
-									
-									<a href="#" class="btn btn-primary"  class="btn btn-primary"><i class="fa fa-credit-card"  data-toggle="modal" data-target="#exampleModal<?php echo $data['codcubo']; ?>"></i> </a>
+										<?php		
+										if($data['disponible'] == 0){
+												?>
+													<a href="#" class="btn btn-primary"  title="Pagar Renta" class="btn btn-primary"><i class="fa fa-check"  data-toggle="modal" data-target="#exampleModal<?php echo $data['codcubo']; ?>"></i> </a>
+											<?php
+											}else{
+											?>        
+												<a href="#" class="btn btn-secondary"  title="Rentar cubo" class="btn btn-primary"><i class="fa fa-credit-card"  data-toggle="modal" data-target="#exampleModal<?php echo $data['codcubo']; ?>"></i> </a>
+										<?php
+											}
+											?> 
 									<div class="modal fade" id="exampleModal<?php echo $data['codcubo']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel<?php echo $data['codcubo']; ?>" aria-hidden="true">
 									<div class="modal-dialog" role="document">
 									<div class="modal-content">
@@ -71,7 +80,7 @@
 										<div class="card-body"> 
 										<label>Arrendatario</label>
 										<select id="idarrendatario" name="idarrendatario" class="form-control" >
-										
+										<option value="">Seleccione</option>    
 										<?php
 										$query1 = mysqli_query($conexion, "SELECT * FROM arrendatarios ");
 										$res = mysqli_num_rows($query);
@@ -80,13 +89,13 @@
 										<?php
 										if ($res > 0) {
 											while ($f = mysqli_fetch_array($query1)) {
-												
+												echo $data['idarrendatario'];
 											if($f['idarrendatario'] == $data['idarrendatario']){
 												?>
 												<option value="<?php echo $f['idarrendatario']; ?>" selected><?php echo $f['nombre']; ?></option>
 											<?php
 											}else{
-											?>        
+											?>    
 											<option value="<?php echo $f['idarrendatario']; ?>"><?php echo $f['nombre']; ?></option>
 										<?php
 											}
@@ -94,14 +103,14 @@
 										}
 										?>
 									</select>
-										<input id="disponible"  name="disponible" class="form-control" type="text"   value="<?php echo $data['disponible']; ?>"  >
+										<input id="disponible"  name="disponible" class="form-control" type="hidden"   value="<?php echo $data['disponible']; ?>"  >
 											<div class="row">              
 												<div class="col-md-6">
 													<div class="form-group">
 														<label for="tipoven">Tipo de Venta</label>
 														<select id="tipoven" class="form-control" name="tipoven" required="">
 															<option value="1">Contado</option>
-															<option value="2">Credito</option>                             
+														<!-- /*	<option value="2">Credito</option>                              -->
 														</select>
 													</div>
 												</div>
