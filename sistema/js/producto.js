@@ -592,69 +592,6 @@ $('.view_factura').click(function(e) {
 });
 
 
-
-
-
-
-
-
-
-
-
-$('#btn_facturar_renta').click(function(e) {
-  e.preventDefault();
- 
-  var action = 'procesarVenta';
-  var codcliente = $('#idrrendatario').val();
-  var tipoventa = $('#tipoven').val();    
-  var tipopago = $('#tipopago').val();   
-  var referencia = $('#numreferencia').val();   
- 
-
-  console.log(codcliente);
-  console.log("entro");
-  var tipoventa = $('#tipoven').val();    
-  if( tipoventa==1 )
-  { 
-    pago = document.getElementById("pagar_con").value;
-    fechaven = new Date();
-    total=document.getElementById("totalmodal").value;
-  }
-  else
-  {
-    pago = document.getElementById("pagar_conC").value; 
-    total=document.getElementById("totalmodal").value;
-    fechaven = $('#fechav').val();
-    } 
-    numcredito = document.getElementById("numcredito").value; 
-   
- 
-
-    // $.ajax({
-    //   url: 'modal.php',
-    //   type: 'POST',
-    //   async: true,
-    //   data: {action:action,codcliente:codcliente,tipoventa:tipoventa, pago:pago,fechaven:fechaven,tipopago:tipopago,referencia:referencia,numcredito:numcredito},
-    //   success: function(response) {
-    //   (response); 
-    //   //console.log(response);
-    //   if (response != 0) {
-    //     //console.log(response);
-    //     var info = JSON.parse(response);        
-    //     generarPDF(info.codcliente,info.nofactura);
-    //     location.reload();
-    //   }else {
-    //     console.log('no hay dato');
-    //   }
-    //   },
-    //   error: function(error) {
-
-    //   }
-    // });
-  
-});
-
-
 // Cambiar contraseña
 $('.newPass').keyup(function() {
   validaPass();

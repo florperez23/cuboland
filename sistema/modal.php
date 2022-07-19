@@ -463,13 +463,7 @@ if ($_POST['action'] == 'procesarVenta') {
     }else{
       $pagocon = "";
     }
-
-    // if(isset($_POST['total'])){
-    //   $total= $_POST['total'];
-    // }else{
-    //   $total= "";
-    // }
-    
+ 
     
     if(isset($_POST['referencia'])){
       $referencia = $_POST['referencia'];
