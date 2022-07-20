@@ -416,6 +416,23 @@ function nextDni(){
 		 else {return FALSE;}
 	}
 }
+function obtenerUltimoNoFactura(){
+	include "../conexion.php";
+	$sql = "select Max(nofactura) as nofactura from factura";			
+	//echo $sql;		
+	$rc= $conexion -> query($sql);
+	if($f = $rc -> fetch_array())
+	{
+		// echo $sql;
+		$rc= $conexion -> query($sql);
+		if($f = $rc -> fetch_array())
+			{		
+						
+				return $f['nofactura'];
+			}
+		 else {return FALSE;}
+	}
+}
 function obtenerDatosFacturaNva($id){
 	include "../conexion.php";
 	$sql="select * from factura where referencia like CONCAT('DEV.#','".$id."')";	
@@ -586,7 +603,7 @@ if($f = $rc -> fetch_array())
 		{
 			$fechaproximopago=date("Y-m-d",strtotime($probandofecha."+ 1 day")); // si es domingo le sumamos 1 dia para el lunes
 		}else
-		{echo "entro";
+		{
 			//echo date("Y-m-d",strtotime($probandofecha."+ 2 day"));
 			$fechaproximopago=date("Y-m-d",strtotime($probandofecha."+ 2 day")); // si es sabado le sumamos 2 dias para el lunes
 		}

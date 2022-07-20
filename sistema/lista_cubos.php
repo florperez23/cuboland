@@ -29,7 +29,7 @@
 						<?php
 						include "../conexion.php";
 
-						$query = mysqli_query($conexion, "SELECT * FROM cubos ");
+						$query = mysqli_query($conexion, "SELECT * FROM cubos");
 						$result = mysqli_num_rows($query);
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
@@ -56,11 +56,11 @@
 										<?php		
 										if($data['disponible'] == 0){
 												?>
-													<a href="#" class="btn btn-primary"  title="Pagar Renta" class="btn btn-primary"><i class="fa fa-check"  data-toggle="modal" data-target="#exampleModal<?php echo $data['codcubo']; ?>"></i> </a>
+													<a href="#" class="btn btn-primary"  title="Rentar Cubo" class="btn btn-primary"><i class="fa fa-check"  data-toggle="modal" data-target="#exampleModal<?php echo $data['codcubo']; ?>"></i> </a>
 											<?php
 											}else{
 											?>        
-												<a href="#" class="btn btn-secondary"  title="Rentar cubo" class="btn btn-primary"><i class="fa fa-credit-card"  data-toggle="modal" data-target="#exampleModal<?php echo $data['codcubo']; ?>"></i> </a>
+												<a href="#" class="btn btn-secondary"  title="Pagar Renta" class="btn btn-primary"><i class="fa fa-credit-card"  data-toggle="modal" data-target="#exampleModal<?php echo $data['codcubo']; ?>"></i> </a>
 										<?php
 											}
 											?> 
@@ -79,7 +79,21 @@
 									<div class="card_div">
 										<div class="card-body"> 
 										<label>Arrendatario</label>
-										<select id="idarrendatario" name="idarrendatario" class="form-control" >
+										<?php
+										
+										if ($data['disponible'] == 0) {											
+												?>
+											<select id="idarrendatario<?php echo $data['codcubo']; ?>" name="idarrendatario<?php echo $data['codcubo']; ?>" class="form-control" required  >
+											<?php
+											}else{
+											?>    
+											<select id="idarrendatario<?php echo $data['codcubo']; ?>" name="idarrendatario<?php echo $data['codcubo']; ?>" class="form-control" required  readonly>
+										<?php
+											}
+								
+								
+										?>
+										
 										<option value="">Seleccione</option>    
 										<?php
 										$query1 = mysqli_query($conexion, "SELECT * FROM arrendatarios ");
@@ -103,12 +117,12 @@
 										}
 										?>
 									</select>
-										<input id="disponible"  name="disponible" class="form-control" type="hidden"   value="<?php echo $data['disponible']; ?>"  >
+										<input id="disponible<?php echo $data['codcubo']; ?>"  name="disponible<?php echo $data['codcubo']; ?>" class="form-control" type="hidden"   value="<?php echo $data['disponible']; ?>"  >
 											<div class="row">              
 												<div class="col-md-6">
 													<div class="form-group">
 														<label for="tipoven">Tipo de Venta</label>
-														<select id="tipoven" class="form-control" name="tipoven" required="">
+														<select id="tipoven<?php echo $data['codcubo']; ?>" class="form-control" name="tipoven<?php echo $data['codcubo']; ?>" required="">
 															<option value="1">Contado</option>
 														<!-- /*	<option value="2">Credito</option>                              -->
 														</select>
@@ -117,7 +131,7 @@
 												<div class="col-md-6">
 													<div class="form-group">
 														<label for="tipopago">Tipo de Pago</label>
-														<select id="tipopago" class="form-control" name="tipopago" required="">
+														<select id="tipopago<?php echo $data['codcubo']; ?>" class="form-control" name="tipopago<?php echo $data['codcubo']; ?>" onchange="tipopagocubo(<?php echo $data['codcubo']; ?>);" required="">
 															<option value="1">Efectivo</option>
 															<option value="2">Tarjeta</option>  
 															<option value="3">Transferencia</option>    
@@ -130,20 +144,20 @@
 													<div class="col-md-4">
 														<div class="form-group">
 															<label for="totalmodal" class="font-weight-bold">Renta</label>
-															<input id="totalmodal"  name="totalmodal" class="form-control" type="text" placeholder="Total"  value="<?php echo $data['renta']; ?>"  readonly >
+															<input id="totalmodal<?php echo $data['codcubo']; ?>"  name="totalmodal<?php echo $data['codcubo']; ?>" class="form-control" type="text" placeholder="Total"  value="$<?php echo $data['renta']; ?>"  readonly >
 														
 														</div>
 														</div>
 														<div class="col-md-4">
 															<div class="form-group">
 																<label for="pagar_con"  class="font-weight-bold">Pagar</label>
-																<input id="pagar_con" name="pagar_con" class="form-control"  type="text" placeholder="0.00"   onchange="MASK(this,this.value,'$##,###,##0.00',1);">
+																<input id="pagar_con<?php echo $data['codcubo']; ?>" name="pagar_con<?php echo $data['codcubo']; ?>" class="form-control"  type="text" placeholder="0.00"  onkeyup="pagarcon(<?php echo $data['codcubo']; ?>);" onchange="MASK(this,this.value,'$##,###,##0.00',1);">
 															</div>
 														</div>
-														<div class="col-md-4" id="divCambio" >
+														<div class="col-md-4" id="divCambio<?php echo $data['codcubo']; ?>" >
 															<div class="form-group">
 																<label for="cambio" class="font-weight-bold">Cambio</label>  
-																<input id="cambio" class="form-control" type="text" placeholder="Cambio" value="0.00" readonly onchange="MASK(this,this.value,'$##,###,##0.00',1);">
+																<input id="cambio<?php echo $data['codcubo']; ?>" class="form-control" type="text" placeholder="Cambio" value="0.00" readonly onchange="MASK(this,this.value,'$##,###,##0.00',1);">
 															</div>
 														</div>
 
@@ -154,40 +168,40 @@
 													<div class="col-md-4">
 														<div class="form-group">
 															<label for="totalmodalC" class="font-weight-bold">Renta</label>
-															<input id="totalmodalC"  class="form-control" type="text" placeholder="Total"  value=""  readonly >
+															<input id="totalmodalC<?php echo $data['codcubo']; ?>"  class="form-control" type="text" placeholder="Total"  value=""  readonly >
 														</div>
 														</div>
 														<div class="col-md-4" id="divSaldo">
 															<div class="form-group">
 																<label for="saldo" class="font-weight-bold">Saldo</label>
-																<input id="saldo" class="form-control"  type="text" placeholder="0.00"  value="" readonly  onchange="MASK(this,this.value,'$##,###,##0.00',1);">
+																<input id="saldo<?php echo $data['codcubo']; ?>" class="form-control"  type="text" placeholder="0.00"  value="" readonly  onchange="MASK(this,this.value,'$##,###,##0.00',1);">
 															</div>
 														</div>  
 														<div class="col-md-4">
 															<div class="form-group">
 																<label for="pagar_conC" class="font-weight-bold">Pago</label>
-																<input id="pagar_conC" name="pagar_conC" class="form-control"  type="text" placeholder="0.00"  value="" onchange="MASK(this,this.value,'$##,###,##0.00',1);">
+																<input id="pagar_conC<?php echo $data['codcubo']; ?>" name="pagar_conC<?php echo $data['codcubo']; ?>" class="form-control"  type="text" placeholder="0.00"  value="" onchange="MASK(this,this.value,'$##,###,##0.00',1);">
 															</div>
 														</div>                            
 														<div class="col-md-4" id="divFechaVencimiento">
 															<div class="form-group">
 																<label for="fechaven" class="font-weight-bold">Fecha Venciminto </label>
-																<input id="fechaven" name="fechaven" class="form-control"  type="datetime"   value="<?php echo date("d-m-Y",strtotime(date("d-m-Y")."+ 1 month"));;?>" >
+																<input id="fechaven<?php echo $data['codcubo']; ?>" name="fechaven<?php echo $data['codcubo']; ?>" class="form-control"  type="datetime"   value="<?php echo date("d-m-Y",strtotime(date("d-m-Y")."+ 1 month"));;?>" >
 															</div>
 														</div> 
 														<div class="col-md-4" id="divcredito">
 															<div class="form-group">
 																<label for="numcredito" class="font-weight-bold">NumCredito</label>  
-																<input id="numcredito" name="numcredito" class="form-control" type="text" placeholder="Cambio" value="0" readonly>
+																<input id="numcredito<?php echo $data['codcubo']; ?>" name="numcredito<?php echo $data['codcubo']; ?>" class="form-control" type="text" placeholder="Cambio" value="0" readonly>
 															</div>
 														</div>                    
 														
 												</div>
 
 												
-												<div class="form-group" id='referencia' style="display:none;">
+												<div class="form-group" id='referencia<?php echo $data['codcubo']; ?>' style="display:none;">
 													<label for="numreferencia" class="font-weight-bold">Referencia</label>  
-													<input id="numreferencia" class="form-control" type="text" placeholder="Referencia" value="">
+													<input id="numreferencia<?php echo $data['codcubo']; ?>" name="numreferencia<?php echo $data['codcubo']; ?>"  class="form-control" type="text" placeholder="Referencia" value="">
 												</div>
 													
 
