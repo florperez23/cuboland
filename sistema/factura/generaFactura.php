@@ -106,16 +106,27 @@
 		// $pdf->Cell(25, 5, utf8_decode("Dirección"), 0, 1, 'L');
 		$pdf->SetFont('Arial', '', 7);
 		$pdf->Ln();
-		if ($_GET['cl'] == 1) {
-		$pdf->Cell(55, 5, utf8_decode("Público en general"), 0, 0, 'L');
-		$pdf->Cell(20, 5, utf8_decode("-------------------"), 0, 0, 'L');
-		// $pdf->Cell(25, 5, utf8_decode("-------------------"), 0, 1, 'L');
-		}else{
-		
-		$pdf->Cell(55, 5, utf8_decode($result_cliente['nombre']), 0, 0, 'L');
-		$pdf->Cell(20, 5, utf8_decode($result_cliente['telefono']), 0, 0, 'R');
-		// $pdf->Cell(25, 5, utf8_decode($result_cliente['direccion']), 0, 1, 'L');
+
+		if($tipo!='5')
+		{
+			if ($_GET['cl'] == 1) {
+			$pdf->Cell(55, 5, utf8_decode("Público en general"), 0, 0, 'L');
+			$pdf->Cell(20, 5, utf8_decode("-------------------"), 0, 0, 'L');
+			// $pdf->Cell(25, 5, utf8_decode("-------------------"), 0, 1, 'L');
+			}else{
+			
+			$pdf->Cell(55, 5, utf8_decode($result_cliente['nombre']), 0, 0, 'L');
+			$pdf->Cell(20, 5, utf8_decode($result_cliente['telefono']), 0, 0, 'R');
+			// $pdf->Cell(25, 5, utf8_decode($result_cliente['direccion']), 0, 1, 'L');
+			}
+	    }else
+		{
+			$pdf->Cell(55, 5, utf8_decode($result_cliente['nombre']), 0, 0, 'L');
+			$pdf->Cell(20, 5, utf8_decode($result_cliente['telefono']), 0, 0, 'R');
 		}
+
+
+
 		if($tipo=='3')
 		{		$pdf->Ln();	
 		$pdf->SetFont('Arial', 'B', 7);
