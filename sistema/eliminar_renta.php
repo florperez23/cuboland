@@ -8,13 +8,13 @@ if (!empty($_GET['id'])) {
     $query_delete = mysqli_query($conexion, $query);
     if ($query_delete) {
         $idcubo = idcuboanterior($id);
-        $q2 = "UPDATE cubos SET disponible = 0 WHERE codcubo = $idcubo";
+        $q2 = "UPDATE cubos SET disponible = 0, idarrendatario = '' WHERE codcubo = $idcubo";
         echo $q2;
         $sql = mysqli_query($conexion, $q2);
         if ($sql) {
 
             //SI ELIMINA UNA RENTA QUIERE DECIR QUE YA SE VA ASI QUE DESACTIVAMOS TODOS SUS PRODUCTOS
-            $q2 = "UPDATE productos SET activo = 1 WHERE codcubo = $idcubo";
+            $q2 = "UPDATE producto SET activo = 1 WHERE codcubo = $idcubo";
             echo $q2;
             $sql = mysqli_query($conexion, $q2);
             if ($sql) {
