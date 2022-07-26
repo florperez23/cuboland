@@ -5,19 +5,12 @@ include "../conexion.php";
 require_once('pdf/tcpdf.php');
 
 
-$desde = $_POST['desde'];
-$hasta = $_POST['hasta'];
-$desde = date("Y-m-d",strtotime($desde."- 1 day"));
-$hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
-$suma = 0;
-$sumaiva = 0;
-$sumasub = 0;
+$estatus = $_POST['estatus'];
 
 
-$sql = 'select g.proveedor, g.fecha, g.subtotal, g.iva, g.total, g.descripcion, p.proveedor as nomprov
-from gastos g
-left join proveedor p on p.codproveedor = g.proveedor
-WHERE g.fecha BETWEEN  "'.$desde.'" and "'.$hasta.'"';
+    $sql = 'select a.* from arrendatarios a 
+   ';
+
 //echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
@@ -26,12 +19,9 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8">';
     $tabla = $tabla.'<th ><b>No.</b></th>';
-    $tabla = $tabla.'<th ><b>PROVEEDOR</b></th>';
-    $tabla = $tabla."<th><b>FECHA</b></th>";
-    $tabla = $tabla.'<th ><b>SUBTOTAL</b></th>';
-    $tabla = $tabla.'<th ><b>IVA</b></th>';
-    $tabla = $tabla.'<th ><b>TOTAL</b></th>';
-    $tabla = $tabla.'<th ><b>DESCRIPCION</b></th>';
+    $tabla = $tabla.'<th ><b>NOMBRE</b></th>';
+    $tabla = $tabla."<th><b>TELEFONO</b></th>";
+    $tabla = $tabla.'<th ><b>FECHA INGRESO</b></th>';
     $tabla = $tabla."</tr>";
     while($f = $r -> fetch_array())
     {                  
@@ -40,37 +30,19 @@ if ($r -> num_rows >0){
         }else{
             $tabla = $tabla.'<tr bgcolor="#D7E9F0">'; 
         }
-        $tabla = $tabla.'<td>'.$vuelta.'</td>';
-        $tabla = $tabla.'<td>'.$f['nomprov'].'</td>';
-        $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['subtotal'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['iva'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>$'.number_format(abs($f['total']), 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
-        $suma = $suma += abs($f['total']);
-        $sumaiva = $sumaiva += $f['iva'];
-        $sumasub = $sumasub += $f['subtotal'];
-        $tabla = $tabla."</tr>";  
-        $vuelta++;               
+        $tabla = $tabla.'<td>'.$f['idarrendatario'].'</td>';
+        $tabla = $tabla.'<td>'.$f['nombre'].'</td>';
+        $tabla = $tabla.'<td>'.$f['telefono'].'</td>';
+        $tabla = $tabla.'<td>'.$f['fechaingreso'].'</td>';
+
+        $tabla = $tabla."</tr>";    
+        $vuelta++;       
     }
     $tabla = $tabla.'</table>';
 }
 
 
-$tabla = $tabla.'<br><br><br>
-<table  align = "center" >
-    <tr>
-        <td></td>
-        <td></td>
-        <td><b>TOTALES</b></td>
-        <td bgcolor="#D7E9F0">$'.number_format($sumasub, 2, '.', ',').'</td>
-        <td bgcolor="#D7E9F0">$'.number_format($sumaiva, 2, '.', ',').'</td>
-        <td bgcolor="#D7E9F0">$'.number_format($suma, 2, '.', ',').'</td>
-       
-        <td></td>
-    </tr>
-    
-</table>';
+
 
 echo $tabla;
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -78,7 +50,7 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetTitle('CUBOLAND');
 $pdf->SetKeywords('Tienda de cubos');
-$pdf->SetHeaderData('Imagen1.jpg', '28', 'LISTADO DE EGRESOS', "Impreso: ".$fecha."");
+$pdf->SetHeaderData('Imagen1.jpg', '28', 'LISTA DE CUBOS', "Impreso: ".$fecha."");
 //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '');
 //$link = "http://".$urlnueva[0]."/md_lista.php";
 

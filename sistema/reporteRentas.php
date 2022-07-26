@@ -4,20 +4,33 @@ ob_start();
 include "../conexion.php";
 require_once('pdf/tcpdf.php');
 
+$tipo = $_POST['tipo'];
 
-$desde = $_POST['desde'];
-$hasta = $_POST['hasta'];
-$desde = date("Y-m-d",strtotime($desde."- 1 day"));
-$hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
-$suma = 0;
-$sumaiva = 0;
-$sumasub = 0;
+echo $tipo;
 
+$ultimo = date("Y-m-t", strtotime($fecha));
+$primero = date('Y-m-01');
 
-$sql = 'select g.proveedor, g.fecha, g.subtotal, g.iva, g.total, g.descripcion, p.proveedor as nomprov
-from gastos g
-left join proveedor p on p.codproveedor = g.proveedor
-WHERE g.fecha BETWEEN  "'.$desde.'" and "'.$hasta.'"';
+$desde = date("Y-m-d",strtotime($primero."- 1 day"));
+$hasta =  date("Y-m-d",strtotime($ultimo."+ 1 day"));
+
+if($tipo == 0 and $desde == '' and $hasta == ''){
+    $sql = 'select r.*, a.nombre, c.cubo from rentas r
+    inner join arrendatarios a on a.idarrendatario = r.idarrendatario
+    inner join cubos c on c.codcubo = r.idcubo
+    where r.cancelado = 0 ';
+}else if($tipo == 1){
+    $sql = 'select r.*, a.nombre, c.cubo from rentas r
+    inner join arrendatarios a on a.idarrendatario = r.idarrendatario
+    inner join cubos c on c.codcubo = r.idcubo
+    where r.cancelado = 0 and r.fechaultimopago BETWEEN  "'.$desde.'" and "'.$hasta.'"' ;
+}else if($tipo == 2){
+    $sql = 'select r.*, a.nombre, c.cubo from rentas r
+    inner join arrendatarios a on a.idarrendatario = r.idarrendatario
+    inner join cubos c on c.codcubo = r.idcubo
+    where r.cancelado = 0';
+}
+
 //echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
@@ -25,13 +38,12 @@ $vuelta = 1;
 if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8">';
-    $tabla = $tabla.'<th ><b>No.</b></th>';
-    $tabla = $tabla.'<th ><b>PROVEEDOR</b></th>';
-    $tabla = $tabla."<th><b>FECHA</b></th>";
-    $tabla = $tabla.'<th ><b>SUBTOTAL</b></th>';
-    $tabla = $tabla.'<th ><b>IVA</b></th>';
-    $tabla = $tabla.'<th ><b>TOTAL</b></th>';
-    $tabla = $tabla.'<th ><b>DESCRIPCION</b></th>';
+    $tabla = $tabla.'<th ><b>IDRENTA.</b></th>';
+    $tabla = $tabla.'<th ><b>CUBO</b></th>';
+    $tabla = $tabla."<th><b>ARRENDATARIO</b></th>";
+    $tabla = $tabla.'<th ><b>FECHA CONTRATO</b></th>';
+    $tabla = $tabla.'<th ><b>FECHA ULTIMO PAGO</b></th>';
+   
     $tabla = $tabla."</tr>";
     while($f = $r -> fetch_array())
     {                  
@@ -40,16 +52,12 @@ if ($r -> num_rows >0){
         }else{
             $tabla = $tabla.'<tr bgcolor="#D7E9F0">'; 
         }
-        $tabla = $tabla.'<td>'.$vuelta.'</td>';
-        $tabla = $tabla.'<td>'.$f['nomprov'].'</td>';
-        $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['subtotal'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['iva'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>$'.number_format(abs($f['total']), 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
-        $suma = $suma += abs($f['total']);
-        $sumaiva = $sumaiva += $f['iva'];
-        $sumasub = $sumasub += $f['subtotal'];
+      
+        $tabla = $tabla.'<td>'.$f['id'].'</td>';
+        $tabla = $tabla.'<td>'.$f['cubo'].'</td>';
+        $tabla = $tabla.'<td>'.$f['nombre'].'</td>';
+        $tabla = $tabla.'<td>'.$f['fechacontrato'].'</td>';
+        $tabla = $tabla.'<td>'.$f['fechaultimopago'].'</td>';
         $tabla = $tabla."</tr>";  
         $vuelta++;               
     }
@@ -57,20 +65,6 @@ if ($r -> num_rows >0){
 }
 
 
-$tabla = $tabla.'<br><br><br>
-<table  align = "center" >
-    <tr>
-        <td></td>
-        <td></td>
-        <td><b>TOTALES</b></td>
-        <td bgcolor="#D7E9F0">$'.number_format($sumasub, 2, '.', ',').'</td>
-        <td bgcolor="#D7E9F0">$'.number_format($sumaiva, 2, '.', ',').'</td>
-        <td bgcolor="#D7E9F0">$'.number_format($suma, 2, '.', ',').'</td>
-       
-        <td></td>
-    </tr>
-    
-</table>';
 
 echo $tabla;
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -78,7 +72,7 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetTitle('CUBOLAND');
 $pdf->SetKeywords('Tienda de cubos');
-$pdf->SetHeaderData('Imagen1.jpg', '28', 'LISTADO DE EGRESOS', "Impreso: ".$fecha."");
+$pdf->SetHeaderData('Imagen1.jpg', '28', 'LISTADO DE RENTAS', "Impreso: ".$fecha."");
 //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '');
 //$link = "http://".$urlnueva[0]."/md_lista.php";
 

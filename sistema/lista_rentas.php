@@ -9,6 +9,29 @@
 		<a href="registro_renta.php" class="btn btn-primary">Nuevo</a>
 	</div>
 
+
+	<!-- Elementos para crear el reporte -->
+	<form action="reporteRentas.php" method="post">
+	<div class="row">
+	<div class="col-md-4" >
+			<div class="form-group">
+			<label>Tipo renta</label>
+				<select id="tipo" name="tipo"  class="form-control">
+					<option value="0">SIN ESPECIFICAR</option>
+					<option value="1">PAGADAS</option>
+					<option value="2">NO PAGADAS</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="col-md-4">
+			<input type="submit" value="Generar Reporte" class="btn btn-primary">
+		</div>
+	
+	</div>
+	</form>	
+
+
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="table-responsive">

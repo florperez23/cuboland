@@ -7,6 +7,8 @@ require_once('pdf/tcpdf.php');
 
 $desde = $_POST['desde'];
 $hasta = $_POST['hasta'];
+$desde = date("Y-m-d",strtotime($desde."- 1 day"));
+$hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
 $suma = 0;
 
 $sql = 'select *

@@ -9,6 +9,28 @@
 		<a href="registro_cubo.php" class="btn btn-primary">Nuevo</a>
 	</div>
 
+	<!-- Elementos para crear el reporte -->
+	<form action="reporteCubos.php" method="post">
+	<div class="row">
+	
+	<div class="col" style='width: 500px;'>
+			<div class="form-group">
+			<label style='color:#000'>Estatus del cubo</label>
+				<select id="estatus" name="estatus"  class="form-control">
+					<option value="5">SIN ESPECIFICAR</option>
+					<option value="0">DISPONIBLES</option>
+					<option value="1">OCUPADOS</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="col-md-4">
+			<input type="submit" value="Generar Reporte" class="btn btn-primary">
+		</div>
+	
+	</div>
+	</form>	
+
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="table-responsive">
