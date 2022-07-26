@@ -31,9 +31,9 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<th ><b>COD. CUBO</b></th>';
     $tabla = $tabla.'<th ><b>CUBO</b></th>';
     $tabla = $tabla."<th><b>PRECIO RENTA</b></th>";
+    $tabla = $tabla.'<th ><b>ESTADO</b></th>';
     $tabla = $tabla.'<th ><b>ARRENDATARIO</b></th>';
     $tabla = $tabla.'<th ><b>FECHA CONTRATO</b></th>';
-    $tabla = $tabla.'<th ><b>ESTADO</b></th>';
     $tabla = $tabla."</tr>";
     while($f = $r -> fetch_array())
     {                  
