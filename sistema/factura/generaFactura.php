@@ -18,10 +18,23 @@
 		$resultado = mysqli_fetch_assoc($consulta);
 		$ventas = mysqli_query($conexion, "SELECT * FROM factura WHERE nofactura = $noFactura");
 		$result_venta = mysqli_fetch_assoc($ventas);
-		$clientes = mysqli_query($conexion, "SELECT * FROM cliente WHERE idcliente = $codCliente");
-		$result_cliente = mysqli_fetch_assoc($clientes);
-		$credito = mysqli_query($conexion, "SELECT * FROM creditos WHERE idcliente = ".$codCliente." and numcredito=".$result_venta['numcredito']."");
-		$result_credito = mysqli_fetch_assoc($credito);
+
+		$tipo = $result_venta['idtipoventa'];
+		if($tipo ==5)
+		{
+			$sql="SELECT * FROM arrendatarios inner join cubos on cubos.idarrendatario=arrendatarios.idarrendatario WHERE arrendatarios.idarrendatario = ".$codCliente." and cubos.codcubo='".$result_venta['observaciones']."'";
+			//
+			$arrendatarios = mysqli_query($conexion, $sql);
+			$result_cliente= mysqli_fetch_assoc($arrendatarios);		
+		}else
+		{	$clientes = mysqli_query($conexion, "SELECT * FROM cliente WHERE idcliente = $codCliente");
+			$result_cliente = mysqli_fetch_assoc($clientes);
+
+			$credito = mysqli_query($conexion, "SELECT * FROM creditos WHERE idcliente = ".$codCliente." and numcredito=".$result_venta['numcredito']."");
+			$result_credito = mysqli_fetch_assoc($credito);
+		}
+
+		
 		
 
 		if($result_venta['numcredito']!= '' and $result_venta['numcredito']!=0)
@@ -46,7 +59,7 @@
 		$pdf->Ln();
 		
 		
-		$tipo = $result_venta['idtipoventa'];
+		
 		$tipop = $result_venta['idtipopago'];
 		$referencia = $result_venta['referencia'];
 		$saldo = $result_venta['saldo'];
@@ -93,16 +106,27 @@
 		// $pdf->Cell(25, 5, utf8_decode("Dirección"), 0, 1, 'L');
 		$pdf->SetFont('Arial', '', 7);
 		$pdf->Ln();
-		if ($_GET['cl'] == 1) {
-		$pdf->Cell(55, 5, utf8_decode("Público en general"), 0, 0, 'L');
-		$pdf->Cell(20, 5, utf8_decode("-------------------"), 0, 0, 'L');
-		// $pdf->Cell(25, 5, utf8_decode("-------------------"), 0, 1, 'L');
-		}else{
-		
-		$pdf->Cell(55, 5, utf8_decode($result_cliente['nombre']), 0, 0, 'L');
-		$pdf->Cell(20, 5, utf8_decode($result_cliente['telefono']), 0, 0, 'R');
-		// $pdf->Cell(25, 5, utf8_decode($result_cliente['direccion']), 0, 1, 'L');
+
+		if($tipo!='5')
+		{
+			if ($_GET['cl'] == 1) {
+			$pdf->Cell(55, 5, utf8_decode("Público en general"), 0, 0, 'L');
+			$pdf->Cell(20, 5, utf8_decode("-------------------"), 0, 0, 'L');
+			// $pdf->Cell(25, 5, utf8_decode("-------------------"), 0, 1, 'L');
+			}else{
+			
+			$pdf->Cell(55, 5, utf8_decode($result_cliente['nombre']), 0, 0, 'L');
+			$pdf->Cell(20, 5, utf8_decode($result_cliente['telefono']), 0, 0, 'R');
+			// $pdf->Cell(25, 5, utf8_decode($result_cliente['direccion']), 0, 1, 'L');
+			}
+	    }else
+		{
+			$pdf->Cell(55, 5, utf8_decode($result_cliente['nombre']), 0, 0, 'L');
+			$pdf->Cell(20, 5, utf8_decode($result_cliente['telefono']), 0, 0, 'R');
 		}
+
+
+
 		if($tipo=='3')
 		{		$pdf->Ln();	
 		$pdf->SetFont('Arial', 'B', 7);
@@ -146,29 +170,41 @@
 		$pdf->Cell(10, 5, 'Precio', 0, 0, 'L');
 		$pdf->Cell(10, 5, 'Prom.', 0, 0, 'L');
 		
-		
-
-
+	
 		$pdf->Cell(12, 5, 'Total', 0, 1, 'L');
 		$pdf->SetFont('Arial', '', 6);
-		while ($row = mysqli_fetch_assoc($productos)) {
-			$pdf->Cell(39, 5, utf8_decode($row['descripcion']), 0, 0, 'L');
-			$pdf->Cell(8, 5, $row['cantidad'], 0, 0, 'L');
-			$pdf->Cell(10, 5, '$'.number_format($row['precio'], 2, '.', ','), 0, 0, 'L');
+
+		if($tipo=='5')
+		{
+			
+			$pdf->Cell(39, 5, ($result_cliente['cubo']), 0, 0, 'L');
+			$pdf->Cell(8, 5, '1', 0, 0, 'L');
+			$pdf->Cell(10, 5, '$'.number_format($result_cliente['renta'] ,2, '.', ','), 0, 0, 'L');
+			$pdf->Cell(10, 5, '$'.number_format('0', 2, '.', ','), 0, 0, 'L');
 		
+			$pdf->Cell(12, 5, '$'.number_format($result_cliente['renta'] ,2, '.', ','), 0, 1, 'L');
+			
+		}else
+		{	
+			while ($row = mysqli_fetch_assoc($productos)) {
+				$pdf->Cell(39, 5, utf8_decode($row['descripcion']), 0, 0, 'L');
+				$pdf->Cell(8, 5, $row['cantidad'], 0, 0, 'L');
+				$pdf->Cell(10, 5, '$'.number_format($row['precio'], 2, '.', ','), 0, 0, 'L');
+			
 
 
-			if($row['idtipopromocion']==1)
-			{
-				$pdf->Cell(10, 5, number_format($row['promocion'], 2, '.', ',').'%', 0, 0, 'L');
+				if($row['idtipopromocion']==1)
+				{
+					$pdf->Cell(10, 5, number_format($row['promocion'], 2, '.', ',').'%', 0, 0, 'L');
+				}
+				else 
+				{
+					$pdf->Cell(10, 5, '$'.number_format($row['promocion'], 2, '.', ','), 0, 0, 'L');
+				}
+
+				$importe = number_format($row['cantidad'] * $row['precio_promocion'], 2, '.', ',');
+				$pdf->Cell(12, 5, '$'.$importe, 0, 1, 'L');
 			}
-			else 
-			{
-				$pdf->Cell(10, 5, '$'.number_format($row['promocion'], 2, '.', ','), 0, 0, 'L');
-			}
-
-			$importe = number_format($row['cantidad'] * $row['precio_promocion'], 2, '.', ',');
-			$pdf->Cell(12, 5, '$'.$importe, 0, 1, 'L');
 		}
 		$pdf->Ln();
 		$pdf->SetFont('Arial', 'B', 8);

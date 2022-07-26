@@ -594,67 +594,6 @@ $('.view_factura').click(function(e) {
 
 
 
-
-
-
-
-
-
-
-$('#btn_facturar_renta').click(function(e) {
- e.preventDefault();
-
- var action = 'procesarVenta';
- var codcliente = $('#idrrendatario').val();
- var tipoventa = $('#tipoven').val();    
- var tipopago = $('#tipopago').val();   
- var referencia = $('#numreferencia').val();   
-
-
- console.log(codcliente);
- console.log("entro");
- var tipoventa = $('#tipoven').val();    
- if( tipoventa==1 )
- { 
-   pago = document.getElementById("pagar_con").value;
-   fechaven = new Date();
-   total=document.getElementById("totalmodal").value;
- }
- else
- {
-   pago = document.getElementById("pagar_conC").value; 
-   total=document.getElementById("totalmodal").value;
-   fechaven = $('#fechav').val();
-   } 
-   numcredito = document.getElementById("numcredito").value; 
-  
-
-
-   // $.ajax({
-   //   url: 'modal.php',
-   //   type: 'POST',
-   //   async: true,
-   //   data: {action:action,codcliente:codcliente,tipoventa:tipoventa, pago:pago,fechaven:fechaven,tipopago:tipopago,referencia:referencia,numcredito:numcredito},
-   //   success: function(response) {
-   //   (response); 
-   //   //console.log(response);
-   //   if (response != 0) {
-   //     //console.log(response);
-   //     var info = JSON.parse(response);        
-   //     generarPDF(info.codcliente,info.nofactura);
-   //     location.reload();
-   //   }else {
-   //     console.log('no hay dato');
-   //   }
-   //   },
-   //   error: function(error) {
-
-   //   }
-   // });
- 
-});
-
-
 // Cambiar contraseña
 $('.newPass').keyup(function() {
  validaPass();
@@ -1133,6 +1072,52 @@ $('#pagar_con').keyup(function(e) {
 
 
 
+
+function pagarcon(codcubo)
+{
+  //if (e.which == 13) {  
+ 
+ console.log("entro");
+    pagar_con = document.getElementById("pagar_con"+codcubo).value.replace('$',''); //Quitamos el signo de pesos 
+    total = document.getElementById("totalmodal"+codcubo).value.replace('$','');//Quitamos el signo de pesos 
+ 
+    total=total.replace(',','');//Quitamos el la coma para poder hacer la operacion
+    pagar_con=pagar_con.replace(',','');//Quitamos el la coma para poder hacer la operacion
+ 
+    console.log( pagar_con);
+    console.log(total);
+    const cambio =(parseFloat(pagar_con)-parseFloat(total));
+    tipopago= document.getElementById("tipopago"+codcubo).value;
+    const tipoventa = document.getElementById("tipoven"+codcubo).value;    
+ 
+    if(tipopago==1)
+    {
+      $('#btn_facturar_venta').slideUp();
+          if (cambio >= 0 ) {    
+             
+          document.getElementById("cambio"+codcubo).value=MASK('', (cambio),'$##,###,##0.00',1);
+          $('.alertCambio').html('<p style="color : red;"></p>');
+          $('#btn_facturar_venta').slideDown();      
+          } else {
+            $('.alertCambio').html('<p style="color : red;">Error la cantidad con la que paga debe ser mayor o igual al total!</p>');
+
+           $('#btn_facturar_venta').slideUp();    
+            document.getElementById('pagar_con'+codcubo).focus();
+            
+          }
+ 
+  
+ }
+}
+ 
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('input[type=text]').forEach( node => node.addEventListener('keypress', e => {
+    if(e.keyCode == 13) {
+      e.preventDefault();
+    }
+  }))
+});
+
 //EVALUAMOS QUE TIPO DE VENTA SERÁ
 $('#tipoven').on('change', function() {
  if(this.value=='1')
@@ -1345,6 +1330,41 @@ $('#tipopago').on('change', function() {
  }
 });
 
+function tipopagocubo(codcubo)
+{
+  
+  //EVALUAMOS QUE TIPO DE PAGO SERÁ
+
+ valor=   $('#tipopago'+codcubo).val();
+
+  if(valor=='1')
+  { 
+    $('#referencia'+codcubo).slideUp();       
+    $('#divCambio'+codcubo).slideDown();
+    $('#divCambioC'+codcubo).slideDown();
+    document.getElementById('pagar_con'+codcubo).value="0.00";
+    document.getElementById('pagar_conC'+codcubo).value="0.00";
+    $('pagar_con'+codcubo).removeAttr("readonly");
+  
+ }  
+  else{  
+  console.log("entrososno");
+  $('#referencia'+codcubo).slideDown(); 
+  $('#divCambio'+codcubo).slideUp();
+  $('#divCambioC'+codcubo).slideUp();
+  var total=$('#totalmodal'+codcubo).val();
+  var totalC=$('#totalmodalC'+codcubo).val();
+  
+   if ($('#tipoven'+codcubo).val()==1)
+  {
+    document.getElementById('pagar_con'+codcubo).value=total;
+    document.getElementById('pagar_conC'+codcubo).value=totalC;
+  
+    $('pagar_con'+codcubo).attr("readonly","readonly");
+    }
+  }
+
+}
 
 // ingresar abono
 $('#form_new_abono_creditos').submit(function(e) {  
