@@ -90,19 +90,20 @@
                                     <td><?php echo date_format( date_create($dato['fechainicio']), 'd/m/Y');?></td>
                                     <td><?php echo date_format( date_create($dato['fechatermino']), 'd/m/Y');?></td>
                                     <td>
-                                        <?php if( $dato['activo'] =='1')
-                                    {
-                                    echo '<span class="badge bg-success" style="color:white;">Activo</span>';
+                                        <?php if( $dato['fechatermino']<date("Y-m-d H:i:s"))
+                                    {echo '   <span class="badge bg-danger" style="color:white;">Inactivo</span>';
+                                  
                                     }else
                                     {
-                                        echo '   <span class="badge bg-danger" style="color:white;">Cancelado</span>';
+                                        
+										echo '<span class="badge bg-success" style="color:white;">Activo</span>';
                                     }
                                     ?>
                                   </td>
 									<td>
                                    
                                 <form action="eliminar_promocion.php?id=<?php echo $dato['idpromocion']; ?>" method="post" class="confirmar d-inline">
-											<button  title="Cancelar" class="btn btn-danger" type="submit"><i class="fa fa-ban"></i> </button>
+											<button  title="Eliminar" class="btn btn-danger" type="submit"><i class="fa fa-trash"></i> </button>
 										</form>
         
                                

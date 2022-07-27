@@ -533,7 +533,7 @@ function ExiteUnaPromocion($codproducto){
 function ValidarExiteUnaPromocion($ididentificador){
 	require("..\conexion.php");
 	
-	$sql="select * from promociones where ididentificador='".$ididentificador."'";
+	$sql="select * from promociones where ididentificador='".$ididentificador."' AND (DATE(promociones.fechainicio) <=CURRENT_DATE() AND DATE(promociones.fechatermino) >DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY))";
 	//echo $sql;
 	$r = $conexion -> query($sql);
 	if ($r -> num_rows >0) {
