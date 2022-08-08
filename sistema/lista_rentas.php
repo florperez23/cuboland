@@ -15,11 +15,12 @@
 	<div class="row">
 	<div class="col-md-4" >
 			<div class="form-group">
-			<label>Tipo renta</label>
+			<label>FILTRO</label>
 				<select id="tipo" name="tipo"  class="form-control">
 					<option value="0">SIN ESPECIFICAR</option>
 					<option value="1">PAGADAS</option>
 					<option value="2">NO PAGADAS</option>
+				
 				</select>
 			</div>
 		</div>

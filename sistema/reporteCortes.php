@@ -48,7 +48,7 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>$'.number_format($f['precio_venta'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>'.$f['tipopago'].'</td>';
-        $suma = $suma += $f['precio_venta'];
+        $suma = $suma += $f['precio_promocion'];
         $tabla = $tabla."</tr>";  
         $vuelta++;               
     }
