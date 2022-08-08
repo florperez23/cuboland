@@ -7,8 +7,6 @@
 if(isset($_POST['proveedor'])){
 	
 	$proveedor = $_POST['proveedor'];
-	$subtotal = $_POST['subtotal'];
-	$iva = $_POST['iva'];
 	$total = $_POST['total'];
 	$fecha = $_POST['fecha'];
 	$descripcion = $_POST['descripcion'];
@@ -16,14 +14,14 @@ if(isset($_POST['proveedor'])){
 
 	$total = 0 - $total ;
 
-		$sql = "INSERT INTO gastos(fecha,activo, proveedor, subtotal, iva, total, descripcion, idusuariosube) values ( '$fecha', '1', '$proveedor','$subtotal', '$iva', '$total', '".$descripcion."', '".$usuario_id."')";
+		$sql = "INSERT INTO gastos(fecha,activo, proveedor, total, descripcion, idusuariosube) values ( '$fecha', '1', '$proveedor', '$total', '".$descripcion."', '".$usuario_id."')";
 		echo $sql;	
 		$query_insert = mysqli_query($conexion, $sql);
         if ($query_insert) {
 
 			//HACER el insert el factura para tomarlo en cuenta en los reportes
 			$sql = "INSERT INTO factura(nofactura,fecha,usuario,codcliente,totalfactura,idtipoventa,idtipopago,	cancelado,totalventa,referencia,pagocon,numcredito,	saldo,fechacancelacion,usuario_id_mod,subtotal,iva) 
-			values ('', now(), '$usuario_id','$proveedor', '$total','4','1',0,'$total','Gasto','','','','','','$subtotal', '$iva')";
+			values ('', now(), '$usuario_id','$proveedor', '$total','4','1',0,'$total','Gasto','','','','','','', '')";
 			echo $sql;	
 			$query_insert = mysqli_query($conexion, $sql);
         	if ($query_insert) {
@@ -102,9 +100,9 @@ if(isset($_POST['proveedor'])){
 						<?php
 						include "../conexion.php";
 
-						$query = mysqli_query($conexion, "SELECT a.id, a.proveedor, a.subtotal, a.iva, a.total, a.descripcion, pr.proveedor as nomproveedor
+						$query = mysqli_query($conexion, "SELECT a.id, a.proveedor, a.total, a.descripcion, pr.proveedor as nomproveedor
 						FROM gastos a
-						left join proveedor pr on pr.codproveedor = a.proveedor");
+						left join proveedor pr on pr.codproveedor = a.proveedor ORDER BY id DESC");
 						$result = mysqli_num_rows($query);
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>

@@ -4,17 +4,19 @@ ob_start();
 include "../conexion.php";
 require_once('pdf/tcpdf.php');
 
-
+$codcubo = $_POST['cubo'];
 $desde = $_POST['desde'];
 $hasta = $_POST['hasta'];
 $desde = date("Y-m-d",strtotime($desde."- 1 day"));
 $hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
 $suma = 0;
 
-$sql = 'select *
-from cortecaja c
-WHERE c.FechaApertura BETWEEN  "'.$desde.'" and "'.$hasta.'"';
-//echo $sql;
+$sql = 'SELECT f.nofactura, f.fecha, df.*, if(f.idtipopago = 1, "EFECTIVO", if(f.idtipopago=2, "TARJETA",if(f.idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
+FROM detallefactura df
+inner JOIN factura f on f.nofactura = df.nofactura
+inner JOIN producto p on p.codproducto = df.codproducto
+WHERE p.codcubo = '.$codcubo.' and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'"';
+echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
 $vuelta = 1;
@@ -22,13 +24,14 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8">';
     $tabla = $tabla.'<th ><b>No.</b></th>';
-    $tabla = $tabla.'<th ><b>MONTO INICIAL</b></th>';
-    $tabla = $tabla."<th><b>MONTO FINAL</b></th>";
-    $tabla = $tabla.'<th ><b>FECHA APERTURA</b></th>';
-    $tabla = $tabla.'<th ><b>FECHA CIERRE</b></th>';
-    $tabla = $tabla.'<th ><b>TOTAL VENTAS</b></th>';
-    $tabla = $tabla.'<th ><b>MONTO TOTAL</b></th>';
-    $tabla = $tabla.'<th ><b>ESTADO</b></th>';
+    $tabla = $tabla.'<th ><b>FACTURA</b></th>';
+    $tabla = $tabla.'<th ><b>FECHA</b></th>';
+    $tabla = $tabla."<th><b>CODPRODUCTO</b></th>";
+    $tabla = $tabla.'<th ><b>CANTIDAD</b></th>';
+    $tabla = $tabla.'<th ><b>PRECIO VENTA</b></th>';
+    $tabla = $tabla.'<th ><b>PRECIO PROMOCION</b></th>';
+    $tabla = $tabla.'<th ><b>TIPO PAGO</b></th>';
+
     $tabla = $tabla."</tr>";
     while($f = $r -> fetch_array())
     {                  
@@ -38,19 +41,14 @@ if ($r -> num_rows >0){
             $tabla = $tabla.'<tr bgcolor="#D7E9F0">'; 
         }
         $tabla = $tabla.'<td>'.$vuelta.'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['MontoInicial'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['MontoFinal'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>'.$f['FechaApertura'].'</td>';
-        $tabla = $tabla.'<td>'.$f['FechaCierre'].'</td>';
-        $tabla = $tabla.'<td>'.$f['TotalVentas'].'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['MontoTotal'], 2, '.', ',').'</td>';
-        if($f['Estado']==1){
-            $tabla = $tabla.'<td>Terminado</td>';
-        }else{
-            $tabla = $tabla.'<td>En proceso</td>';
-        }
-        
-        $suma = $suma += $f['MontoTotal'];
+        $tabla = $tabla.'<td>'.$f['nofactura'].'</td>';
+        $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
+        $tabla = $tabla.'<td>'.$f['codproducto'].'</td>';
+        $tabla = $tabla.'<td>'.$f['cantidad'].'</td>';
+        $tabla = $tabla.'<td>$'.number_format($f['precio_venta'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>'.$f['tipopago'].'</td>';
+        $suma = $suma += $f['precio_venta'];
         $tabla = $tabla."</tr>";  
         $vuelta++;               
     }
@@ -65,7 +63,7 @@ $tabla = $tabla.'<br><br><br>
             
         </td>
         <td  bgcolor="#D7E9F0">
-            MONTO TOTAL GASTADO $'.number_format($suma, 2, '.', ',').'
+            MONTO TOTAL GENERADO $'.number_format($suma, 2, '.', ',').'
         </td>
     </tr>
     
@@ -77,7 +75,7 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetTitle('CUBOLAND');
 $pdf->SetKeywords('Tienda de cubos');
-$pdf->SetHeaderData('Imagen1.jpg', '28', 'LISTA DE CORTES DE CAJA', "Impreso: ".$fecha."");
+$pdf->SetHeaderData('Imagen1.jpg', '28', 'CORTE DEL MES', "Impreso: ".$fecha."");
 //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '');
 //$link = "http://".$urlnueva[0]."/md_lista.php";
 

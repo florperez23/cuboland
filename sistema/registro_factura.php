@@ -50,14 +50,6 @@ include "../conexion.php";
                     </select>
                     </div>
                     <div class="form-group">
-                        <label for="contacto">Subtotal</label>
-                        <input type="text" placeholder="Ingrese el subtotal de la factura" name="subtotal" id="subtotal" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contacto">IVA</label>
-                        <input type="text" placeholder="Ingrese el IVA de la factura"  name="iva" id="iva" class="form-control" required>
-                    </div>
-                    <div class="form-group">
                         <label for="contacto">Total</label>
                         <input type="text" placeholder="Ingrese el total de la factura" name="total" id="total" class="form-control" required>
                     </div>

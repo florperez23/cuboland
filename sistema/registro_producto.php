@@ -17,14 +17,19 @@
       $existencia = $_POST['existencia'];
       $usuario_id = $_SESSION['idUser'];
 
+      echo $signum;
+
       //validamos si lleva la nomenclatura de la C
-      $empieza = substr($codigo, 0); 
+      $empieza = substr($codigo, 0, 1);
+      echo $empieza; 
       if($empieza <> 'C'){
         $signum = '';
       }
 
-      $query_insert = mysqli_query($conexion, "INSERT INTO producto(codproducto, nomenclatura,numsiguiente,descripcion,precio,mayoreo, registro, fecha, codcubo, cantidad_mayoreo, existencia) 
-      values ('$codigo','$nomenclatura', '$signum', '$descripcion', '$precio','$mayoreo', '$usuario_id', now(), '$idcubo', '$cant_may', '$existencia')");
+      $sql = "INSERT INTO producto(codproducto, nomenclatura,numsiguiente,descripcion,precio,mayoreo, registro, fecha, codcubo, cantidad_mayoreo, existencia) 
+      values ('$codigo','$nomenclatura', '$signum', '$descripcion', '$precio','$mayoreo', '$usuario_id', now(), '$idcubo', '$cant_may', '$existencia')";
+      echo $sql;
+      $query_insert = mysqli_query($conexion, $sql );
       if ($query_insert) {
         historia('Se registro el nuevo producto '.$codigo);
         mensajeicono('Se ha registrado con éxito el producto!', 'lista_productos.php','','exito');
@@ -60,7 +65,7 @@
              <div class="form-group">
                <label>Cubo</label>
                <?php
-                $query = mysqli_query($conexion, "SELECT * FROM cubos");
+                $query = mysqli_query($conexion, "SELECT * FROM cubos WHERE disponible = 1");
                 $res = mysqli_num_rows($query);
                
                 ?>

@@ -14,7 +14,7 @@ $sumaiva = 0;
 $sumasub = 0;
 
 
-$sql = 'select g.proveedor, g.fecha, g.subtotal, g.iva, g.total, g.descripcion, p.proveedor as nomprov
+$sql = 'select g.proveedor, g.fecha, g.total, g.descripcion, p.proveedor as nomprov
 from gastos g
 left join proveedor p on p.codproveedor = g.proveedor
 WHERE g.fecha BETWEEN  "'.$desde.'" and "'.$hasta.'"';
@@ -28,8 +28,7 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<th ><b>No.</b></th>';
     $tabla = $tabla.'<th ><b>PROVEEDOR</b></th>';
     $tabla = $tabla."<th><b>FECHA</b></th>";
-    $tabla = $tabla.'<th ><b>SUBTOTAL</b></th>';
-    $tabla = $tabla.'<th ><b>IVA</b></th>';
+    
     $tabla = $tabla.'<th ><b>TOTAL</b></th>';
     $tabla = $tabla.'<th ><b>DESCRIPCION</b></th>';
     $tabla = $tabla."</tr>";
@@ -43,8 +42,6 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$vuelta.'</td>';
         $tabla = $tabla.'<td>'.$f['nomprov'].'</td>';
         $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['subtotal'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>$'.number_format($f['iva'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>$'.number_format(abs($f['total']), 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
         $suma = $suma += abs($f['total']);

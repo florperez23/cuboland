@@ -143,13 +143,13 @@ if ($result_data > 0) {
 				<li class="nav-item">
 					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCredito" aria-expanded="true" aria-controls="collapseTwo">
 						<i class="fa fa-credit-card"></i>
-						<span>Creditos</span>
+						<span>Separos</span>
 						<i class="fas fa-angle-down fa-lg float-right"></i>
 					</a>
 					<div id="collapseCredito" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
 							<!-- //<a class="collapse-item" href="nueva_venta.php">Creditos</a> -->
-							<a class="collapse-item" href="lista_creditos.php">Creditos</a>
+							<a class="collapse-item" href="lista_creditos.php">Separos</a>
 						</div>
 					</div>
 				 </li>
@@ -165,7 +165,7 @@ if ($result_data > 0) {
 						<div class="bg-white py-2 collapse-inner rounded">
 							<a class="collapse-item" href="registro_producto.php">Nuevo Producto</a>
 							<a class="collapse-item" href="lista_productos.php">Productos</a>
-							<a class="collapse-item" href="ajuste_inventario.php">Ajuste Inventario</a>
+							<a class="collapse-item" href="ajuste_inventario.php">Bajas</a>
 							
 						</div>
 					</div>
@@ -218,12 +218,12 @@ if ($result_data > 0) {
 					<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCorte" aria-expanded="true" aria-controls="collapseTwo">
 					<i class="fas fa-solid fa-cash-register"></i>
 					<!--<i class="fas fa-fw fa-cog"></i>-->
-						<span>Arrendatarios</span>
+						<span>Renteros</span>
 						<i class="fas fa-angle-down fa-lg float-right"></i>
 					</a>
 					<div id="collapseCorte" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 						<div class="bg-white py-2 collapse-inner rounded">
-							<a class="collapse-item" href="lista_arrendatarios.php">Lista de arrendatarios</a>
+							<a class="collapse-item" href="lista_arrendatarios.php">Renteros</a>
 						</div>
 					</div>
 				</li>

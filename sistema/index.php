@@ -29,13 +29,13 @@
 		</a>
 	
 		<!-- Earnings (Monthly) Card Example -->
-		<a class="col-xl-3 col-md-6 mb-4" href="lista_cliente.php">
+		<a class="col-xl-3 col-md-6 mb-4" href="lista_creditos.php">
 			<div class="card border-left-success shadow h-100 py-2 bg-white">
 				<div class="card-body">
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
-							<div class="text-xs font-weight-bold text-success text-uppercase mb-1">Clientes</div>
-							<div class="h5 mb-0 font-weight-bold text-gray-800">Clientes</div>
+							<div class="text-xs font-weight-bold text-success text-uppercase mb-1">Separos</div>
+							<div class="h5 mb-0 font-weight-bold text-gray-800">Apartados</div>
 						</div>
 						<div class="col-auto">
 							<i class="fas fa-users fa-2x text-gray-300"></i>
@@ -109,8 +109,8 @@
 				<div class="card-body">
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
-							<div class="text-xs font-weight-bold text-titulo text-uppercase mb-1">Arrendatarios</div>
-							<div class="h5 mb-0 font-weight-bold text-gray-800">Lista de Arrendadores</div>
+							<div class="text-xs font-weight-bold text-titulo text-uppercase mb-1">Dueños de cubos</div>
+							<div class="h5 mb-0 font-weight-bold text-gray-800">Renteros</div>
 						</div>
 						<div class="col-auto">
 							

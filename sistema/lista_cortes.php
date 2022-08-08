@@ -30,17 +30,38 @@
 	<!-- Elementos para crear el reporte -->
 	<form action="reporteCortes.php" method="post">
 	<div class="row">
+		<div class="col-md-4">
+			<label>Cubo</label>
+			<?php
+				$query = mysqli_query($conexion, "select * from cubos");
+				$res = mysqli_num_rows($query);
+			?>
+
+			<select id="cubo" name="cubo" class="form-control">
+				<option value='0'>Seleccione una opción</option>
+				<?php
+				if ($res > 0) {
+					while ($f = mysqli_fetch_array($query)) {
+				?>
+					<option value="<?php echo $f['codcubo']; ?>"><?php echo $f['cubo']; ?></option>
+				<?php
+					}
+				}
+				
+				?>
+			</select>
+		</div>
 	
 		<div class="col-md-4">
 			<label for="producto" style='color:#000;'>Desde</label>
-            <input type="date" name="desde" id="desde" class="form-control">
+            <input type="date" name="desde" id="desde" value = "<?php echo $fecha ?>" class="form-control">
 		</div>
 		<div class="col-md-4">
 			<label for="producto" style='color:#000;'>Hasta</label>
-            <input type="date" name="hasta" id="hasta" class="form-control">
+            <input type="date" name="hasta" id="hasta" value = "<?php echo $fecha ?>" class="form-control">
 		</div>
 		<div class="col-md-4">
-			<input type="submit" value="Generar Reporte" class="btn btn-primary">
+			<input type="submit" value="Generar corte" class="btn btn-primary">
 		</div>
 	
 	</div>

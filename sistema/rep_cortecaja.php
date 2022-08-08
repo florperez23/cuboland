@@ -20,7 +20,7 @@ $fechafin =  date("Y-m-d",strtotime($fechafin."+ 1 day"));
   left JOIN usuario u on u.idusuario = f.usuario
   left join cliente c on c.idcliente = f.codcliente
   left join proveedor p on p.codproveedor = f.codcliente
-  WHERE f.fecha between '".$fechainicio."' and '".$fechafin."' ";
+  WHERE f.fecha between '".$fechainicio."' and '".$fechafin."' and idtipoventa in (1,2) ";
 
 echo $sql;
 $r = $conexion -> query($sql);
