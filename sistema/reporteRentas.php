@@ -6,7 +6,7 @@ require_once('pdf/tcpdf.php');
 
 $tipo = $_POST['tipo'];
 
-echo $tipo;
+//echo $tipo;
 
 $ultimo = date("Y-m-t", strtotime($fecha));
 $primero = date('Y-m-01');
@@ -14,7 +14,7 @@ $primero = date('Y-m-01');
 $desde = date("Y-m-d",strtotime($primero."- 1 day"));
 $hasta =  date("Y-m-d",strtotime($ultimo."+ 1 day"));
 
-if($tipo == 0 and $desde == '' and $hasta == ''){
+if($tipo == 0){
     $sql = 'select r.*, a.nombre, c.cubo from rentas r
     inner join arrendatarios a on a.idarrendatario = r.idarrendatario
     inner join cubos c on c.codcubo = r.idcubo
@@ -28,10 +28,10 @@ if($tipo == 0 and $desde == '' and $hasta == ''){
     $sql = 'select r.*, a.nombre, c.cubo from rentas r
     inner join arrendatarios a on a.idarrendatario = r.idarrendatario
     inner join cubos c on c.codcubo = r.idcubo
-    where r.cancelado = 0';
+    where r.cancelado = 0 and r.fechaultimopago <= "'.$desde.'"' ;
 }
 
-//echo $sql;
+echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
 $vuelta = 1;
