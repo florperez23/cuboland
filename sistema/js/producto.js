@@ -954,62 +954,20 @@ if (document.getElementById("sales-chart")) {
    }
  });
 }
+
 if (document.getElementById("polarChart")) {
  const action = "polarChart";
- $('.alertAddProduct').html('');
+
  $.ajax({
    url: 'chart.php',
    type: 'POST',
    async: true,
    data: {action},
    success: function (response) {
-     if (response != 0) {
-       var data = JSON.parse(response);
-       var nombre = [];
-       var cantidad = [];
-       for (var i = 0; i < data.length; i++) {
-         nombre.push(data[i]['descripcion']);
-         cantidad.push(data[i]['cantidad']);
-       }
-     }
-     try {
-
-       // polar chart
-       var ctx = document.getElementById("polarChart");
-       if (ctx) {
-         ctx.height = 200;
-         var myChart = new Chart(ctx, {
-           type: 'polarArea',
-           data: {
-             datasets: [{
-               data: cantidad,
-               backgroundColor: [
-                 "rgb(0, 123, 255)",
-                 "rgb(255, 0, 0)",
-                 "rgb(0, 255, 0)",
-                 "rgb(0,0,0)",
-                 "rgb(0, 0, 255)"
-               ]
-
-             }],
-             labels: nombre
-           },
-           options: {
-             legend: {
-               position: 'top',
-               labels: {
-                 fontFamily: 'Poppins'
-               }
-
-             },
-             responsive: true
-           }
-         });
-       }
-
-     } catch (error) {
-       console.log(error);
-     }
+    //alert(response);
+    console.log(response);
+    $("#polarChart").val(response);
+    $('#polarChart').html(response);
    },
    error: function (error) {
      console.log(error);

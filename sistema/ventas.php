@@ -34,6 +34,7 @@
 					<option value="0">SIN ESPECIFICAR</option>
 					<option value="1">CONTADO</option>
 					<option value="2">CRÉDITO</option>
+					<option value="3">DEVOLUCIÓN</option>
 				</select>
 			</div>
 		</div>
