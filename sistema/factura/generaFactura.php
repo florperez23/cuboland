@@ -180,9 +180,14 @@
 			$pdf->Cell(39, 5, ($result_cliente['cubo']), 0, 0, 'L');
 			$pdf->Cell(8, 5, '1', 0, 0, 'L');
 			$pdf->Cell(10, 5, '$'.number_format($result_cliente['renta'] ,2, '.', ','), 0, 0, 'L');
-			$pdf->Cell(10, 5, '$'.number_format('0', 2, '.', ','), 0, 0, 'L');
+
+			if($result_cliente['renta']!=$totalfactura)
+			{
+				$pdf->Cell(10, 5,  '$'.number_format($totalfactura ,2, '.', ','), 0, 0, 'L');
+			}
+			
 		
-			$pdf->Cell(12, 5, '$'.number_format($result_cliente['renta'] ,2, '.', ','), 0, 1, 'L');
+			$pdf->Cell(12, 5, '$'.number_format($totalfactura ,2, '.', ','), 0, 1, 'L');
 			
 		}else
 		{	
@@ -214,9 +219,13 @@
 		/*VENTA CONTADO*/
 		if($tipo==1)
 		{
-			$pdf->Cell(76, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
-			$pdf->Cell(76, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');		
-			$pdf->Cell(76, 5,  'Cambio: $' .number_format(($pagocon-$totalventa), 2, '.', ','), 0, 1, 'R');	
+			
+			
+				$pdf->Cell(76, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
+				$pdf->Cell(76, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');		
+				$pdf->Cell(76, 5,  'Cambio: $' .number_format(($pagocon-$totalventa), 2, '.', ','), 0, 1, 'R');	
+			
+			
 		}
 		
 		else if($tipo==2)/*VENTA CREDITO*/
@@ -241,7 +250,14 @@
 		
 			
 			
-		}else{
+		}else if($tipo=='5')
+		{
+			$pdf->Cell(76, 5, 'Total: $' . number_format($totalfactura, 2, '.', ','), 0, 1, 'R');	
+			$pdf->Cell(76, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');		
+			$pdf->Cell(76, 5,  'Cambio: $' .number_format(($pagocon-$totalfactura), 2, '.', ','), 0, 1, 'R');	
+		}
+		
+		else{
 			$pdf->Cell(76, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
 			$pdf->Cell(76, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');	
 			

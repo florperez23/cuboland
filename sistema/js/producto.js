@@ -1807,6 +1807,25 @@ $.ajax({
  }
 });
 
+
+$('#cubo').slideDown();
+ $('#prod').slideUp();  
+ $("#codigo").attr("placeholder", "Ingrese el codigo del cubo");
+
+}else if(idclasificacion==3)
+{ 
+ $('#labelcodigo').html("Codigo del Cubo");
+console.log("");
+ action='cargocubo';
+$.ajax({
+ url: "cargar_cubosdisponibles.php",
+ type: "post",
+ success: function(data){
+     $('#cubo').html(data+"\n");
+ }
+});
+
+
 $('#cubo').slideDown();
  $('#prod').slideUp();  
  $("#codigo").attr("placeholder", "Ingrese el codigo del cubo");

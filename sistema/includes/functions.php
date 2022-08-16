@@ -548,6 +548,39 @@ function ValidarExiteUnaPromocion($ididentificador){
 			
 }
 
+function PrecioPromocionRenta($ididentificador){
+	require("..\conexion.php");
+	
+	$sql="select * from promociones inner join cubos on cubos.codcubo=promociones.ididentificador where ididentificador='".$ididentificador."' AND (DATE(promociones.fechainicio) <=CURRENT_DATE() AND DATE(promociones.fechatermino) >DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY))";
+	//echo $sql;
+	$r = $conexion -> query($sql);
+	if ($r -> num_rows >0) {
+		while($f = $r -> fetch_array())
+		{
+		
+			$tipo= $f['idtipo'];
+			$promocion=$f['promocion'];
+			$renta=$f['renta'];
+			if($tipo==1)
+			{
+				//cantidad/total				
+				$newPrecio=$renta-floatval (($renta*$promocion)/100);
+			}else
+			{
+				$newPrecio=$promocion;
+
+			}
+			$newPrecio=number_format($newPrecio, 2, '.', ',');
+		}
+		return $newPrecio;
+		 
+	}else{
+		
+			return 0;
+		}
+	}
+			
+
 
 
 function cubo_producto_anterior(){

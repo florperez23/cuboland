@@ -2,6 +2,7 @@
   include "../conexion.php";
   if (!empty($_POST)) {
     $alert = "";
+
     if (empty($_POST['clasificacion']) || empty($_POST['tipo']) || empty($_POST['promocion']) || empty($_POST['desde']) || empty($_POST['hasta'])) {
       mensajeicono('Todos los campos son obligatorios.', 'registro_promocion.php','','info');
 
@@ -17,7 +18,7 @@
       $fechatermino = date("Y/m/d", strtotime($fechatermino));
       $usuario = $_SESSION['idUser'];
       
-      if($clasificacion==1)
+      if($clasificacion==1 or $clasificacion==3)
       {
         $identificador = $_POST['codigocub'];
       }else
@@ -36,10 +37,10 @@
         mensajeicono('Ya existe una promocion para este producto/cubo', 'registro_promocion.php','','info');    
       
       }else{
-      echo $sql= "INSERT INTO promociones(idclasificacion, ididentificador,idtipo,promocion,fechainicio,fechatermino,usuario_id, fecha) values ('$clasificacion','$identificador', '$tipo', '$promocion', '$fechainicio','$fechatermino','$usuario', now())";
-      echo $sql;
+      $sql= "INSERT INTO promociones(idclasificacion, ididentificador,idtipo,promocion,fechainicio,fechatermino,usuario_id, fecha) values ('$clasificacion','$identificador', '$tipo', '$promocion', '$fechainicio','$fechatermino','$usuario', now())";
+     // echo $sql;
       $query_insert = mysqli_query($conexion, $sql);
-      if ($query_insert) {
+      if ($query_insert) {        
         historia('Se registro la prmocion ');
         mensajeicono('Se ha registrado con éxito la promocion!', 'lista_promociones.php','','exito');
 
@@ -85,6 +86,10 @@
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="clasificacion"  id="rdcubo"   value="1">
                     <label class="form-check-label" for="inlineRadio1">Cubo</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="clasificacion"  id="rdrenta"   value="3">
+                    <label class="form-check-label" for="inlineRadio1">Renta</label>
                 </div>
             </div>
 
