@@ -1278,6 +1278,12 @@ $('#btn_cerrarcorte').click(function(e) {
  
 });
 
+
+ 
+ $('.modal').on('hidden.bs.modal', function (e) {           
+  location.reload();  
+});
+
 jQuery('#cerrarcorte').on('hidden.bs.modal', function (e) {
  jQuery(this).removeData('bs.modal');
  jQuery(this).find('.alertAddProduct').empty();
@@ -1365,6 +1371,8 @@ function tipopagocubo(codcubo)
   }
 
 }
+
+
 
 // ingresar abono
 $('#form_new_abono_creditos').submit(function(e) {  
