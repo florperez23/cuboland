@@ -176,7 +176,7 @@ if(HayCajaAbierta()==0)
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="pagar_con"  class="font-weight-bold">Pagar</label>
-                                    <input id="pagar_con" name="pagar_con" class="form-control"  type="text" placeholder="0.00"   onchange="MASK(this,this.value,'$##,###,##0.00',1);">
+                                    <input id="pagar_con" required name="pagar_con" class="form-control"  type="text" placeholder="0.00"   onchange="MASK(this,this.value,'$##,###,##0.00',1);">
                                 </div>
                             </div>
                             <div class="col-md-4" id="divCambio" >
@@ -205,7 +205,7 @@ if(HayCajaAbierta()==0)
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="pagar_conC" class="font-weight-bold">Pago</label>
-                                    <input id="pagar_conC" name="pagar_conC" class="form-control"  type="text" placeholder="0.00"  value="" onchange="MASK(this,this.value,'$##,###,##0.00',1);">
+                                    <input id="pagar_conC" required name="pagar_conC" class="form-control"  type="text" placeholder="0.00"  value="" onchange="MASK(this,this.value,'$##,###,##0.00',1);">
                                 </div>
                             </div>                            
                             <div class="col-md-4" id="divFechaVencimiento">

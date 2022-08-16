@@ -189,6 +189,9 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 															{
 																$totalrenta=PrecioPromocionRenta($data['codcubo']);
 																$texto='Renta normal $'. $data['renta'].', precio promoción  $'.$totalrenta; 
+															}else
+															{
+																$texto=''; 
 															}
 
 														}else
@@ -199,6 +202,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 															$texto='La renta es de $'. $data['renta'].' + $50.00 por retrazo del pago.'; 
 															}else{
 															$totalrenta=$data['renta'];
+															$texto=''; 
 															
 														}}
 														 ?>
@@ -214,7 +218,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 														<div class="col-md-4">
 															<div class="form-group">
 																<label for="pagar_con"  class="font-weight-bold">Pagar</label>
-																<input id="pagar_con<?php echo $data['codcubo']; ?>" name="pagar_con<?php echo $data['codcubo']; ?>" class="form-control"  type="text" placeholder="0.00"  onkeyup="pagarcon(<?php echo $data['codcubo']; ?>);" onchange="MASK(this,this.value,'$##,###,##0.00',1);">
+																<input required id="pagar_con<?php echo $data['codcubo']; ?>" name="pagar_con<?php echo $data['codcubo']; ?>" class="form-control"  type="text" placeholder="0.00"  onkeyup="pagarcon(<?php echo $data['codcubo']; ?>);" onchange="MASK(this,this.value,'$##,###,##0.00',1);">
 															</div>
 														</div>
 														<div class="col-md-4" id="divCambio<?php echo $data['codcubo']; ?>" >
