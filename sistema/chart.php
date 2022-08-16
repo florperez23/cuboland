@@ -15,20 +15,29 @@ if ($_POST['action'] == 'polarChart') {
   
     $query = mysqli_query($conexion, "select r.*, a.nombre, c.cubo from rentas r inner join arrendatarios a on a.idarrendatario = r.idarrendatario inner join cubos c on c.codcubo = r.idcubo where r.cancelado = 0 and r.fechaultimopago <= DATE_FORMAT(LAST_DAY(NOW() - INTERVAL 1 MONTH), '%Y-%m-%d 23:59:59')");
     
-    echo "<table class='table table-striped table-bordered'>";
-    echo "<tr>";
-        echo "<th>Cubo</th>";
-        echo "<th>Rentero</th>";
-        echo "<th>Último pago</th>";
-    echo "</tr>";
+    //echo "<table class='table table-striped table-bordered'>";
+    //echo "<tr>";
+       // echo "<th>Cubo</th>";
+       // echo "<th>Rentero</th>";
+      //  echo "<th>Último pago</th>";
+    //echo "</tr>";
     while ($data = mysqli_fetch_array($query)) {
-        echo "<tr>";
-            echo "<td>".$data['cubo']."</td>";
-            echo "<td>".$data['nombre']."</td>";
-            echo "<td>".$data['fechaultimopago']."</td>";
-        echo "</tr>";
+       // echo "<tr>";
+        echo "<div class='card_span'>";
+        echo "<table>";
+        echo "<td style='width:100px;'>";
+            echo '<center><i class="fas fa-user fa-2x text-gray-300"></i></center>';
+        echo "</td>";
+        echo "<td>";
+            echo "<center><span ><b style='color:#CCC8C8'>Cubo: </b>".$data['cubo']." <b style='color:#CCC8C8'>Rentero: </b>".$data['nombre']." <br><b style='color:#CCC8C8'>Fecha último pago: </b>".$data['fechaultimopago']." </span></center>";
+        echo "</td>";
+        echo "</table>";
+        echo "</div>"; 
+            //echo "<td>".$data['nombre']."</td>";
+            //echo "<td>".$data['fechaultimopago']."</td>";
+       // echo "</tr>";
     }
-    echo "</table>";
+   // echo "</table>";
   
     
 }

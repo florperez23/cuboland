@@ -7,14 +7,14 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" style='color: #fff;' id="exampleModalLongTitle">Abrir corte de caja</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Abrir corte de caja</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">X</span>
         </button>
       </div>
       <div class="modal-body">
 	 
-		<label for="montoinicial" style="color: #fff;">Monto Inicial</label>
+		<label for="montoinicial">Monto Inicial</label>
 		<input type="text" placeholder="Ingrese el monto inicial" id="montoinicial" name="montoinicial" class="form-control">
 		
       </div>
@@ -75,7 +75,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" style='color: #fff;' id="exampleModalLongTitle">Cerrar corte de caja</h5>
+        <h5 class="modal-title"  id="exampleModalLongTitle">Cerrar corte de caja</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">X</span>
         </button>
@@ -94,7 +94,7 @@
 				
 		) t";
 
-		echo $sql;
+		//echo $sql;
 		$query = mysqli_query($conexion, $sql);
 		$result = mysqli_num_rows($query);
 	  
@@ -106,22 +106,22 @@
 
       <div class="modal-body">
 	  	<input type="hidden" id="idcorte" name="idcorte" value="<?php echo $id; ?>">
-		<label for="montoinicial" style="color: #fff;">Monto Inicial</label>
+		<label for="montoinicial" >Monto Inicial</label>
 		<input type="text" placeholder="Monto inicial de las ventas" id="montoinicial" name="montoinicial" value="<?php echo $montoinicial; ?>" class="form-control" readonly>
       </div>
 	  <div class="modal-body">
-		<label for="montofinal" style="color: #fff;">Monto Final</label>
+		<label for="montofinal" >Monto Final</label>
 		<input type="text" placeholder="Monto final de las ventas" id="montofinal" name="montofinal" value="<?php echo $data['Total']; ?>" class="form-control" readonly>
       </div>
 	  <div class="modal-body">
-		<label for="totalventas" style="color: #fff;">Total Ventas</label>
+		<label for="totalventas" >Total Ventas</label>
 		<input type="text" placeholder="total de ventas" id="totalventas" name="totalventas" value="<?php echo $data['TotalVentas']; ?>" class="form-control" readonly>
       </div>
 	  <div class="modal-body">
-		<label for="totalventas" style="color: #fff;">Monto General</label>
+		<label for="totalventas" >Monto General</label>
 		<input type="text" placeholder="Monto general de las ventas" id="montogral" name="montogral" value="<?php echo $montoinicial + $data['Total']; ?>" class="form-control" readonly>
       </div>
-	  <div class="alert alertAddProduct" style='color:#fff'></div>
+	  <div class="alert alertAddProduct" ></div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 		<a href="#" class="btn btn-primary" id="btn_cerrarcorte">Guardar</a>
