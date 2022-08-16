@@ -1,5 +1,15 @@
 <?php include_once "includes/header.php"; ?>
 
+<?php
+$DiasMes=0;
+$dia=0;
+$precioxDia=0;
+$totalrenta=0;
+$texto=''; 
+$DiasMes= date('t'); 
+$dia = date('d', strtotime($fecha));//obtenemos el dia actual
+$precioxDia=( (float)255 / (float)$DiasMes);
+?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -139,6 +149,7 @@
 										}
 										?>
 									</select>
+									<input id="renta<?php echo $data['codcubo']; ?>"  name="renta<?php echo $data['codcubo']; ?>" class="form-control" type="hidden"   value="<?php echo $data['renta']; ?>"  >
 										<input id="disponible<?php echo $data['codcubo']; ?>"  name="disponible<?php echo $data['codcubo']; ?>" class="form-control" type="hidden"   value="<?php echo $data['disponible']; ?>"  >
 											<div class="row">              
 												<div class="col-md-6">
@@ -165,8 +176,38 @@
 												<div class="row" id="ventacontado">
 													<div class="col-md-4">
 														<div class="form-group">
+														<?php
+															if ($data['disponible'] == 0)
+														{
+															
+															$DiasMes= date('t'); 
+															$dia = date('d', strtotime($fecha));//obtenemos el dia actual
+															$precioxDia=( $data['renta'] / $DiasMes);
+															$totalrenta=round(number_format(($DiasMes-$dia)*$precioxDia, 2, '.', ',') ,0);
+															
+															if(ValidarExiteUnaPromocion($data['codcubo'])=='Existe')
+															{
+																$totalrenta=PrecioPromocionRenta($data['codcubo']);
+																$texto='Renta normal $'. $data['renta'].', precio promoción  $'.$totalrenta; 
+															}
+
+														}else
+														{ 
+															if($dia>10)
+															{        
+															$totalrenta=(float)$data['renta']+50;
+															$texto='La renta es de $'. $data['renta'].' + $50.00 por retrazo del pago.'; 
+															}else{
+															$totalrenta=$data['renta'];
+															
+														}}
+														 ?>
+
+
+
+														    
 															<label for="totalmodal" class="font-weight-bold">Renta</label>
-															<input id="totalmodal<?php echo $data['codcubo']; ?>"  name="totalmodal<?php echo $data['codcubo']; ?>" class="form-control" type="text" placeholder="Total"  value="$<?php echo $data['renta']; ?>"  readonly >
+															<input id="totalmodal<?php echo $data['codcubo']; ?>"  name="totalmodal<?php echo $data['codcubo']; ?>" class="form-control" type="text" placeholder="Total"  value="$<?php echo $totalrenta ?>"  readonly >
 														
 														</div>
 														</div>
@@ -182,7 +223,14 @@
 																<input id="cambio<?php echo $data['codcubo']; ?>" class="form-control" type="text" placeholder="Cambio" value="0.00" readonly onchange="MASK(this,this.value,'$##,###,##0.00',1);">
 															</div>
 														</div>
-
+													<?php
+															//if($dia>10 && $data['disponible']==1)	
+															//{				
+																       echo '<center  style="width:100%"><label class="font-weight-bold" style="color:#f44336">'.$texto.'</label></center>';
+														//}?>
+														
+														
+														
 													
 												</div>
 

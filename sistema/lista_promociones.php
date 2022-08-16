@@ -64,6 +64,9 @@
                                         <?php if( $dato['idclasificacion'] =='1')
                                     {
                                     echo '<span>Cubo</span>';
+                                    }else if( $dato['idclasificacion'] =='3')
+                                    {
+                                        echo '<span>Renta Cubo</span>';
                                     }
 									else
                                     {
