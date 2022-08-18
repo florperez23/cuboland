@@ -531,7 +531,18 @@ $('#btn_facturar_venta').click(function(e) {
    } 
    numcredito = document.getElementById("numcredito").value; 
   
-
+   if(pago<=0 || pago=='')
+   {
+   
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Debe especificar el monto con el que esta pagando!',
+        footer: ''
+      })
+      $('#exampleModal').modal('hide');
+      return;
+    }
  if (rows > 0) {
    $.ajax({
      url: 'modal.php',
@@ -1078,6 +1089,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //EVALUAMOS QUE TIPO DE VENTA SERÁ
 $('#tipoven').on('change', function() {
+  $('.alertCambio').html('');  
+  $('#btn_facturar_venta').slideDown();
  if(this.value=='1')
  { 
    $('#ventacredito').slideUp();
@@ -1238,9 +1251,9 @@ $('#btn_cerrarcorte').click(function(e) {
 
 
  
- $('.modal').on('hidden.bs.modal', function (e) {           
-  location.reload();  
-});
+//  $('.modal').on('hidden.bs.modal', function (e) {           
+//   location.reload();  
+// });
 
 jQuery('#cerrarcorte').on('hidden.bs.modal', function (e) {
  jQuery(this).removeData('bs.modal');
