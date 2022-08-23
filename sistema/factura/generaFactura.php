@@ -39,11 +39,11 @@
 
 		if($result_venta['numcredito']!= '' and $result_venta['numcredito']!=0)
 		{
-			$sql="SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.descripcion, p.precio,d.precio_promocion, d.promocion, d.idtipopromocion FROM detallefactura d INNER JOIN producto p ON d.nofactura = ".$result_credito['nofacturaorigen']." WHERE d.codproducto = p.codproducto GROUP BY p.codproducto";
+			$sql="SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.cantidad_mayoreo,p.descripcion, p.precio,d.precio_promocion, d.promocion, d.idtipopromocion FROM detallefactura d INNER JOIN producto p ON d.nofactura = ".$result_credito['nofacturaorigen']." WHERE d.codproducto = p.codproducto GROUP BY p.codproducto";
 			//echo $sql;
 			$productos = mysqli_query($conexion, $sql);
 		}else{
-			$sql="SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto, p.descripcion, p.precio, d.precio_promocion, d.promocion , d.idtipopromocion FROM detallefactura d INNER JOIN producto p ON d.nofactura = $noFactura WHERE d.codproducto = p.codproducto GROUP BY p.codproducto";
+			$sql="SELECT d.nofactura, d.codproducto, SUM(d.cantidad) AS cantidad, p.codproducto,p.cantidad_mayoreo, p.descripcion, p.precio, d.precio_promocion, d.promocion , d.idtipopromocion FROM detallefactura d INNER JOIN producto p ON d.nofactura = $noFactura WHERE d.codproducto = p.codproducto GROUP BY p.codproducto";
 			//echo $sql;
 			$productos = mysqli_query($conexion, $sql);
 		}
@@ -204,7 +204,15 @@
 				}
 				else 
 				{
-					$pdf->Cell(10, 5, '$'.number_format($row['promocion'], 2, '.', ','), 0, 0, 'L');
+					if($row['cantidad']>$row['cantidad_mayoreo'])
+					{
+						$pdf->Cell(10, 5, '$'.number_format($row['precio_promocion'], 2, '.', ','), 0, 0, 'L');
+					}else
+					{
+						
+						$pdf->Cell(10, 5, '$'.number_format($row['promocion'], 2, '.', ','), 0, 0, 'L');
+					}
+				
 				}
 
 				$importe = number_format($row['cantidad'] * $row['precio_promocion'], 2, '.', ',');

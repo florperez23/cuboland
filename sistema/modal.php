@@ -140,31 +140,63 @@ if (empty($_POST['producto']) || empty($_POST['cantidad'])){
     $iva = $info_iva['igv'];
   }
   while ($data = mysqli_fetch_assoc($query_detalle_temp)) {
-    $precioTotal = round($data['cantidad'] * $data['precio_promocion'], 2);
+    // $precioTotal = round($data['cantidad'] * $data['precio_promocion'], 2);
+    // $sub_total = round($sub_total + $precioTotal, 2);
+    // $total = round($total + $precioTotal, 2);
+
+    // $detalleTabla .= '<tr>
+    // <td>'.$data['codproducto'].'</td>
+    // <td colspan="2">'.$data['descripcion'].'</td>
+    // <td class="text-center">'.$data['cantidad'].'</td>';
+
+
+    // if($data['mayoreo']>0)
+    // {
+    // $detalleTabla .= '<td class="text-center">'.$data['mayoreo'].'</td>';
+    // }else{
+    //   $detalleTabla .= '<td class="text-center">'.$data['precio'].'</td>';
+    
+    // }
+
+    // if($data['idtipopromocion']==1)
+    // {
+    // $detalleTabla .= '<td class="text-center">'.$data['promocion'].'%</td>';
+    // }else{
+    //   $detalleTabla .= '<td class="text-center">'.$data['promocion'].'</td>';
+    
+    // }
+
+    if(($data['cantidad']>=$data['cantidad_mayoreo']) and $data['cantidad_mayoreo']>0)
+    {  $precioTotal = round($data['cantidad'] * $data['mayoreo'], 2);
+    }else
+    {  $precioTotal = round($data['cantidad'] * $data['precio_promocion'], 2);
+
+    }
+   // $precioTotal = round($data['cantidad'] * $data['precio_promocion'], 2);
     $sub_total = round($sub_total + $precioTotal, 2);
     $total = round($total + $precioTotal, 2);
+      $detalleTabla .= '<tr>
+          <td>'.$data['codproducto'].'</td>
+          <td colspan="2">'.$data['descripcion'].'</td>
+          <td class="textcenter">'.$data['cantidad'].'</td>';
+         
+         
+          if(($data['cantidad']>=$data['cantidad_mayoreo']) and $data['cantidad_mayoreo']>0)
+          {
+          $detalleTabla .= '<td class="text-center">'.$data['mayoreo'].'</td>';
+          }else{
+            $detalleTabla .= '<td class="text-center">'.$data['precio'].'</td>';
+          
+          }
+      
+          if($data['idtipopromocion']==1)
+          {
+          $detalleTabla .= '<td class="text-center">'.$data['promocion'].'%</td>';
+          }else{
+            $detalleTabla .= '<td class="text-center">'.$data['promocion'].'</td>';
+          
+          }
 
-    $detalleTabla .= '<tr>
-    <td>'.$data['codproducto'].'</td>
-    <td colspan="2">'.$data['descripcion'].'</td>
-    <td class="text-center">'.$data['cantidad'].'</td>';
-
-
-    if($data['mayoreo']>0)
-    {
-    $detalleTabla .= '<td class="text-center">'.$data['mayoreo'].'</td>';
-    }else{
-      $detalleTabla .= '<td class="text-center">'.$data['precio'].'</td>';
-    
-    }
-
-    if($data['idtipopromocion']==1)
-    {
-    $detalleTabla .= '<td class="text-center">'.$data['promocion'].'%</td>';
-    }else{
-      $detalleTabla .= '<td class="text-center">'.$data['promocion'].'</td>';
-    
-    }
     $detalleTabla .='<td class="text-center">'.number_format($precioTotal, 2, '.', ',').'</td>
     <td>
         <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
@@ -219,16 +251,39 @@ where token_user = '$token' 		GROUP BY tmp.codproducto";
     $iva = $info_iva['igv'];
   }
   while ($data = mysqli_fetch_assoc($query)) {
-    $precioTotal = round($data['cantidad'] * $data['precio_promocion'], 2);
+   
+   
+    if(($data['cantidad']>=$data['cantidad_mayoreo']) and $data['cantidad_mayoreo']>0)
+    {  $precioTotal = round($data['cantidad'] * $data['mayoreo'], 2);
+    }else
+    {  $precioTotal = round($data['cantidad'] * $data['precio_promocion'], 2);
+
+    }
+   // $precioTotal = round($data['cantidad'] * $data['precio_promocion'], 2);
     $sub_total = round($sub_total + $precioTotal, 2);
     $total = round($total + $precioTotal, 2);
-   
       $detalleTabla .= '<tr>
           <td>'.$data['codproducto'].'</td>
           <td colspan="2">'.$data['descripcion'].'</td>
           <td class="textcenter">'.$data['cantidad'].'</td>';
+         
+         
+          if(($data['cantidad']>=$data['cantidad_mayoreo']) and $data['cantidad_mayoreo']>0)
+          {
+          $detalleTabla .= '<td class="text-center">'.$data['mayoreo'].'</td>';
+          }else{
+            $detalleTabla .= '<td class="text-center">'.$data['precio'].'</td>';
+          
+          }
+      
+          if($data['idtipopromocion']==1)
+          {
+          $detalleTabla .= '<td class="text-center">'.$data['promocion'].'%</td>';
+          }else{
+            $detalleTabla .= '<td class="text-center">'.$data['promocion'].'</td>';
+          
+          }
 
-        
           $detalleTabla .='<td class="text-center">'.number_format($precioTotal, 2, '.', ',').'</td>
           <td>
               <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
@@ -363,22 +418,52 @@ if (empty($_POST['id_detalle'])){
     $iva = $info_iva['igv'];
   }
   while ($data = mysqli_fetch_assoc($query_detalle_tmp)) {
-    $precioTotal = round($data['cantidad'] * $data['precio'], 2);
+    // $precioTotal = round($data['cantidad'] * $data['precio'], 2);
+    // $sub_total = round($sub_total + $precioTotal, 2);
+    // $total = round($total + $precioTotal, 2);
+
+    //   $detalleTabla .= '<tr>
+    //       <td>'.$data['codproducto'].'</td>
+    //       <td colspan="2">'.$data['descripcion'].'</td>
+    //       <td class="text-center">'.$data['cantidad'].'</td>';
+
+    //       if($data['mayoreo']>0)
+    //       {
+    //       $detalleTabla .= '<td class="text-center">'.$data['mayoreo'].'</td>';
+    //       }else{
+    //         $detalleTabla .= '<td class="text-center">'.$data['precio'].'</td>';
+          
+    //       }
+    //       if($data['idtipopromocion']==1)
+    //       {
+    //       $detalleTabla .= '<td class="text-center">'.$data['promocion'].'%</td>';
+    //       }else{
+    //         $detalleTabla .= '<td class="text-center">'.$data['promocion'].'</td>';
+          
+    //       }
+    if(($data['cantidad']>=$data['cantidad_mayoreo']) and $data['cantidad_mayoreo']>0)
+    {  $precioTotal = round($data['cantidad'] * $data['mayoreo'], 2);
+    }else
+    {  $precioTotal = round($data['cantidad'] * $data['precio_promocion'], 2);
+
+    }
+   // $precioTotal = round($data['cantidad'] * $data['precio_promocion'], 2);
     $sub_total = round($sub_total + $precioTotal, 2);
     $total = round($total + $precioTotal, 2);
-
       $detalleTabla .= '<tr>
           <td>'.$data['codproducto'].'</td>
           <td colspan="2">'.$data['descripcion'].'</td>
-          <td class="text-center">'.$data['cantidad'].'</td>';
-
-          if($data['mayoreo']>0)
+          <td class="textcenter">'.$data['cantidad'].'</td>';
+         
+         
+          if(($data['cantidad']>=$data['cantidad_mayoreo']) and $data['cantidad_mayoreo']>0)
           {
           $detalleTabla .= '<td class="text-center">'.$data['mayoreo'].'</td>';
           }else{
             $detalleTabla .= '<td class="text-center">'.$data['precio'].'</td>';
           
           }
+      
           if($data['idtipopromocion']==1)
           {
           $detalleTabla .= '<td class="text-center">'.$data['promocion'].'%</td>';
@@ -386,6 +471,7 @@ if (empty($_POST['id_detalle'])){
             $detalleTabla .= '<td class="text-center">'.$data['promocion'].'</td>';
           
           }
+
           $detalleTabla .='<td class="text-center">'.number_format($precioTotal, 2, '.', ',').'</td>
           <td>
               <a href="#" class="link_delete" onclick="event.preventDefault(); del_product_detalle('.$data['correlativo'].');"><i class="fas fa-trash-alt"></i> Eliminar</a>
