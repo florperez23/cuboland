@@ -177,7 +177,8 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 													<div class="col-md-4">
 														<div class="form-group">
 														<?php
-															if ($data['disponible'] == 0)
+														$fechaUltimoPago=obtenerFechaUltimoPago($data['codcubo']);
+															if ($data['disponible'] == 0 or $fechaUltimoPago=='')
 														{
 															
 															$DiasMes= date('t'); 
@@ -196,11 +197,26 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 
 														}else
 														{ 
-															if($dia>10)
+															$fecha=date("Y-m-d");
+															 
+															
+															$mesactual = date("m", strtotime($fecha));
+															$mesultimopago= date("m", strtotime($fechaUltimoPago));
+															$mesesretrazo=(int)$mesactual-(int)$mesultimopago;
+															
+															
+															
+															if($dia>10 or $mesesretrazo>1)
 															{        
-															$totalrenta=(float)$data['renta']+50;
-															$texto='La renta es de $'. $data['renta'].' + $50.00 por retrazo del pago.'; 
+															
+															$totalrenta=((float)$data['renta']+50)*$mesesretrazo;
+															if($mesesretrazo>1){
+																$texto='Tiene '.$mesesretrazo.' de retrazo!!<br>La renta es de $'. $data['renta'].' + $50.00 por cada mes de retrazo.'; 
 															}else{
+															$texto='La renta es de $'. $data['renta'].' + $50.00 por cada mes de retrazo.'; 
+															}
+															}
+															else{
 															$totalrenta=$data['renta'];
 															$texto=''; 
 															

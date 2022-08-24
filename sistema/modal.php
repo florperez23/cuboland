@@ -116,7 +116,7 @@ exit;
 // agregar producto a detalle temporal
 if ($_POST['action'] == 'addProductoDetalle') {
 if (empty($_POST['producto']) || empty($_POST['cantidad'])){
-  echo 'error';
+  echo 'error1';
 }else {    
 
   $codproducto = $_POST['producto'];
@@ -404,8 +404,7 @@ if (empty($_POST['id_detalle'])){
   $result_iva = mysqli_num_rows($query_iva);
 
   $query_detalle_tmp = mysqli_query($conexion, "CALL del_detalle_temp($id_detalle,'$token')");
-  $result = mysqli_num_rows($query_detalle_tmp);
-
+  $result = mysqli_num_rows($query_detalle_tmp);  
   $detalleTabla = '';
   $sub_total = 0;
   $iva = 0;
@@ -564,7 +563,7 @@ $pagocon = str_replace(",", "", $pagocon);
 
 if ($result > 0) {
 $sql="CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagocon','$newDate',$tipopago,'$referencia','$numcredito')";
-  //echo $sql;    
+//echo $sql;    
 $query_procesar = mysqli_query($conexion, $sql,);
   $result_detalle = mysqli_num_rows($query_procesar);
   if ($result_detalle > 0) {    

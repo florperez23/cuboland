@@ -436,10 +436,10 @@ $('#add_product_venta').click(function(e) {
      async: true,
      data: {action:action,producto:codproducto,cantidad:cantidad},
      success: function(response) {    
-       console.log(response);    
+       //console.log(response);    
        if (response != 'error') {          
          var info = JSON.parse(response);
-        console.log(response);
+        //console.log(response);
          $('#detalle_venta').html(info.detalle);
          $('#detalle_totales').html(info.totales);
          $('#totalmodal').val(  MASK('', (info.totalmodal),'$##,###,##0.00',1));             
@@ -553,7 +553,7 @@ $('#btn_facturar_venta').click(function(e) {
      (response); 
      //console.log(response);
      if (response != 0) {
-       //console.log(response);
+     //console.log(response);
        var info = JSON.parse(response);        
        generarPDF(info.codcliente,info.nofactura);
        location.reload();
@@ -713,11 +713,11 @@ function del_product_detalle(correlativo) {
    async: true,
    data: {action:action,id_detalle:id_detalle},
    success: function(response) {
-    // console.log(response);
+     //console.log(response);
        if (response != 0) {
-       
+        //console.log(response);
         
-       var info = JSON.parse(response);
+      var info = JSON.parse(response);
        $('#detalle_venta').html(info.detalle);
        $('#detalle_totales').html(info.totales);
        $('#totalmodal').val(  MASK('', (info.totalmodal),'$##,###,##0.00',1));          
@@ -767,7 +767,7 @@ function searchForDetalle(id) {
    async: true,
    data: {action:action,user:user},
    success: function(response) {   
-     console.log(response); 
+     //console.log(response); 
      if (response == 0) {       
      }else {
        var info = JSON.parse(response);

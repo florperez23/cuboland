@@ -651,6 +651,20 @@ function FechaProximoPago($probandofecha)
 	}
 }
 
+
+function obtenerFechaUltimoPago($idcubo)
+{
+	include "../conexion.php";
+	$sql = "SELECT * FROM rentas where idcubo='$idcubo' and cancelado=0";
+	//echo $sql;
+	$rc= $conexion -> query($sql);
+	if($f = $rc -> fetch_array())
+		{		
+					
+			return $f['fechaultimopago'];
+		}
+		else {return FALSE;}
+}
 function pdfSalida($idcubo){
 
 }
