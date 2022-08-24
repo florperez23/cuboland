@@ -42,6 +42,9 @@
     $fecha=date("Y-m-d");  
 
     $fproximopago=null;;
+
+
+   
     if($estado==0)
     {
       $sql = "INSERT INTO rentas(idarrendatario,idcubo,fechacontrato,fechaultimopago,fechaproximopago,usuario) values ( '$idarrendatario', '$codcubo', '$fecha', '$fecha', '$fproximopago', '".$usuario."')";
@@ -60,7 +63,7 @@
     // //     //HACER el insert el factura para tomarlo en cuenta en los reportes
        $sql = "INSERT INTO factura(fecha,usuario,codcliente,totalfactura,idtipoventa,idtipopago,	cancelado,totalventa,referencia,pagocon,numcredito,	saldo,fechacancelacion,usuario_id_mod,subtotal,iva,observaciones) 
       values ( now(), '$usuario','$idarrendatario', '$totalrenta','5','$tipopago',0,'$renta','$referencia','$pagocon','','','','','$totalrenta', '$totalrenta','".$codcubo."')";
-         echo $sql;	
+         //echo $sql;	
          $query_insert = mysqli_query($conexion, $sql);
          if ($query_insert) {
            $nofactura= obtenerUltimoNoFactura();
