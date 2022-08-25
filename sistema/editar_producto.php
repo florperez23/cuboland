@@ -98,7 +98,7 @@ if (empty($_REQUEST['id'])) {
              </div>
              <div class="form-group">
                <label for="producto">Descripción del producto</label>
-               <input type="text" placeholder="Ingrese la descripcion del producto" name="descripcion" id="descripcion" value="<?php echo $descripcion; ?>" class="form-control">
+               <input type="text"  maxlength="23" placeholder="Ingrese la descripcion del producto" name="descripcion" id="descripcion" value="<?php echo $descripcion; ?>" class="form-control">
              </div>
 
              <div class="form-group">
