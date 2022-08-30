@@ -1841,11 +1841,23 @@ $('#cubop').change(function(e) {
  e.preventDefault();
 
  var idcubo = $('#cubop').val();
- if(idcubo == 0){
-   $('#nom').val('Seleccione una opción');
- }else{
-   $('#nom').val('C'+idcubo);
- }
+ $('#codigo').val(' ');
+ 
+ var action = 'nomenclatura';
+
+ $.ajax({
+   url: 'modal.php',
+   type: "POST",
+   async: true,
+   data: {action:action, idcubo: idcubo},
+   success: function(response) {
+     //console.log(response);
+     document.getElementById('nom').value = response; 
+   },
+   error: function(error) {
+   }
+ });
+
 
  var action = 'signumero';
  $.ajax({
@@ -1855,14 +1867,16 @@ $('#cubop').change(function(e) {
    data: {action:action, idcubo: idcubo},
    success: function(response) {
      //console.log(response);
-     document.getElementById('numsig').value = response;
-     $('#codigo').val('C'+idcubo+response);
-     //$('#numsig').val(response);
+      document.getElementById('numsig').value = response;
+      var nomenclatura = $('#nom').val();
+      var numsig = $('#numsig').val();
+      $('#codigo').val(nomenclatura+numsig);
    },
    error: function(error) {
    }
  });
 
+ 
  //validar que no tenga arrendatario el cubo
  var action = 'buscarArrendatario';
  $.ajax({
@@ -1871,7 +1885,6 @@ $('#cubop').change(function(e) {
    async: true,
    data: {action:action, idcubo: idcubo},
    success: function(response) {
-     console.log(response);
      if(response.trim() == '-1'){
        Swal.fire({
          icon: 'error',

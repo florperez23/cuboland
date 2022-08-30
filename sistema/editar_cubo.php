@@ -10,8 +10,9 @@ if (!empty($_POST)) {
     $idcubo = $_GET['id'];
     $cubo = $_POST['cubo'];
     $renta = $_POST['renta'];
+    $nomenclatura = $_POST['nomenclatura'];
 
-    $sql_update = mysqli_query($conexion, "UPDATE cubos SET cubo = '$cubo', renta = '$renta'  WHERE codcubo = $idcubo");
+    $sql_update = mysqli_query($conexion, "UPDATE cubos SET cubo = '$cubo', renta = '$renta', nomenclatura = '$nomenclatura'  WHERE codcubo = $idcubo");
 
     if ($sql_update) {
       historia('Se actualizo el cubo '.$idcubo);
@@ -42,6 +43,7 @@ if ($result_sql == 0) {
     $cubo = $data['cubo'];
     $renta = $data['renta'];
     $disponible = $data['disponible'];
+    $nomenclatura = $data['nomenclatura'];
   }
 }
 ?>
@@ -63,6 +65,10 @@ if ($result_sql == 0) {
             <div class="form-group">
               <label for="proveedor">Nombre del cubo</label>
               <input type="text" placeholder="Ingrese nombre del cubo" name="cubo" class="form-control" id="cubo" value="<?php echo $cubo; ?>">
+            </div>
+            <div class="form-group">
+              <label for="proveedor">Nomenclatura del cubo</label>
+              <input type="text" placeholder="Ingrese la nomenclatura cubo" name="nomenclatura" class="form-control" id="nomenclatura" value="<?php echo $nomenclatura; ?>">
             </div>
             <div class="form-group">
               <label for="nombre">Renta</label>

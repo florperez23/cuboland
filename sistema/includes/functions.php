@@ -665,8 +665,55 @@ function obtenerFechaUltimoPago($idcubo)
 		}
 		else {return FALSE;}
 }
-function pdfSalida($idcubo){
+function cubo_nombre($cod){
+	include "../conexion.php";
+	$sql = "select cubo from cubos where codcubo = '$cod'";			
+	//echo $sql;		
 
+	$rc= $conexion -> query($sql);
+	if($f = $rc -> fetch_array())
+		{		
+					
+			return $f['cubo'];
+		}
+		else {return FALSE;}
+	
+}
+
+function rentero_cubo($cod){
+	include "../conexion.php";
+	$sql = "select a.nombre from rentas r
+	inner join arrendatarios a on a.idarrendatario = r.idarrendatario
+	where idcubo = '$cod'";			
+	//echo $sql;		
+
+	$rc= $conexion -> query($sql);
+	if($f = $rc -> fetch_array())
+		{		
+					
+			return $f['nombre'];
+		}
+		else {return FALSE;}
+	
+}
+
+function total_rentas($desde, $hasta){
+	include "../conexion.php";
+	
+//traer total rentas
+$sql = 'select sum(totalfactura) as totalrentas
+from factura f
+WHERE f.idtipoventa = 5 and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and cancelado = 0';	
+	//echo $sql;		
+
+	$rc= $conexion -> query($sql);
+	if($f = $rc -> fetch_array())
+		{		
+					
+			return $f['totalrentas'];
+		}
+		else {return FALSE;}
+	
 }
 ?>
 

@@ -925,6 +925,25 @@ $sql = "select if(ISNULL(max(numsiguiente)), 0, max(numsiguiente)) + 1 as signum
 exit;
 }
 
+// Siguiente numero del producto
+if ($_POST['action'] == 'nomenclatura') {
+  $codcubo = $_POST['idcubo'];
+  $sql = "select nomenclatura from cubos where codcubo = '$codcubo' ";
+  //echo $sql;
+    $query = mysqli_query($conexion, $sql);
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($query);
+    if ($result > 0) {
+      $data = mysqli_fetch_assoc($query);     
+     echo $data["nomenclatura"];
+      exit;
+    }else{
+      $data = "0";
+    }
+  
+  exit;
+  }
+
 
 // agregar producto a detalle temporal
 if ($_POST['action'] == 'addProductoSalida') {

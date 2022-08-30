@@ -3,26 +3,29 @@ ob_start();
 
 include "../conexion.php";
 require_once('pdf/tcpdf.php');
-
+require_once('includes/functions.php');
 
 $desde = $_POST['desde'];
 $hasta = $_POST['hasta'];
-$desde = date("Y-m-d",strtotime($desde."- 1 day"));
-$hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
+//$desde = date("Y-m-d",strtotime($desde."- 1 day"));
+//$hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
 $suma = 0;
 $sumaiva = 0;
 $sumasub = 0;
 
+$totalrentas = total_rentas($desde, $hasta);
 
 $sql = 'select g.proveedor, g.fecha, g.total, g.descripcion, p.proveedor as nomprov
 from gastos g
 left join proveedor p on p.codproveedor = g.proveedor
 WHERE g.fecha BETWEEN  "'.$desde.'" and "'.$hasta.'"';
-//echo $sql;
+echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
 $vuelta = 1;
 if ($r -> num_rows >0){
+
+
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8">';
     $tabla = $tabla.'<th ><b>No.</b></th>';
@@ -45,25 +48,35 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>$'.number_format(abs($f['total']), 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
         $suma = $suma += abs($f['total']);
-        $sumaiva = $sumaiva += $f['iva'];
-        $sumasub = $sumasub += $f['subtotal'];
+
         $tabla = $tabla."</tr>";  
         $vuelta++;               
     }
     $tabla = $tabla.'</table>';
 }
 
-
+$resta = $totalrentas - $suma;
 $tabla = $tabla.'<br><br><br>
 <table  align = "center" >
     <tr>
         <td></td>
         <td></td>
-        <td><b>TOTALES</b></td>
-        <td bgcolor="#D7E9F0">$'.number_format($sumasub, 2, '.', ',').'</td>
-        <td bgcolor="#D7E9F0">$'.number_format($sumaiva, 2, '.', ',').'</td>
-        <td bgcolor="#D7E9F0">$'.number_format($suma, 2, '.', ',').'</td>
-       
+        <td bgcolor="#D7E9F0"><b>TOTAL RECUPERADO EN RENTAS</b></td>
+        <td bgcolor="#D7E9F0">$'.number_format($totalrentas, 2, '.', ',').'</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td bgcolor="#FFFFFF"><b>TOTAL GASTADO</b></td>
+        <td bgcolor="#FFFFFF">$'.number_format($suma, 2, '.', ',').'</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td bgcolor="#D7E9F0"><b>RESTANTE</b></td>
+        <td bgcolor="#D7E9F0">$'.number_format($resta, 2, '.', ',').'</td>
         <td></td>
     </tr>
     

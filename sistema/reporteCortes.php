@@ -3,24 +3,31 @@ ob_start();
 
 include "../conexion.php";
 require_once('pdf/tcpdf.php');
+require_once('includes/functions.php');
 
 $codcubo = $_POST['cubo'];
 $desde = $_POST['desde'];
 $hasta = $_POST['hasta'];
-$desde = date("Y-m-d",strtotime($desde."- 1 day"));
+//$desde = date("Y-m-d",strtotime($desde."- 1 day"));
 $hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
 $suma = 0;
+
+
 
 $sql = 'SELECT f.nofactura, f.fecha, df.*, if(f.idtipopago = 1, "EFECTIVO", if(f.idtipopago=2, "TARJETA",if(f.idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
 FROM detallefactura df
 inner JOIN factura f on f.nofactura = df.nofactura
 inner JOIN producto p on p.codproducto = df.codproducto
 WHERE p.codcubo = '.$codcubo.' and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'"';
-echo $sql;
+//echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
 $vuelta = 1;
 if ($r -> num_rows >0){
+
+
+    $tabla = $tabla.'<center><span style="font-size: 18px; font-family: sans-serif;"><b> Nombre cubo: </b>'.cubo_nombre($codcubo).' <b>Rentero: </b>'.rentero_cubo($codcubo).'</span></center><br><br>';
+
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8">';
     $tabla = $tabla.'<th ><b>No.</b></th>';
