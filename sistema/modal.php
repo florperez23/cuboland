@@ -563,7 +563,7 @@ $pagocon = str_replace(",", "", $pagocon);
 
 if ($result > 0) {
 $sql="CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagocon','$newDate',$tipopago,'$referencia','$numcredito')";
-//echo $sql;    
+///echo $sql;    
 $query_procesar = mysqli_query($conexion, $sql,);
   $result_detalle = mysqli_num_rows($query_procesar);
   if ($result_detalle > 0) {    

@@ -15,6 +15,14 @@ $dbuser = 'cubos';
 $dbpass = '515t3m4'; // PmTwrXcxUZ3oML9V
 $dbname = 'cubos';
 
+
+//DATOS DE CONECCION
+	
+// $dbhost = 'localhost';	
+// $dbuser = 'root';
+// $dbpass = ''; // PmTwrXcxUZ3oML9V
+// $dbname = 'cubos';
+
 	if (function_exists('mysqli_connect')) {
 //mysqli está instalado
 	//echo 'Si';

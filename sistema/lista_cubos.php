@@ -184,8 +184,13 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 															$DiasMes= date('t'); 
 															$dia = date('d', strtotime($fecha));//obtenemos el dia actual
 															$precioxDia=( $data['renta'] / $DiasMes);
+															
 															$totalrenta=round(number_format(($DiasMes-$dia)*$precioxDia, 2, '.', ',') ,0);
 															
+															if($dia=$DiasMes)
+															{
+																$totalrenta=$data['renta'];
+															}
 															if(ValidarExiteUnaPromocion($data['codcubo'])=='Existe')
 															{
 																$totalrenta=PrecioPromocionRenta($data['codcubo']);
@@ -205,28 +210,38 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 															$mesesretrazo=(int)$mesactual-(int)$mesultimopago;
 															
 															
-															
-															if($dia>10 or $mesesretrazo>1)
-															{        
-															
-															$totalrenta=((float)$data['renta']+50)*$mesesretrazo;
-															if($mesesretrazo>1){
-																$texto='Tiene '.$mesesretrazo.' de retrazo!!<br>La renta es de $'. $data['renta'].' + $50.00 por cada mes de retrazo.'; 
-															}else{
-															$texto='La renta es de $'. $data['renta'].' + $50.00 por cada mes de retrazo.'; 
+															if($mesesretrazo>=1)
+															{
+																if($dia>10 or $mesesretrazo>1)
+																{        
+																	$totalrenta=((float)$data['renta']+50)*$mesesretrazo;
+																	if($mesesretrazo>1){
+																		$texto='Tiene '.$mesesretrazo.' de retrazo!!<br>La renta es de $'. $data['renta'].' + $50.00 por cada mes de retrazo.'; 
+																	}else
+																	{
+																		$texto='La renta es de $'. $data['renta'].' + $50.00 por cada mes de retrazo.'; 
+																	}
+																}
+																else{															
+																	$totalrenta=$data['renta'];
+																	$texto=''; 
+																}
+															}else
+															{
+																$totalrenta=0;
+																$texto='La renta se encuentrá al dia.'; 
+
 															}
-															}
-															else{
-															$totalrenta=$data['renta'];
-															$texto=''; 
 															
-														}}
+														
+													    }
 														 ?>
 
 
 
 														    
 															<label for="totalmodal" class="font-weight-bold">Renta</label>
+															<input id="totalFIJO<?php echo $data['codcubo']; ?>"  name="totalFIJO<?php echo $data['codcubo']; ?>" class="form-control" type="hidden" placeholder="totalFIJO"  value="$<?php echo $totalrenta ?>"  readonly >
 															<input id="totalmodal<?php echo $data['codcubo']; ?>"  name="totalmodal<?php echo $data['codcubo']; ?>" class="form-control" type="text" placeholder="Total"  value="$<?php echo $totalrenta ?>"  readonly >
 														
 														</div>
@@ -242,6 +257,12 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 																<label for="cambio" class="font-weight-bold">Cambio</label>  
 																<input id="cambio<?php echo $data['codcubo']; ?>" class="form-control" type="text" placeholder="Cambio" value="0.00" readonly onchange="MASK(this,this.value,'$##,###,##0.00',1);">
 															</div>
+														</div>
+														<div class="col-md-4" id="divAdelantar<?php echo $data['codcubo']; ?>" >
+															
+																<label for="Adelantar" class="font-weight-bold">Adelantar Meses</label>  
+																<input onkeyup="adelantarMeses('<?php echo $data['codcubo']; ?>')" name="adelantar<?php echo $data['codcubo']; ?>" id="adelantar<?php echo $data['codcubo']; ?>" class="form-control" type="text"  value="0" >
+															
 														</div>
 													<?php
 															//if($dia>10 && $data['disponible']==1)	
@@ -303,7 +324,10 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 										<div class="alert alertCambio"></div>
 										<div class="modal-footer">     
 										<button type="button" style="text-align: center;" class="btn btn-danger" data-dismiss="modal" id="btnCerrar" name="btnCerrar">Close</button>										
+										
+										
 										<button class="btn btn-primary"  style="text-align: center;" type="submit">TerminarRenta </button>
+										
 										</div>
 									</div>
 									</form>
@@ -324,6 +348,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 
 
 </div>
+<!-- echo $mesesretrazo; if($mesesretrazo!=0)  -->
 <!-- /.container-fluid -->
 
 

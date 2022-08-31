@@ -170,6 +170,7 @@ if(HayCajaAbierta()==0)
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="totalmodal" class="font-weight-bold">Total</label>
+                                <input id="totalFIJO" type="hidden" class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
                                 <input id="totalmodal"  class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
                             </div>
                             </div>
@@ -193,6 +194,7 @@ if(HayCajaAbierta()==0)
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="totalmodalC" class="font-weight-bold">Total</label>
+                                <input id="totalFIJOc"  type="hidden" class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
                                 <input id="totalmodalC"  class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
                             </div>
                             </div>
