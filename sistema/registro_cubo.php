@@ -9,6 +9,7 @@ if (!empty($_POST)) {
     } else {
         $cubo = $_POST['nombre'];
         $renta = $_POST['renta'];
+        $nomenclatura = $_POST['nomenclatura'];
         $usuario_id = $_SESSION['idUser'];
         $query = mysqli_query($conexion, "SELECT * FROM cubos where cubo = '$cubo'");
         $result = mysqli_fetch_array($query);
@@ -18,7 +19,7 @@ if (!empty($_POST)) {
         }else{
         
           
-            $sql = "INSERT INTO cubos(cubo, renta, disponible) values ('$cubo', '$renta',0)";
+            $sql = "INSERT INTO cubos(cubo, renta, disponible, nomenclatura) values ('$cubo', '$renta',0, '$nomenclatura')";
            
             $query_insert = mysqli_query($conexion, $sql);
             if ($query_insert) {
@@ -48,6 +49,11 @@ if (!empty($_POST)) {
                     <div class="form-group">
                         <label for="nombre">NOMBRE</label>
                         <input type="text" placeholder="Ingrese nombre" name="nombre" id="nombre" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nombre">NOMENCLATURA</label>
+                        <input type="text" placeholder="Ingrese nomenclatura" name="nomenclatura" id="nomenclatura" class="form-control">
                     </div>
 
                     <div class="form-group">

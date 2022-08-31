@@ -11,8 +11,8 @@ $tipo = $_POST['tipo'];
 $ultimo = date("Y-m-t", strtotime($fecha));
 $primero = date('Y-m-01');
 
-$desde = date("Y-m-d",strtotime($primero."- 1 day"));
-$hasta =  date("Y-m-d",strtotime($ultimo."+ 1 day"));
+$desde = date("Y-m-d",strtotime($primero));//."- 1 day"
+$hasta =  date("Y-m-d",strtotime($ultimo));//."+ 1 day"
 
 if($tipo == 0){
     $sql = 'select r.*, a.nombre, c.cubo from rentas r
@@ -20,29 +20,44 @@ if($tipo == 0){
     inner join cubos c on c.codcubo = r.idcubo
     where r.cancelado = 0 ';
 }else if($tipo == 1){
-    $sql = 'select r.*, a.nombre, c.cubo from rentas r
-    inner join arrendatarios a on a.idarrendatario = r.idarrendatario
-    inner join cubos c on c.codcubo = r.idcubo
-    where r.cancelado = 0 and r.fechaultimopago BETWEEN  "'.$desde.'" and "'.$hasta.'"' ;
+    $sql = 'SELECT
+	r.*,
+	a.nombre,
+	c.cubo, f.totalfactura
+FROM
+	rentas r
+	LEFT JOIN arrendatarios a ON a.idarrendatario = r.idarrendatario
+	LEFT JOIN cubos c ON c.codcubo = r.idcubo 
+	LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
+WHERE
+	r.cancelado = 0 
+	AND r.fechaultimopago BETWEEN  "'.$desde.'" and "'.$hasta.'"' ;
 }else if($tipo == 2){
-    $sql = 'select r.*, a.nombre, c.cubo from rentas r
+    $sql = 'select r.*, a.nombre, c.cubo
+    from rentas r
     inner join arrendatarios a on a.idarrendatario = r.idarrendatario
     inner join cubos c on c.codcubo = r.idcubo
-    where r.cancelado = 0 and r.fechaultimopago <= "'.$desde.'"' ;
+ 
+    where r.cancelado = 0 and (r.fechaultimopago <= "'.$desde.'" or r.fechaultimopago is null)' ;
 }
 
 echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
 $vuelta = 1;
+$suma = 0;
 if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8">';
     $tabla = $tabla.'<th ><b>IDRENTA.</b></th>';
     $tabla = $tabla.'<th ><b>CUBO</b></th>';
     $tabla = $tabla."<th><b>ARRENDATARIO</b></th>";
+    
     $tabla = $tabla.'<th ><b>FECHA CONTRATO</b></th>';
     $tabla = $tabla.'<th ><b>FECHA ULTIMO PAGO</b></th>';
+    if($tipo == 1){
+        $tabla = $tabla.'<th ><b>TOTAL PAGO</b></th>';
+    }
    
     $tabla = $tabla."</tr>";
     while($f = $r -> fetch_array())
@@ -58,12 +73,30 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['nombre'].'</td>';
         $tabla = $tabla.'<td>'.$f['fechacontrato'].'</td>';
         $tabla = $tabla.'<td>'.$f['fechaultimopago'].'</td>';
+        if($tipo == 1){
+            $tabla = $tabla.'<td> $'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
+            $suma = $suma += $f['totalfactura'];
+        }
         $tabla = $tabla."</tr>";  
         $vuelta++;               
     }
     $tabla = $tabla.'</table>';
 }
 
+if($tipo == 1){
+    $tabla = $tabla.'<br><br><br>
+    <table  align = "center" >
+        <tr>
+            <td>
+                
+            </td>
+            <td  bgcolor="#D7E9F0">
+                MONTO TOTAL GENERADO $'.number_format($suma, 2, '.', ',').'
+            </td>
+        </tr>
+        
+    </table>';
+}
 
 
 echo $tabla;
