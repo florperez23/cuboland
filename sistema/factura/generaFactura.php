@@ -246,7 +246,20 @@
 				if(nabonos($result_venta['numcredito'])>1){
 					$pdf->Cell(82, 5,  'Saldo: $' .number_format($saldo, 2, '.', ','), 0, 1, 'R');
 				}
-				$pdf->Cell(82, 5,  'Pago: $' .number_format($pagocon, 2, '.', ','), 0, 1, 'R');		
+
+				if($tipop==2)
+				{
+					$pagoTarjeta=$pagocon+floatval (($pagocon*5)/100);
+					$pdf->Cell(82, 5,  'Pago: $' .number_format($pagoTarjeta, 2, '.', ','), 0, 1, 'R');	
+				}else
+				{
+					$pdf->Cell(82, 5,  'Pago: $' .number_format($pagocon, 2, '.', ','), 0, 1, 'R');
+				}
+					
+				
+				
+
+
 				$pdf->Cell(82, 5, 'Resta: $' . number_format(($saldo-$pagocon), 2, '.', ','), 0, 1, 'R');			
 			
 		}else if($tipo==3) /*VENTA DEVOLUCION*/
