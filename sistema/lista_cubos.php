@@ -178,16 +178,19 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 														<div class="form-group">
 														<?php
 														$fechaUltimoPago=obtenerFechaUltimoPago($data['codcubo']);
+
+														echo $fechaUltimoPago."<br>";
+														echo $data['disponible'];
 															if ($data['disponible'] == 0 or $fechaUltimoPago=='')
 														{
-															
+															echo "entro";
 															$DiasMes= date('t'); 
 															$dia = date('d', strtotime($fecha));//obtenemos el dia actual
 															$precioxDia=( $data['renta'] / $DiasMes);
 															
 															$totalrenta=round(number_format(($DiasMes-$dia)*$precioxDia, 2, '.', ',') ,0);
-															
-															if($dia=$DiasMes)
+															//echo $totalrenta;
+															if($dia==$DiasMes)
 															{
 																$totalrenta=$data['renta'];
 															}
@@ -235,6 +238,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 															
 														
 													    }
+														
 														 ?>
 
 
