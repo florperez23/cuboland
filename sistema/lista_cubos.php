@@ -179,11 +179,9 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 														<?php
 														$fechaUltimoPago=obtenerFechaUltimoPago($data['codcubo']);
 
-														echo $fechaUltimoPago."<br>";
-														echo $data['disponible'];
-															if ($data['disponible'] == 0 or $fechaUltimoPago=='')
+													    if ($data['disponible'] == 0 or $fechaUltimoPago=='')
 														{
-															echo "entro";
+														
 															$DiasMes= date('t'); 
 															$dia = date('d', strtotime($fecha));//obtenemos el dia actual
 															$precioxDia=( $data['renta'] / $DiasMes);
