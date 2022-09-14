@@ -47,8 +47,9 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 				<table class="table table-striped table-bordered" id="table">
 					<thead class="thead-dark">
 						<tr>
-							<th>ID</th>
-							<th>Cubo</th>
+							<th>NO. CUBO</th>
+							<th style="width:100px;">NOMBRE</th>
+							<th style="width:200px;">RENTERO</th>
 							<th>Precio Renta</th>
 							<th>Disponible</th>
 							
@@ -61,13 +62,19 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 						<?php
 						include "../conexion.php";
 
-						$query = mysqli_query($conexion, "SELECT * FROM cubos");
+						$query = mysqli_query($conexion, "SELECT
+						c.*, r.idarrendatario, a.nombre
+					FROM
+						cubos c
+						left join rentas r on r.idcubo = c.codcubo
+						left join arrendatarios a on a.idarrendatario = r.idarrendatario ORDER BY codcubo");
 						$result = mysqli_num_rows($query);
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
-									<td><?php echo $data['codcubo']; ?></td>
+									<td><?php echo $data['nomenclatura']; ?></td>
 									<td><?php echo $data['cubo']; ?></td>
+									<td style="width:100px;"><?php echo $data['nombre']; ?></td>
 									<td><?php echo $data['renta']; ?></td>
 									<td><?php 
 									if($data['disponible'] == 0){
