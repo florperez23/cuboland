@@ -27,11 +27,16 @@
     $estado=$_POST['disponible'.$codcubo];
     $pagocon=$_POST['pagar_con'.$codcubo];
     $renta=$_POST['renta'.$codcubo];
+
+    $mesesadelentados=$_POST['adelantar'.$codcubo];
+
     $pagocon = str_replace("$", "", $pagocon);
     $pagocon = str_replace(",", "", $pagocon);
 
     $totalrenta = str_replace("$", "", $totalrenta);
     $totalrenta = str_replace(",", "", $totalrenta);
+
+
 
     if(isset($_POST['numreferencia'.$codcubo])){
       $referencia = $_POST['numreferencia'.$codcubo];
@@ -43,11 +48,21 @@
 
     $fproximopago=null;;
 
+    if($mesesadelentados>0)
+    {
+      $fecha = date('Y-m-j');
+      $fechaultimopago = strtotime ( '+'.$mesesadelentados.' month' , strtotime ( $fecha ) ) ;
+      $fechaultimopago = date ( 'Y-m-j' , $fechaultimopago );
 
+    }else{
+      $fechaultimopago=$fecha;
+    }
+
+    echo $fechaultimopago;
    
     if($estado==0)
     {
-      $sql = "INSERT INTO rentas(idarrendatario,idcubo,fechacontrato,fechaultimopago,fechaproximopago,usuario) values ( '$idarrendatario', '$codcubo', '$fecha', '$fecha', '$fproximopago', '".$usuario."')";
+      $sql = "INSERT INTO rentas(idarrendatario,idcubo,fechacontrato,fechaultimopago,fechaproximopago,usuario) values ( '$idarrendatario', '$codcubo', '$fecha', '$fechaultimopago', '$fproximopago', '".$usuario."')";
     } 
     else
     {

@@ -138,11 +138,11 @@
 		if($tipo=='2')
 		{		$pdf->Ln();	
 		$pdf->SetFont('Arial', 'B', 9);
-		$pdf->Cell(15, 5, "Tipo Venta: ", 0, 0, 'L');
+		$pdf->Cell(18, 5, "Tipo Venta: ", 0, 0, 'L');
 		$pdf->SetFont('Arial', '', 9);
-		$pdf->Cell(20, 5, 'Credito', 0, 0, 'L');
+		$pdf->Cell(22, 5, 'Credito', 0, 0, 'L');
 		$pdf->SetFont('Arial', 'B', 9);
-		$pdf->Cell(16, 5, "Vencimiento: ", 0, 0, 'R');		
+		$pdf->Cell(18, 5, "Vencimiento: ", 0, 0, 'R');		
 		$pdf->SetFont('Arial', '', 9);
 		$pdf->Cell(25, 5, date_format( date_create($result_venta['fecha']), 'd/m/Y') , 0, 1, 'R');
 		}
@@ -153,9 +153,7 @@
 		$pdf->SetFont('Arial', '', 9);
 		$pdf->Cell(20, 5, 'Renta', 0, 0, 'L');
 		$pdf->SetFont('Arial', 'B', 9);
-		// $pdf->Cell(16, 5, "Vencimiento: ", 0, 0, 'R');		
-		// $pdf->SetFont('Arial', '', 9);
-		// $pdf->Cell(25, 5, date_format( date_create($result_venta['fecha']), 'd/m/Y') , 0, 1, 'R');
+
 		}
 
 		$pdf->Cell(78, 5,'', 0, 1, 'C');
@@ -206,7 +204,7 @@
 				}
 				else 
 				{
-					if($row['cantidad']>$row['cantidad_mayoreo'])
+					if($row['cantidad']>=$row['cantidad_mayoreo'] ) 
 					{
 						$pdf->Cell(12, 5, '$'.number_format($row['precio_promocion'], 2, '.', ','), 0, 0, 'R');
 						
@@ -230,48 +228,57 @@
 		/*VENTA CONTADO*/
 		if($tipo==1)
 		{
-			
-			
-				$pdf->Cell(82, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
-				$pdf->Cell(82, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');		
+			$pdf->Cell(82, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
+			$pdf->Cell(82, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');		
+			if($tipop!=2)
+			{
 				$pdf->Cell(82, 5,  'Cambio: $' .number_format(($pagocon-$totalventa), 2, '.', ','), 0, 1, 'R');	
+			}
 			
-			
+
 		}
 		
 		else if($tipo==2)/*VENTA CREDITO*/
 		{
-			
 			   $pdf->Cell(82, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
 				
 				/*EVALUAMOS SI HAY MAS ABONOS, PARA MOSTRAR EL SALDO*/ 	
 				if(nabonos($result_venta['numcredito'])>1){
 					$pdf->Cell(82, 5,  'Saldo: $' .number_format($saldo, 2, '.', ','), 0, 1, 'R');
 				}
-				$pdf->Cell(82, 5,  'Pago: $' .number_format($pagocon, 2, '.', ','), 0, 1, 'R');		
-				$pdf->Cell(82, 5, 'Resta: $' . number_format(($saldo-$pagocon), 2, '.', ','), 0, 1, 'R');
-			
+
+				if($tipop==2)
+				{
+					$pagoTarjeta=$pagocon+floatval (($pagocon*5)/100);
+					$pdf->Cell(82, 5,  'Pago: $' .number_format($pagoTarjeta, 2, '.', ','), 0, 1, 'R');	
+				}else
+				{
+					$pdf->Cell(82, 5,  'Pago: $' .number_format($pagocon, 2, '.', ','), 0, 1, 'R');
+				}
+					
+				
+				
+
+
+				$pdf->Cell(82, 5, 'Resta: $' . number_format(($saldo-$pagocon), 2, '.', ','), 0, 1, 'R');			
 			
 		}else if($tipo==3) /*VENTA DEVOLUCION*/
-		{
-			
+		{			
 			$pdf->Cell(82, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
 			$pdf->Cell(82, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');	
 			$pdf->Cell(82, 5, 'Referencia:' . $referencia, 0, 1, 'R');	
-		
-			
 			
 		}else if($tipo=='5')
 		{
 			$pdf->Cell(82, 5, 'Total: $' . number_format($totalfactura, 2, '.', ','), 0, 1, 'R');	
 			$pdf->Cell(82, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');		
-			$pdf->Cell(82, 5,  'Cambio: $' .number_format(($pagocon-$totalfactura), 2, '.', ','), 0, 1, 'R');	
-		}
-		
+			if($tipop!=2){
+			$pdf->Cell(82, 5, 'Cambio: $' .number_format(($pagocon-$totalfactura), 2, '.', ','), 0, 1, 'R');
+		     }	
+		}		
 		else{
 			$pdf->Cell(82, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
-			$pdf->Cell(82, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');	
-			
+			$pdf->Cell(82, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');				
 		}
 		
 
@@ -279,8 +286,14 @@
 		if($tipop!=1) /* EL PAGO SE REALIZO POR TRANSFERENCIA O TARJETA*/		
 		{				
 				$pdf->SetFont('Arial', 'B', 9);
+				
 				$pdf->Cell(82, 5, 'Tipo dePago:' . $tipopago, 0, 1, 'R');		
-		 		$pdf->Cell(72, 5, 'Referencia:' . $referencia, 0, 1, 'R');
+		 		$pdf->Cell(82, 5, 'Referencia:' . $referencia, 0, 1, 'R');
+				 $pdf->SetFont('Arial', 'B', 7);
+				 if($tipop==2)
+				 {
+				 $pdf->Cell(82, 5,  '5% de comision por pago con tarjeta', 0, 1, 'R');	
+				 }
 
 		}	
 			

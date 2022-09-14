@@ -365,8 +365,9 @@ $('#txt_cant_producto').keyup(function(e) {
  var precio_total = $(this).val() * $('#txt_precio').html();
  var existencia = parseInt($('#txt_existencia').html());
 
-  
-
+  console.log("hola"+parseInt($('#txt_cantidad_mayoreo').val()));
+if(parseInt($('#txt_cantidad_mayoreo').val())>0)
+{
   if($(this).val() >= parseInt($('#txt_cantidad_mayoreo').val())){
    $('#tipo').html("Precio de mayoreo");
     $('#txt_descuento').html($('#txt_precio_mayoreo').val());
@@ -383,6 +384,7 @@ $('#txt_cant_producto').keyup(function(e) {
    $('#tipo').html("Descuento");
    $('#txt_descuento').html('');
   }
+}
    
   
  $('#txt_precio_total').html(precio_total);
@@ -442,7 +444,8 @@ $('#add_product_venta').click(function(e) {
         //console.log(response);
          $('#detalle_venta').html(info.detalle);
          $('#detalle_totales').html(info.totales);
-         $('#totalmodal').val(  MASK('', (info.totalmodal),'$##,###,##0.00',1));             
+         $('#totalmodal').val(  MASK('', (info.totalmodal),'$##,###,##0.00',1));      
+         $('#totalFIJO').val(  MASK('', (info.totalmodal),'$##,###,##0.00',1));              
          $('#txt_cod_producto').val('');
          $('#txt_cod_pro').val('');
          $('#txt_descripcion').html('-');
@@ -551,9 +554,9 @@ $('#btn_facturar_venta').click(function(e) {
      data: {action:action,codcliente:codcliente,tipoventa:tipoventa, pago:pago,fechaven:fechaven,tipopago:tipopago,referencia:referencia,numcredito:numcredito},
      success: function(response) {
      (response); 
-     //console.log(response);
+     console.log(response);
      if (response != 0) {
-     //console.log(response);
+     console.log(response);
        var info = JSON.parse(response);        
        generarPDF(info.codcliente,info.nofactura);
        location.reload();
@@ -720,7 +723,8 @@ function del_product_detalle(correlativo) {
       var info = JSON.parse(response);
        $('#detalle_venta').html(info.detalle);
        $('#detalle_totales').html(info.totales);
-       $('#totalmodal').val(  MASK('', (info.totalmodal),'$##,###,##0.00',1));          
+       $('#totalmodal').val(  MASK('', (info.totalmodal),'$##,###,##0.00',1));
+       $('#totalFIJO').val(  MASK('', (info.totalmodal),'$##,###,##0.00',1));              
        $('#txt_cod_producto').val('');
        $('#txt_descripcion').html('-');
        $('#txt_existencia').html('-');
@@ -773,7 +777,8 @@ function searchForDetalle(id) {
        var info = JSON.parse(response);
        $('#detalle_venta').html(info.detalle);
        $('#detalle_totales').html(info.totales);
-       $('#totalmodal').val(MASK('', (info.totalmodal),'$##,###,##0.00',1));          
+       $('#totalmodal').val(MASK('', (info.totalmodal),'$##,###,##0.00',1));  
+       $('#totalFIJO').val(  MASK('', (info.totalmodal),'$##,###,##0.00',1));        
      }
      viewProcesar();
    },
@@ -1046,15 +1051,14 @@ function pagarcon(codcubo)
 {
   //if (e.which == 13) {  
  
- console.log("entro");
+ 
     pagar_con = document.getElementById("pagar_con"+codcubo).value.replace('$',''); //Quitamos el signo de pesos 
     total = document.getElementById("totalmodal"+codcubo).value.replace('$','');//Quitamos el signo de pesos 
  
     total=total.replace(',','');//Quitamos el la coma para poder hacer la operacion
     pagar_con=pagar_con.replace(',','');//Quitamos el la coma para poder hacer la operacion
  
-    console.log( pagar_con);
-    console.log(total);
+ 
     const cambio =(parseFloat(pagar_con)-parseFloat(total));
     tipopago= document.getElementById("tipopago"+codcubo).value;
     const tipoventa = document.getElementById("tipoven"+codcubo).value;    
@@ -1074,8 +1078,12 @@ function pagarcon(codcubo)
             document.getElementById('pagar_con'+codcubo).focus();
             
           }
+ }else if (tipopago==2){
  
-  
+ 
+         
+      
+
  }
 }
  
@@ -1102,7 +1110,7 @@ $('#tipoven').on('change', function() {
   $('#ventacredito').slideDown();
   const total=$('#totalmodal').val();
   $('#totalmodalC').val(total);
-
+  $('#totalFIJOc').val(total);
   numcredito = document.getElementById("numcredito").value; 
  
   if(numcredito==0)
@@ -1278,33 +1286,102 @@ function abrirModalAbono(numcredito,total,saldo)
 //EVALUAMOS QUE TIPO DE PAGO SERÁ
 $('#tipopago').on('change', function() {
 
- if(this.value=='1')
+  var total=$('#totalmodal').val();
+  var totalC=$('#totalmodalC').val();
+
+  total=total.replace('$','');//Quitamos el signo de pesos 
+  total=total.replace(',','');//Quitamos el la coma para poder hacer la operacion
+
+  totalC=totalC.replace('$','');//Quitamos el signo de pesos 
+  totalC=totalC.replace(',','');//Quitamos el la coma para poder hacer la operacion
+  
+
+
+  if(this.value=='2') //Evaluamos si es una transferencia
+ {
+  
+  if ($('#tipoven').val()==1)
+      {
+              total=parseFloat(total)+parseFloat ((total*5)/100);
+              totalC=parseFloat(totalC)+parseFloat((totalC*5)/100);
+      
+      $('#referencia').slideDown(); 
+      $('#divCambio').slideUp();
+      $('#divCambioC').slideUp();
+
+      
+      
+     
+          document.getElementById('totalmodal').value=MASK('', (total),'$##,###,##0.00',1);
+          document.getElementById('totalmodalC').value=MASK('', (totalC),'$##,###,##0.00',1);
+          document.getElementById('pagar_con').value=MASK('', (total),'$##,###,##0.00',1);
+          document.getElementById('pagar_conC').value=MASK('', (totalC),'$##,###,##0.00',1);
+          document.getElementById('pagar_con').disabled = true;
+          document.getElementById('pagar_conC').disabled = true;
+        
+        var total=$('#totalmodal').val();
+        var totalC=$('#totalmodalC').val(); 
+      
+        $('.alertCambio').html('<p style="color : red;">5% De comisión por pago con Tarjeta</p>'); 
+         
+      }
+  
+
+ } else if(this.value=='1')  // su es tipo de pago efectivo
  { 
-   $('#referencia').slideUp();       
-   $('#divCambio').slideDown();
-   $('#divCambioC').slideDown();
+  $('#referencia').slideUp();       
+  $('#divCambio').slideDown();
+  $('#divCambioC').slideDown();
    document.getElementById('pagar_con').value="0.00";
    document.getElementById('pagar_conC').value="0.00";
-   document.getElementById('pagar_con').disabled = false;
-   document.getElementById('pagar_con').disabled = false;
-   
-}  
- else{  
+
+   $('.alertCambio').html('<p style="color : red;"></p>');
+
+  
+  var totalFijo=$('#totalFIJO').val();
+   var totalFijoc=$('#totalFIJOc').val();
  
- $('#referencia').slideDown(); 
- $('#divCambio').slideUp();
- $('#divCambioC').slideUp();
- var total=$('#totalmodal').val();
- var totalC=$('#totalmodalC').val();
-  console.log(total);  
-  if ($('#tipoven').val()==1)
+     document.getElementById('totalmodal').value=MASK('', (totalFijo),'$##,###,##0.00',1);
+     document.getElementById('totalmodalC').value=MASK('', (totalFijoc),'$##,###,##0.00',1);
+
+     document.getElementById('pagar_con').disabled = false;
+     document.getElementById('pagar_conC').disabled = false;
+   
+
+ }else
  {
-   document.getElementById('pagar_con').value=total;
-   document.getElementById('pagar_conC').value=totalC;
-   document.getElementById('pagar_con').disabled = true;
-   document.getElementById('pagar_con').disabled = true;
-   }
- }
+
+  $('.alertCambio').html('<p style="color : red;"></p>');
+  
+  $('#referencia').slideDown();       
+  $('#divCambio').slideUp();
+  $('#divCambioC').slideUp();
+
+  var totalFijo=$('#totalFIJO').val();
+   var totalFijoc=$('#totalFIJOc').val();
+
+
+  document.getElementById('totalmodal').value=MASK('', (totalFijo),'$##,###,##0.00',1);
+  document.getElementById('totalmodalC').value=MASK('', (totalFijoc),'$##,###,##0.00',1);
+
+
+
+  if($('#tipoven').val()==1)
+  {    
+  document.getElementById('pagar_con').value=MASK('', (totalFijo),'$##,###,##0.00',1);
+  document.getElementById('pagar_conC').value=MASK('', (totalFijoc),'$##,###,##0.00',1);
+  document.getElementById('pagar_con').disabled = true;
+  document.getElementById('pagar_conC').disabled = true;
+  }else
+  {
+    document.getElementById('pagar_con').value="0.00";
+   document.getElementById('pagar_conC').value="0.00";
+   document.getElementById('pagar_con').disabled = false;
+   document.getElementById('pagar_conC').disabled = false;
+  
+  }
+}
+
 });
 
 function tipopagocubo(codcubo)
@@ -1313,9 +1390,28 @@ function tipopagocubo(codcubo)
   //EVALUAMOS QUE TIPO DE PAGO SERÁ
 
  valor=   $('#tipopago'+codcubo).val();
+ var total=$('#totalmodal'+codcubo).val();
+ var totalFIJO=$('#totalFIJO'+codcubo).val();
+ total=total.replace('$','');//Quitamos el signo de pesos 
+ total=total.replace(',','');//Quitamos el la coma para poder hacer la operacion
+
+ totalFIJO=totalFIJO.replace('$','');//Quitamos el signo de pesos 
+ totalFIJO=totalFIJO.replace(',','');//Quitamos el la coma para poder hacer la operacion
+
+ var mesesxadelantar=$('#adelantar'+codcubo).val();
+ 
 
   if(valor=='1')
   { 
+     if(mesesxadelantar==0)
+      {
+        renta= totalFIJO;
+      }else
+      {
+        renta=parseFloat(totalFIJO*mesesxadelantar);
+      }
+
+    document.getElementById('totalmodal'+codcubo).value=renta;
     $('#referencia'+codcubo).slideUp();       
     $('#divCambio'+codcubo).slideDown();
     $('#divCambioC'+codcubo).slideDown();
@@ -1325,20 +1421,54 @@ function tipopagocubo(codcubo)
   
  }  
   else{  
-  console.log("entrososno");
-  $('#referencia'+codcubo).slideDown(); 
-  $('#divCambio'+codcubo).slideUp();
-  $('#divCambioC'+codcubo).slideUp();
-  var total=$('#totalmodal'+codcubo).val();
-  var totalC=$('#totalmodalC'+codcubo).val();
-  
-   if ($('#tipoven'+codcubo).val()==1)
-  {
-    document.getElementById('pagar_con'+codcubo).value=total;
-    document.getElementById('pagar_conC'+codcubo).value=totalC;
-  
-    $('pagar_con'+codcubo).attr("readonly","readonly");
+    
+      
+   
+
+
+    $('#referencia'+codcubo).slideDown(); 
+    $('#divCambio'+codcubo).slideUp();
+    $('#divCambioC'+codcubo).slideUp();
+
+    if(mesesxadelantar==0)
+    {
+      
+      total= totalFIJO;
+    }else
+    {
+      total=parseFloat(totalFIJO*mesesxadelantar);
     }
+    
+    console.log(totalFIJO);
+  if (valor==2)
+  ///var total=$('#totalmodal'+codcubo).val();
+  {
+    total=parseFloat(total)+parseFloat ((total*5)/100);    
+
+    document.getElementById('totalmodal'+codcubo).value=MASK('', (total),'$##,###,##0.00',1);
+    document.getElementById('pagar_con'+codcubo).value=MASK('', (total),'$##,###,##0.00',1);
+    $('.alertCambio').html('<p style="color : red;">5% De comisión por pago con Tarjeta</p>'); 
+  
+  }else
+  {
+   
+    document.getElementById('totalmodal'+codcubo).value=MASK('', (total),'$##,###,##0.00',1);
+    document.getElementById('pagar_con'+codcubo).value=MASK('', (total),'$##,###,##0.00',1);
+    $('.alertCambio').html('<p style="color : red;"></p>'); 
+  
+  }
+ 
+
+
+  
+  
+  //  if ($('#tipoven'+codcubo).val()==1)
+  // {
+  //   document.getElementById('pagar_con'+codcubo).value=total;
+   
+  
+  //   $('pagar_con'+codcubo).attr("readonly","readonly");
+  //   }
   }
 
 }
@@ -2169,3 +2299,47 @@ $('#btn_anular_venta_salida').click(function(e) {
  }
  
 });
+
+
+function adelantarMeses(codcubo)
+{
+  var total=$('#totalmodal'+codcubo).val();
+  var totalFIJO=$('#totalFIJO'+codcubo).val();
+  var mesesxadelantar=$('#adelantar'+codcubo).val();
+  total=total.replace('$','');//Quitamos el la coma para poder hacer la operacion
+  total=total.replace(',','');//Quitamos el la coma para poder hacer la operacion
+  totalFIJO=totalFIJO.replace('$','');//Quitamos el la coma para poder hacer la operacion
+  totalFIJO=totalFIJO.replace(',','');//Quitamos el la coma para poder hacer la operacion
+  if($('#tipopago'+codcubo).val()==2)
+  {
+    if(mesesxadelantar==0)
+    {
+      renta= total;
+    }else
+    {
+      renta=parseFloat(total*mesesxadelantar);
+    }
+  }else
+  {
+    if(mesesxadelantar==0)
+    {
+      renta= totalFIJO;
+    }else
+    {
+      renta=parseFloat(totalFIJO*mesesxadelantar);
+    }
+  }
+
+
+ document.getElementById('totalmodal'+codcubo).value=MASK('', (renta),'$##,###,##0.00',1);
+ if($('#tipopago'+codcubo).val()!=1){
+ document.getElementById('pagar_con'+codcubo).value=MASK('', (renta),'$##,###,##0.00',1);
+ }else
+ {
+  document.getElementById('pagar_con'+codcubo).value=MASK('', (0),'$##,###,##0.00',1);
+ }
+
+
+
+
+}
