@@ -49,9 +49,10 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 						<tr>
 							<th>NO. CUBO</th>
 							<th style="width:100px;">NOMBRE</th>
+							
+							<th>PRECIO RENTA</th>
 							<th style="width:200px;">RENTERO</th>
-							<th>Precio Renta</th>
-							<th>Disponible</th>
+							<th>DISPONIBLE</th>
 							
 							<?php if ($_SESSION['rol'] == 1) { ?>
 							<th>ACCIONES</th>
@@ -62,20 +63,18 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 						<?php
 						include "../conexion.php";
 
-						$query = mysqli_query($conexion, "SELECT
-						c.*, r.idarrendatario, a.nombre
-					FROM
-						cubos c
-						left join rentas r on r.idcubo = c.codcubo
-						left join arrendatarios a on a.idarrendatario = r.idarrendatario ORDER BY codcubo");
+						$query = mysqli_query($conexion, "SELECT c.*, r.idarrendatario, a.nombre FROM
+						cubos c left join rentas r on r.idcubo = c.codcubo
+						left join arrendatarios a on a.idarrendatario = r.idarrendatario ORDER BY codcubo ASC");
 						$result = mysqli_num_rows($query);
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
 									<td><?php echo $data['nomenclatura']; ?></td>
 									<td><?php echo $data['cubo']; ?></td>
-									<td style="width:100px;"><?php echo $data['nombre']; ?></td>
 									<td><?php echo $data['renta']; ?></td>
+									<td style="width:100px;"><?php echo $data['nombre']; ?></td>
+									
 									<td><?php 
 									if($data['disponible'] == 0){
 										echo '<span class="badge bg-success" style="color:white;">Disponible</span>';
