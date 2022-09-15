@@ -3,6 +3,7 @@ ob_start();
 
 include "../conexion.php";
 require_once('pdf/tcpdf.php');
+require_once('includes/functions.php');
 
 $idcubo = $_POST['cubor'];
 //echo $cat.' '.$seccion;+
@@ -28,6 +29,7 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<th ><b>CODIGO</b></th>';
     $tabla = $tabla.'<th ><b>DESCRIPCION</b></th>';
     $tabla = $tabla."<th><b>PRECIO</b></th>";
+    $tabla = $tabla."<th><b>FECHA INGRESO</b></th>";
     $tabla = $tabla.'<th ><b>CUBO</b></th>';
     $tabla = $tabla."</tr>";
     while($f = $r -> fetch_array())
@@ -40,6 +42,7 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['codproducto'].'</td>';
         $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['precio'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
         $tabla = $tabla.'<td>'.$f['nomcubo'].'</td>';
         $tabla = $tabla."</tr>";  
         $vuelta++;               
@@ -79,7 +82,12 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetTitle('CUBOLAND');
 $pdf->SetKeywords('Tienda de cubos');
-$pdf->SetHeaderData('Imagen1.jpg', '28', 'PRODUCTOS', "Impreso: ".$fecha."");
+
+if($idcubo == 0){
+    $pdf->SetHeaderData('Imagen1.jpg', '28', "PRODUCTOS", "Impreso: ".$fecha."");
+}else{
+    $pdf->SetHeaderData('Imagen1.jpg', '28', "PRODUCTOS DEL ".cubo_nombre($idcubo).", RENTERO: ".rentero_cubo($idcubo)."", "Impreso: ".$fecha."");
+}
 //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '');
 //$link = "http://".$urlnueva[0]."/md_lista.php";
 
