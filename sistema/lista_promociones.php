@@ -49,7 +49,9 @@
 						<?php
 						require "../conexion.php";
 
-                        $sql="SELECT * from promociones" ;
+                        $sql="SELECT * from promociones 
+						left join cubos on 
+						promociones.ididentificador=cubos.codcubo" ;
 						$query = mysqli_query($conexion,$sql);
 						mysqli_close($conexion);
 						$cli = mysqli_num_rows($query);
@@ -75,7 +77,19 @@
                                     ?>
                                   
                                     
-									<td><?php echo $dato['ididentificador']; ?></td> 
+									
+									<td>
+                                        <?php if( $dato['cubo'] !='')
+                                    {
+                                    echo '<span>'.$dato['cubo'].'</span>';
+									
+                                    }
+									else
+                                    {
+                                        echo '<span>'.$dato['ididentificador'].'</span>';
+                                    }
+                                    ?>
+                                  </td>
 
 								  <td>
                                         <?php if( $dato['idtipo'] =='1')
@@ -93,7 +107,7 @@
                                     <td><?php echo date_format( date_create($dato['fechainicio']), 'd/m/Y');?></td>
                                     <td><?php echo date_format( date_create($dato['fechatermino']), 'd/m/Y');?></td>
                                     <td>
-                                        <?php if( $dato['fechatermino']<date("Y-m-d H:i:s"))
+                                        <?php if( $dato['fechatermino']<=date("Y-m-d"))
                                     {echo '   <span class="badge bg-danger" style="color:white;">Inactivo</span>';
                                   
                                     }else
