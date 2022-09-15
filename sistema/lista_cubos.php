@@ -47,6 +47,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 				<table class="table table-striped table-bordered" id="table">
 					<thead class="thead-dark">
 						<tr>
+							<th style='display:none;'>algo</th>
 							<th>NO. CUBO</th>
 							<th style="width:100px;">NOMBRE</th>
 							
@@ -70,6 +71,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
+									<td style='display:none;'><?php echo $data['codcubo']; ?></td>
 									<td><?php echo $data['nomenclatura']; ?></td>
 									<td><?php echo $data['cubo']; ?></td>
 									<td><?php echo $data['renta']; ?></td>

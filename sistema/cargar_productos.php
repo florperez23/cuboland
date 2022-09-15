@@ -1,17 +1,57 @@
-<?php include_once "includes/header.php"; ?>
+<?php
+    include "../conexion.php";
+    session_start();
+    $codcubo = $_POST['codcubo'];
+  
+?>
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/popper.js/umd/popper.min.js"> </script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
+<script src="vendor/jquery-validation/jquery.validate.min.js"></script>
+<script src="js/Chart.bundle.min.js"></script>
+<script src="js/front.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+<script src="js/dataTables.bootstrap4.min.js"></script>
+<script src="js/sweetalert2@10.js"></script>
+<script type="text/javascript" src="js/producto.js"></script>
+<script type="text/javascript" src="js/imprimircodigo.js"></script>
+<script type="text/javascript" src="js/all.min.js"></script>
+<script type="text/javascript">
 
-<!-- Begin Page Content -->
-<div class="container-fluid">
+  
+  $(document).ready(function() {
+    $('#table').DataTable({
+      language: {
+        "decimal": "",
+        "emptyTable": "No hay datos",
+        "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+        "infoEmpty": "Mostrando 0 a 0 de 0 registros",
+        "infoFiltered": "(Filtro de _MAX_ total registros)",
+        "infoPostFix": "",
+        "thousands": ",",
+        "lengthMenu": "Mostrar _MENU_ registros",
+        "loadingRecords": "Cargando...",
+        "processing": "Procesando...",
+        "search": "Buscar:",
+        "zeroRecords": "No se encontraron coincidencias",
+        "paginate": {
+          "first": "Primero",
+          "last": "Ultimo",
+          "next": "Siguiente",
+          "previous": "Anterior"
+        },
+        "aria": {
+          "sortAscending": ": Activar orden de columna ascendente",
+          "sortDescending": ": Activar orden de columna desendente"
+        }
+      }
+    });
+    var usuarioid = '<?php echo $_SESSION['idUser']; ?>';
+    searchForDetalle(usuarioid);
+  });
+</script>
 
-	<!-- Page Heading -->
-	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<h1 class="h3 mb-0 text-gray-800">Productos</h1>
-		<a href="registro_producto.php" class="btn btn-primary">Nuevo</a>
-		<!--<a href="reportes_productos.php" class="btn btn-primary">Reportes</a> -->
-	</div>
-
-<div id="respuesta">
-	
 <!-- Begin Page Content -->
 <div class="container-fluid">
  <!-- Content Row -->
@@ -33,11 +73,16 @@
 				<?php
 				if ($res > 0) {
 					while ($d = mysqli_fetch_array($query)) {	
+                        if($codcubo == $d['codcubo']){
+                ?>
+                            <option value="<?php echo $d['codcubo']; ?>" selected><?php echo $d['cubo']; ?></option>
+                <?php
+                        }else{
 				?>
 					
 					<option value="<?php echo $d['codcubo']; ?>"><?php echo $d['cubo']; ?></option>
 				<?php
-						
+                        }
 					}
 				}
 					?>
@@ -62,7 +107,7 @@
 </div>
 
 
-	<div class="row">
+<div class="row">
 		<div class="col-lg-12">
 			<div class="table-responsive">
 				<table class="table table-striped table-bordered" id="table">
@@ -70,7 +115,7 @@
 						<tr>
 							<th>CODIGO</th>
 							<th>DESCRIPCION</th>
-							<th>CUBO</th>
+							<th style="width:250px;">CUBO</th>
 							<th>PRECIO</th>
 							
 							<?php if ($_SESSION['rol'] == 1) { ?>
@@ -80,13 +125,18 @@
 					</thead>
 					<tbody>
 						<?php
-						include "../conexion.php";
+					
+                            if($codcubo == 0){
+                                $sql = "SELECT p.*, c.cubo
+                                FROM producto p
+                                INNER JOIN cubos c ON c.codcubo = p.codcubo";
+                            }else{
+                                $sql = "SELECT p.*, c.cubo
+                                FROM producto p
+                                INNER JOIN cubos c ON c.codcubo = p.codcubo WHERE p.codcubo =  $codcubo";
+                            }
 
-						$query = mysqli_query($conexion, "SELECT
-						p.*, c.cubo
-					FROM
-						producto p
-						INNER JOIN cubos c ON c.codcubo = p.codcubo");
+						$query = mysqli_query($conexion, $sql);
 						$result = mysqli_num_rows($query);
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
@@ -119,46 +169,4 @@
 			</div>
 		</div>
 	</div>
-	</div>
 </div>
-<!-- /.container-fluid -->
-<script>
-    function cb(cod) {
-        var data = $("#codigob"+cod).val();
-
-        $.post( "guardarImagen.php", { filepath: "codigosGenerados/"+data+".png", text:data }  )
-            .done(function( respuesta ) {
-				location.href = "codigoimprimir.php?codigo="+data;
-
-                /*Swal.fire({
-                    icon: 'success',
-                    title: 'Hecho!',
-                    text: 'Se ha registrado con éxito el código!',
-                    footer: ''
-                })*/
-            }
-        );
-
-		
-       // $("#imagen"+data).html('<img src="barcode\\barcode.php?text='+data+'&size=60&codetype=Code39&print=true"/><a href="codigoimprimir.php?codigo='+data+'" class="btn btn-success"><i class=" fas fa-solid fa-print"></i></a>');
-      
-    }
-
-
-	function cambiartabla(){
-		var codcubo = $('#cubor').val();
-
-		$.ajax({
-			url: "cargar_productos.php",
-			type: "post",
-			data: {codcubo: codcubo},
-			success: function(data){
-				$('#respuesta').html(data+"\n");
-			}
-		});
-	}
-    
-
-  </script>
-
-<?php include_once "includes/footer.php"; ?>
