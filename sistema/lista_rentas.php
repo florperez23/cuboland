@@ -9,14 +9,15 @@
 		<a href="registro_renta.php" class="btn btn-primary">Nuevo</a>
 	</div>
 
-
+	<div id="respuesta">
+	
 	<!-- Elementos para crear el reporte -->
 	<form action="reporteRentas.php" method="post">
-	<div class="row">
-	<div class="col-md-4" >
+	<div class="row"> 
+		<div class="col-md-4" >
 			<div class="form-group">
 			<label>FILTRO</label>
-				<select id="tipo" name="tipo"  class="form-control">
+				<select id="tipo" name="tipo" onchange="filtro()" class="form-control">
 					<option value="0">SIN ESPECIFICAR</option>
 					<option value="1">PAGADAS</option>
 					<option value="2">NO PAGADAS</option>
@@ -64,9 +65,10 @@
 									<td><?php echo $data['idcubo']; ?></td>
 									<td><?php echo $data['cubo']; ?></td>
 									<td><?php echo $data['nombre']; ?></td>
-									<td><?php echo $data['fechacontrato']; ?></td>
-									<td><?php echo $data['fechaultimopago']; ?></td>
-                                    <td><?php echo $data['fechaproximopago']; ?></td>
+									
+									<td><?php echo date("d/m/Y", strtotime($data['fechacontrato'])); ?></td>
+									<td><?php echo date("d/m/Y", strtotime($data['fechaultimopago'])); ?></td>
+                                    <td><?php echo date("d/m/Y", strtotime($data['fechaproximopago'])); ?></td>
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
 										<a href="editar_renta.php?id=<?php echo $data['id']; ?>" class="btn btn-success"><i class='fas fa-edit'></i></a>
@@ -86,9 +88,26 @@
 		</div>
 	</div>
 
+	</div>
+
 
 </div>
 <!-- /.container-fluid -->
+<script>
+  	function filtro(){
+		var tipo = $('#tipo').val();
 
+		$.ajax({
+			url: "cargar_rentas.php",
+			type: "post",
+			data: {tipo: tipo},
+			success: function(data){
+				$('#respuesta').html(data+"\n");
+			}
+		});
+	}
+    
+
+  </script>
 
 <?php include_once "includes/footer.php"; ?>

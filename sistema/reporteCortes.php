@@ -49,7 +49,10 @@ if ($r -> num_rows >0){
         }
         $tabla = $tabla.'<td>'.$vuelta.'</td>';
         $tabla = $tabla.'<td>'.$f['nofactura'].'</td>';
-        $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
+      
+            $fecha = date("d/m/Y", strtotime($f['fecha']));
+            
+        $tabla = $tabla.'<td>'.$fecha.'</td>';
         $tabla = $tabla.'<td>'.$f['codproducto'].'</td>';
         $tabla = $tabla.'<td>'.$f['cantidad'].'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['precio_venta'], 2, '.', ',').'</td>';

@@ -42,7 +42,7 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['codproducto'].'</td>';
         $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['precio'], 2, '.', ',').'</td>';
-        $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
+        $tabla = $tabla.'<td>'.date("d/m/Y", strtotime($f['fecha'])).'</td>';
         $tabla = $tabla.'<td>'.$f['nomcubo'].'</td>';
         $tabla = $tabla."</tr>";  
         $vuelta++;               

@@ -86,7 +86,7 @@
 						?>
 								<tr>
 									<td><?php echo $dato['nofactura']; ?></td>
-									<td><?php echo $dato['fecha']; ?></td>
+									<td><?php echo date("d/m/Y H:i:s", strtotime($dato['fecha'])); ?></td>
 									<td><?php echo $dato['totalfactura']; ?></td>
 									<td>
 										<button type="button" class="btn btn-primary view_factura" cl="<?php echo $dato['codcliente'];  ?>" f="<?php echo $dato['nofactura']; ?>" p="<?php echo $dato['totalfactura']; ?>" t="<?php echo $dato['idtipoventa']; ?>">Ver</button>

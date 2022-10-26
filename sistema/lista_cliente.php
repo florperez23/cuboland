@@ -17,7 +17,7 @@
 					<thead class="thead-dark">
 						<tr>
 							<th>ID</th>
-							<th>DNI</th>
+							
 							<th>NOMBRE</th>
 							<th>TELEFONO</th>
 							<th>DIRECCIÓN</th>
@@ -36,7 +36,7 @@
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
 									<td><?php echo $data['idcliente']; ?></td>
-									<td><?php echo $data['dni']; ?></td>
+									
 									<td><?php echo $data['nombre']; ?></td>
 									<td><?php echo $data['telefono']; ?></td>
 									<td><?php echo $data['direccion']; ?></td>

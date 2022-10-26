@@ -2000,7 +2000,7 @@ $('#cubop').change(function(e) {
       document.getElementById('numsig').value = response;
       var nomenclatura = $('#nom').val();
       var numsig = $('#numsig').val();
-      $('#codigo').val(nomenclatura+numsig);
+      $('#codigo').val(nomenclatura+'-'+numsig);
    },
    error: function(error) {
    }

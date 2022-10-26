@@ -71,8 +71,12 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['id'].'</td>';
         $tabla = $tabla.'<td>'.$f['cubo'].'</td>';
         $tabla = $tabla.'<td>'.$f['nombre'].'</td>';
-        $tabla = $tabla.'<td>'.$f['fechacontrato'].'</td>';
-        $tabla = $tabla.'<td>'.$f['fechaultimopago'].'</td>';
+
+        $fechaContrato = date("d/m/Y", strtotime($f['fechacontrato']));
+        $tabla = $tabla.'<td>'.$fechaContrato.'</td>';
+
+        $fechaultimopago = date("d/m/Y", strtotime($f['fechaultimopago']));
+        $tabla = $tabla.'<td>'.$fechaultimopago.'</td>';
         if($tipo == 1){
             $tabla = $tabla.'<td> $'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
             $suma = $suma += $f['totalfactura'];

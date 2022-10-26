@@ -108,7 +108,7 @@ if ($r -> num_rows >0){
         }
         $tabla = $tabla.'<td>'.$vuelta.'</td>';
         $tabla = $tabla.'<td>'.$f['nofactura'].'</td>';
-        $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
+        $tabla = $tabla.'<td>'.date("d/m/Y H:i:s", strtotime($f['fecha'])).'</td>';
         $tabla = $tabla.'<td>'.$f['nomusuario'].'</td>';
         $suma = $suma += $f['totalfactura'];
         $tabla = $tabla.'<td>$'.number_format($f['totalfactura'], 2, '.', ',').'</td>';

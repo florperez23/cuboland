@@ -33,7 +33,7 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['idarrendatario'].'</td>';
         $tabla = $tabla.'<td>'.$f['nombre'].'</td>';
         $tabla = $tabla.'<td>'.$f['telefono'].'</td>';
-        $tabla = $tabla.'<td>'.$f['fechaingreso'].'</td>';
+        $tabla = $tabla.'<td>'.date("d/m/Y", strtotime($f['fechaingreso'])).'</td>';
 
         $tabla = $tabla."</tr>";    
         $vuelta++;       

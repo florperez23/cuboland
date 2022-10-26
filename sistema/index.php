@@ -104,13 +104,13 @@
 			</div>
 		</a>
 
-		<a class="col-xl-3 col-md-6 mb-4" href="lista_arrendatarios.php">
+		<a class="col-xl-3 col-md-6 mb-4" href="lista_cortes.php">
 			<div class="card border-left-warning bg-white shadow h-100 py-2">
 				<div class="card-body">
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
-							<div class="text-xs font-weight-bold text-titulo text-uppercase mb-1">Dueños de cubos</div>
-							<div class="h5 mb-0 font-weight-bold text-gray-800">Renteros</div>
+							<div class="text-xs font-weight-bold text-titulo text-uppercase mb-1">Corte por cubo</div>
+							<div class="h5 mb-0 font-weight-bold text-gray-800">Cortes mensuales</div>
 						</div>
 						<div class="col-auto">
 							

@@ -52,7 +52,12 @@ if ($r -> num_rows >0){
             $tabla = $tabla.'<td>Libre</td>';
         }
         $tabla = $tabla.'<td>'.$f['nombre'].'</td>';
-        $tabla = $tabla.'<td>'.$f['fechacontrato'].'</td>';
+        if($f['fechacontrato']<>''){
+        $fechacontrato = date("d/m/Y", strtotime($f['fechacontrato']));
+        }else{
+            $fechacontrato='';
+        }
+        $tabla = $tabla.'<td>'.$fechacontrato.'</td>';
         $tabla = $tabla."</tr>";    
         $vuelta++;       
     }

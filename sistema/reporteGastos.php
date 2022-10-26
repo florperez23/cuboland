@@ -44,7 +44,8 @@ if ($r -> num_rows >0){
         }
         $tabla = $tabla.'<td>'.$vuelta.'</td>';
         $tabla = $tabla.'<td>'.$f['nomprov'].'</td>';
-        $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
+        $fecha = date("d/m/Y", strtotime($f['fecha']));
+        $tabla = $tabla.'<td>'.$fecha.'</td>';
         $tabla = $tabla.'<td>$'.number_format(abs($f['total']), 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
         $suma = $suma += abs($f['total']);
@@ -53,6 +54,13 @@ if ($r -> num_rows >0){
         $vuelta++;               
     }
     $tabla = $tabla.'</table>';
+}else{
+    $tabla = $tabla.'<br><br><br>
+<table  align = "center" >
+    <tr>    
+        <td bgcolor="#D7E9F0"><b>NO HAY GASTOS REGISTRADOS EN ESAS FECHAS </b></td>
+    </tr>
+</table>';
 }
 
 $resta = $totalrentas - $suma;

@@ -47,7 +47,8 @@ if ($r -> num_rows >0){
             $tabla = $tabla.'<tr bgcolor="#D7E9F0">'; 
         }
         $tabla = $tabla.'<td>'.$f['nofactura'].'</td>';
-        $tabla = $tabla.'<td>'.$f['fecha'].'</td>';
+     
+        $tabla = $tabla.'<td>'.date("d/m/Y H:i:s", strtotime($f['fecha'])).'</td>';
         $tabla = $tabla.'<td>'.$f['quien'].'</td>';
         if($f['nombre'] == ''){
             $tabla = $tabla.'<td>'.$f['proveedor'].'</td>';

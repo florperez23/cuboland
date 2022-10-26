@@ -183,8 +183,9 @@
 									<td style='width:200px;'><?php echo $data['Id']; ?></td>
 									<td style='width:150px;'><?php echo '$ '.$data['MontoInicial']; ?></td>
 									<td><?php echo $data['MontoFinal']; ?></td>
-                                    <td><?php echo $data['FechaApertura']; ?></td>
-                                    <td><?php echo $data['FechaCierre']; ?></td>
+									
+                                    <td><?php echo date("d/m/Y H:i:s", strtotime($data['FechaApertura'])); ?></td>
+                                    <td><?php echo date("d/m/Y H:i:s", strtotime($data['FechaCierre'])); ?></td>
                                     <td><?php echo $data['TotalVentas']; ?></td>
                                     <td><?php echo $data['MontoTotal']; ?></td>
                                     <td><?php if($data['Estado']==0){ echo 'Abierta'; } else {echo 'Cerrada'; } ?></td>
