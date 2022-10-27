@@ -55,8 +55,11 @@ if (!empty($_POST)) {
                     <form action="" method="post" autocomplete="off">
                         <?php echo isset($alert) ? $alert : ''; ?>
                         <div class="form-group">
-                            <label for="dni">Identificador cliente</label>
-                            <input type="number" placeholder="Ingrese dni " name="dni" id="dni" class="form-control">
+                    <label for="dni">Identificador cliente</label>
+                    <?php 
+                        $dni=nextDni();
+                        echo '  <input type="number" placeholder="Ingrese dni " name="dni" id="dni" class="form-control"  value="'.$dni.'">';?>
+                            
                         </div>
                         <div class="form-group">
                             <label for="nombre">Nombre</label>

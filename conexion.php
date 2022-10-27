@@ -9,12 +9,12 @@ mb_http_output('UTF-8');
 $urlsite = 'https://plataformaitavu.tamaulipas.gob.mx'; global $urlsite;
 
 //DATOS DE CONECCION
-//$dbhost = '192.168.159.5';	
-$dbhost = 'localhost';	
-//$dbuser = 'cubos';
-$dbuser = 'root';
-//$dbpass = '515t3m4'; // PmTwrXcxUZ3oML9V
-$dbpass = ''; // PmTwrXcxUZ3oML9V
+$dbhost = '192.168.159.5';	
+//$dbhost = 'localhost';	
+$dbuser = 'cubos';
+//$dbuser = 'root';
+$dbpass = '515t3m4'; // PmTwrXcxUZ3oML9V
+//$dbpass = ''; // PmTwrXcxUZ3oML9V
 $dbname = 'cubos';
 
 
