@@ -55,11 +55,8 @@ if (!empty($_POST)) {
                     <form action="" method="post" autocomplete="off">
                         <?php echo isset($alert) ? $alert : ''; ?>
                         <div class="form-group">
-                    <label for="dni">Identificador cliente</label>
-                    <?php 
-                        $dni=nextDni();
-                        echo '  <input type="number" placeholder="Ingrese dni " name="dni" id="dni" class="form-control"  value="'.$dni.'">';?>
-                            
+                            <label for="dni">Identificador cliente</label>             
+                             <input type="number" placeholder="Ingrese dni " name="dni" id="dni" readonly class="form-control"  >                            
                         </div>
                         <div class="form-group">
                             <label for="nombre">Nombre</label>
@@ -84,3 +81,31 @@ if (!empty($_POST)) {
 </div>
 <!-- /.container-fluid -->
 <?php include_once "includes/footer.php"; ?>
+
+<script>
+
+
+    $( document ).ready(function() {
+    console.log( "ready!" );
+
+    var action = 'nextIdcliente';
+     $.ajax({
+    url: 'modal.php',
+    type: "POST",
+    async: true,
+    data: {action:action},
+    success: function(response) {
+    //console.log(response);
+    var data = $.parseJSON(response);
+        $('#dni').val(data);
+        $('#dni').val(data);
+       // $('#dni').attr('disabled','disabled');
+        
+    },
+    error: function(error) {
+    }
+    });
+
+});
+
+    </script>
