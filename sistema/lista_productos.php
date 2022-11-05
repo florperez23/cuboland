@@ -128,7 +128,7 @@
 
         $.post( "guardarImagen.php", { filepath: "codigosGenerados/"+data+".png", text:data }  )
             .done(function( respuesta ) {
-				location.href = "codigoimprimir.php?codigo="+data;
+				location.href = "codigoimprimir1.php?codigo="+data;
 
                 /*Swal.fire({
                     icon: 'success',
