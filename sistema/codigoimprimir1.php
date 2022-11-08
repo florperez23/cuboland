@@ -10,7 +10,7 @@
 
     $codigo = $_GET['codigo'];
 
-    $pdf = new FPDF('L', 'mm', array(27, 13));
+    $pdf = new FPDF('L', 'mm', array(54, 13));
     $pdf->AddPage();
 		$pdf->SetMargins(1, 0, 0);
 		$pdf->SetTitle("Codgio de barras");
@@ -18,7 +18,15 @@
     // Image example with resizing
     //$img = file_get_contents('codigosGenerados/'.$codigo.'.png');
     //$pdf->Image('@' . $img, 10, 20, 27, 13, '', '', 'center', false, 0, '', false, false, 0, false, false, false);
-    $pdf->image('codigosGenerados/'.$codigo.'.png', 0, 1, 27, 13, 'PNG');
+   //izquierda
+	$pdf->image('codigosGenerados/'.$codigo.'.png', 0, 1, 27, 13, 'PNG');
+	$pdf->AddPage();
+	//derecha
+	$pdf->image('codigosGenerados/'.$codigo.'.png', 27, 1, 27, 13, 'PNG');
+	$pdf->AddPage();
+	//dos
+	$pdf->image('codigosGenerados/'.$codigo.'.png', 0, 1, 27, 13, 'PNG');
+	$pdf->image('codigosGenerados/'.$codigo.'.png', 27, 1, 27, 13, 'PNG');
 
     //Close and output PDF document
     $pdf->Output('codigobarra.pdf', 'I');
