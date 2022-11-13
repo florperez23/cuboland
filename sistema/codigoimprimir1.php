@@ -13,12 +13,12 @@
 
     $codigo = $_GET['codigo'];
 
-    $pdf = new FPDF('L', 'mm', array(54, 10));
+    $pdf = new FPDF('L', 'mm', array(54, 13));
     $pdf->AddPage();
 	//$pdf->SetMargins(1, 0, 0);
-	$pdf->SetTitle("Codgio de barras");
-	$pdf->SetFont('Arial', '', 2);
-    // Image example with resizing
+	$pdf->SetTitle("Codigo de barras");
+	$pdf->SetFont('Arial', '', 6);
+    // Image example with iresizingconfig
     //$img = file_get_contents('codigosGenerados/'.$codigo.'.png');
     //$pdf->Image('@' . $img, 10, 20, 27, 13, '', '', 'center', false, 0, '', false, false, 0, false, false, false);
    //izquierda
@@ -29,17 +29,12 @@
 	 //$pdf->AddPage();
 
 	 //precio y descripcion
-	// $descripcion = descripcion_producto($codigo);
-	 //$precio = precio_producto($codigo);
+	 $descripcion = descripcion_producto($codigo);
+	 $precio = precio_producto($codigo);
 
 	
 	
-	//$pdf->SetXY(0, 0);
-	/*$pdf->Cell(10,2,'Columna1',1,0,'C');
-	$pdf->Cell(10,2,'palabras2',1,1,'C');
-	//$pdf->SetY(2); /* Set 20 Eje Y */
-	/*$pdf->Cell(10,2,'Columna3',1,0,'C');
-	$pdf->Cell(10,2,'Columna4',1,1,'C');*/
+	
 
 /*
 	
@@ -62,9 +57,28 @@
 	 */
 
 	/* $pdf->SetXY(34, 4);*/
-	$pdf->image('codigosGenerados/'.$codigo.'.png', 0, 0,25, 11, 'PNG');
-	$pdf->image('codigosGenerados/'.$codigo.'.png', 34, 0, 25, 11, 'PNG');
 
+	//ejemplo con write 
+	/*$pdf->SetXY(0,0);
+	$pdf->Write(2, $descripcion.'		'.$descripcion, '');
+	$pdf->SetXY(0,2);
+	$pdf->Write(2, '$'.$precio.'		'.'$'.$precio, '');*/
+
+
+	//ejemplo con CELL
+	
+	$pdf->SetXY(0,0);
+	$pdf->Cell(20, 2, $descripcion, 1, 0, 'C');
+	$pdf->Cell(20, 2, $descripcion, 1, 0, 'C');
+	$pdf->Ln(0);
+	$pdf->SetXY(0, 2);
+	$pdf->Cell(20,2,'$'.$precio, 1,0,'C');
+	$pdf->Cell(20, 2, '$'.$precio, 1, 0, 'C');
+	
+	$pdf->image('codigosGenerados/'.$codigo.'.png', 0, 4,22, 6, 'PNG');
+	$pdf->image('codigosGenerados/'.$codigo.'.png', 32, 4, 22, 6, 'PNG');
+	
+	
     //Close and output PDF document
     $pdf->Output('codigobarra.pdf', 'I');
 
