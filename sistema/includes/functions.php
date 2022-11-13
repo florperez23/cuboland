@@ -715,6 +715,38 @@ WHERE f.idtipoventa = 5 and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and ca
 		else {return FALSE;}
 	
 }
+
+function descripcion_producto($cod){
+	include "../conexion.php";
+	$sql = "select descripcion from producto
+	where codproducto = '$cod'";			
+	//echo $sql;		
+
+	$rc= $conexion -> query($sql);
+	if($f = $rc -> fetch_array())
+		{		
+					
+			return $f['descripcion'];
+		}
+		else {return FALSE;}
+	
+}
+
+function precio_producto($cod){
+	include "../conexion.php";
+	$sql = "select precio from producto
+	where codproducto = '$cod'";			
+	//echo $sql;		
+
+	$rc= $conexion -> query($sql);
+	if($f = $rc -> fetch_array())
+		{		
+					
+			return $f['precio'];
+		}
+		else {return FALSE;}
+	
+}
 ?>
 
 

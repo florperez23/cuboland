@@ -125,9 +125,10 @@
 <script>
     function cb(cod) {
         var data = $("#codigob"+cod).val();
-
+		console.log(data);
         $.post( "guardarImagen.php", { filepath: "codigosGenerados/"+data+".png", text:data }  )
             .done(function( respuesta ) {
+				console.log(respuesta);
 				location.href = "codigoimprimir1.php?codigo="+data;
 
                 /*Swal.fire({
