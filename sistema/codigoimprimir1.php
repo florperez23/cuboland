@@ -17,7 +17,7 @@
     $pdf->AddPage();
 	//$pdf->SetMargins(1, 0, 0);
 	$pdf->SetTitle("Codigo de barras");
-	$pdf->SetFont('Arial', '', 6);
+	$pdf->SetFont('Arial', '', 3);
     // Image example with iresizingconfig
     //$img = file_get_contents('codigosGenerados/'.$codigo.'.png');
     //$pdf->Image('@' . $img, 10, 20, 27, 13, '', '', 'center', false, 0, '', false, false, 0, false, false, false);
@@ -67,18 +67,19 @@
 
 	//ejemplo con CELL
 	
-	$pdf->SetXY(0,0);
-	$pdf->Cell(20, 2, $descripcion, 1, 0, 'C');
-	$pdf->Cell(20, 2, $descripcion, 1, 0, 'C');
+	
+	
+	$pdf->image('codigosGenerados/'.$codigo.'.png', 0, 1,22, 10, 'PNG');
+	$pdf->image('codigosGenerados/'.$codigo.'.png', 32, 1, 22, 10, 'PNG');
+
+	
+	//$pdf->SetXY(0,0);
+	/*$pdf->Cell(20, 1, $descripcion, 1, 0, 'C');
+	$pdf->Cell(20, 1, $descripcion, 1, 1, 'C');
 	$pdf->Ln(0);
-	$pdf->SetXY(0, 2);
-	$pdf->Cell(20,2,'$'.$precio, 1,0,'C');
-	$pdf->Cell(20, 2, '$'.$precio, 1, 0, 'C');
-	
-	$pdf->image('codigosGenerados/'.$codigo.'.png', 0, 4,22, 6, 'PNG');
-	$pdf->image('codigosGenerados/'.$codigo.'.png', 32, 4, 22, 6, 'PNG');
-	
-	
+	//$pdf->SetXY(0, 2);
+	$pdf->Cell(20,.7,'$'.$precio, 1,0,'C');
+	$pdf->Cell(20, .7, '$'.$precio, 1, 1, 'C');*/
     //Close and output PDF document
     $pdf->Output('codigobarra.pdf', 'I');
 
