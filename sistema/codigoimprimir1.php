@@ -42,6 +42,9 @@ $angulo = 0;
 $x = 30;
 $y = 100;
 $texto1 = '$'.$precio;
+
+
+ $ruta=dirname(__DIR__, 1)."/sistema/codigosGenerados/Roboto-Regular.ttf";
 imagettftext($imagen, $tamanio, $angulo, $x, $y, $color, $ruta, $texto1);
 imagepng ($imagen, 'codigosGenerados/'.$codigo.'_1.png'); //la imagen se archiva en la ruta dada
 imagedestroy($imagen);
