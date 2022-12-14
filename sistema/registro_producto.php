@@ -91,7 +91,7 @@
              </div>
              <div class="form-group">
                <label for="codigo">Siguiente número</label>
-               <input type="text"  name="numsig" id="numsig" class="form-control" readonly>
+               <input type="text"  name="numsig" id="numsig" class="form-control" >
              </div>
 
              <div class="form-group">
