@@ -113,9 +113,9 @@
 				<table class="table table-striped table-bordered" id="table">
 					<thead class="thead-dark">
 						<tr>
-							<th>CODIGO</th>
-							<th>DESCRIPCION</th>
-							<th style="width:250px;">CUBO</th>
+							<th>CUBO</th>
+							<th>CÓDIGO</th>
+							<th style="width:250px;">DESCRIPCIÓN</th>
 							<th>PRECIO</th>
 							
 							<?php if ($_SESSION['rol'] == 1) { ?>
