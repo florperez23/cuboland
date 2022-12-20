@@ -1969,6 +1969,8 @@ else{
 
 $('#cubop').change(function(e) {
  e.preventDefault();
+  $('#nom').val('');
+ $('#numsig').val('');
 
  var idcubo = $('#cubop').val();
  $('#codigo').val(' ');

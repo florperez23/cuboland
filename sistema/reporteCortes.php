@@ -14,7 +14,7 @@ $suma = 0;
 
 
 
-$sql = 'SELECT f.nofactura, f.fecha, df.*, if(f.idtipopago = 1, "EFECTIVO", if(f.idtipopago=2, "TARJETA",if(f.idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
+$sql = 'SELECT f.nofactura, f.fecha, df.*, (df.cantidad * df.precio_promocion) as total, if(f.idtipopago = 1, "EFECTIVO", if(f.idtipopago=2, "TARJETA",if(f.idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
 FROM detallefactura df
 inner JOIN factura f on f.nofactura = df.nofactura
 inner JOIN producto p on p.codproducto = df.codproducto
@@ -37,6 +37,7 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<th ><b>CANTIDAD</b></th>';
     $tabla = $tabla.'<th ><b>PRECIO VENTA</b></th>';
     $tabla = $tabla.'<th ><b>PRECIO PROMOCION</b></th>';
+    $tabla = $tabla.'<th ><b>TOTAL</b></th>';
     $tabla = $tabla.'<th ><b>TIPO PAGO</b></th>';
 
     $tabla = $tabla."</tr>";
@@ -57,8 +58,9 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['cantidad'].'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['precio_venta'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>$'.number_format($f['total'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>'.$f['tipopago'].'</td>';
-        $suma = $suma += $f['precio_promocion'];
+        $suma = $suma += $f['total'];
         $tabla = $tabla."</tr>";  
         $vuelta++;               
     }
