@@ -76,6 +76,12 @@
 
 		}
 
+
+		$efectivo = $result_venta['efectivo'];
+		$tarjeta = $result_venta['tarjeta'];
+		$transferencia = $result_venta['transferencia'];
+		$deposito = $result_venta['deposito'];
+
 		$pdf->image("img/icono.jpg", 40, 15, 25, 20, 'JPG');
 		$pdf->SetFont('Arial', 'B', 7);
 		$pdf->Cell(15, 5, "Ruc: ", 0, 0, 'L');
@@ -90,7 +96,7 @@
 		$pdf->SetFont('Arial', '', 7);
 		$pdf->Cell(20, 5, utf8_decode($resultado['direccion']), 0, 1, 'L');
 		$pdf->SetFont('Arial', 'B', 7);
-		$pdf->Cell(15, 5, "Ticked: ", 0, 0, 'L');
+		$pdf->Cell(15, 5, "Ticket: ", 0, 0, 'L');
 		$pdf->SetFont('Arial', '', 7);
 		$pdf->Cell(20, 5, $noFactura, 0, 0, 'L');
 		$pdf->SetFont('Arial', 'B', 7);
@@ -228,13 +234,28 @@
 		/*VENTA CONTADO*/
 		if($tipo==1)
 		{
+			
+		if($tipop==5) /* ES UN PAGO MIXO*/		
+		{		
+				
+			$pdf->SetFont('Arial', 'B', 7);
+				$pdf->Cell(70, 5, 'Efectivo: $' . $efectivo, 0, 1, 'R');		
+		 		$pdf->Cell(70, 5, 'Tarjeta: $' . $tarjeta, 0, 1, 'R');
+				$pdf->Cell(70, 5, 'Transferencia: $' . $transferencia, 0, 1, 'R');
+				$pdf->Cell(70, 5, 'Deposito: $' . $deposito, 0, 1, 'R');
+				$pdf->Ln();	
+				$pdf->Cell(70, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
+					
+				
+		}else
+		{
 			$pdf->Cell(70, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
 			$pdf->Cell(70, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');		
 			if($tipop!=2)
 			{
 				$pdf->Cell(70, 5,  'Cambio: $' .number_format(($pagocon-$totalventa), 2, '.', ','), 0, 1, 'R');	
 			}
-			
+		}
 
 		}
 		
@@ -282,8 +303,18 @@
 		}
 		
 
+		// if($tipop==5) /* ES UN PAGO MIXO*/		
+		// {				
+		// 		$pdf->SetFont('Arial', 'B', 8);
+		// 		$pdf->Ln();
+		// 		$pdf->Cell(70, 5, 'Efectivo:' . $efectivo, 0, 1, 'R');		
+		//  		$pdf->Cell(70, 5, 'Tarjeta:' . $tarjeta, 0, 1, 'R');
+		// 		$pdf->Cell(70, 5, 'Transferencia:' . $transferencia, 0, 1, 'R');
+		// 		$pdf->Cell(70, 5, 'Deposito:' . $deposito, 0, 1, 'R');
+				 
 
-		if($tipop!=1) /* EL PAGO SE REALIZO POR TRANSFERENCIA O TARJETA*/		
+		// }	
+		 if($tipop!=1 and $tipop!=5) /* EL PAGO SE REALIZO POR TRANSFERENCIA , TARJETA O DEPOSITO*/		
 		{				
 				$pdf->SetFont('Arial', 'B', 7);
 				
@@ -295,7 +326,7 @@
 				 $pdf->Cell(70, 5,  '5% de comision por pago con tarjeta', 0, 1, 'R');	
 				 }
 
-		}	
+		}
 			
 		
 		$pdf->Ln();

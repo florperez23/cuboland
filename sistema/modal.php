@@ -527,7 +527,6 @@ if (empty($_POST['codcliente'])) {
   $numcredito=$_POST['numcredito'];
   $tipopago = $_POST['tipopago'];
   
-  
 
   if(isset($_POST['pago'])){
     $pagocon = $_POST['pago'];
@@ -547,7 +546,30 @@ if (empty($_POST['codcliente'])) {
   }else{
     $referencia = "";
   }
-  
+
+  if(isset($_POST['efectivo'])){
+    $efectivo = $_POST['efectivo'];;
+  }else{
+    $efectivo = "0";
+  }
+
+  if(isset($_POST['tarjeta'])){
+    $tarjeta = $_POST['tarjeta'];;
+  }else{
+    $tarjeta = "0";
+  }
+    if(isset($_POST['transferencia'])){
+    $transferencia = $_POST['transferencia'];;
+  }else{
+    $transferencia = "0";
+  }
+
+  if(isset($_POST['deposito'])){
+    $deposito = $_POST['deposito'];
+  }else{
+    $deposito = "0";
+  }
+
   $query = mysqli_query($conexion, "SELECT * FROM detalle_temp WHERE token_user = '$token' ");
   $result = mysqli_num_rows($query);
   /*EVALUAMOS  SI EXISTE UN NUMERO DE CREDITO QUIERE DECIR QUE ES UN ABONO*/
@@ -562,8 +584,8 @@ $pagocon = str_replace(",", "", $pagocon);
   $newDate = date("Y/m/d", strtotime($fechaven));
 
 if ($result > 0) {
-$sql="CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagocon','$newDate',$tipopago,'$referencia','$numcredito')";
-///echo $sql;    
+$sql="CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagocon','$newDate',$tipopago,'$referencia','$numcredito','$efectivo','$tarjeta','$transferencia','$deposito')";
+//echo $sql;    
 $query_procesar = mysqli_query($conexion, $sql,);
   $result_detalle = mysqli_num_rows($query_procesar);
   if ($result_detalle > 0) {    

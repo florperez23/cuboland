@@ -161,7 +161,8 @@ if(HayCajaAbierta()==0)
                                 <option value="1">Efectivo</option>
                                 <option value="2">Tarjeta</option>  
                                 <option value="3">Transferencia</option>    
-                                <option value="4">Deposito</option>                            
+                                <option value="4">Deposito</option>      
+                                <option value="5">Mixto</option>                   
                             </select>
                         </div>
                       </div> 
@@ -230,7 +231,55 @@ if(HayCajaAbierta()==0)
                         <label for="numreferencia" class="font-weight-bold">Referencia</label>  
                         <input id="numreferencia" class="form-control" type="text" placeholder="Referencia" value="">
                     </div>
-                           
+
+                    <div class="form-group" id='pagomixto' style="display:none;">  
+                    <div class="row" > 
+                     <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="totalpagomixto" class="font-weight-bold">Total</label>
+                                <!-- //<input id="totalFIJOc"  type="hidden" class="form-control" type="text" placeholder="Total"  value=""  disabled="" > -->
+                                <input id="totalpagomixto"  class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
+                            </div>
+                            </div>
+                            <div class="col-md-6" id="divSaldo">
+                                <div class="form-group">
+                                    <label for="saldopmixto" class="font-weight-bold">Saldo</label>
+                                    <input id="saldopmixto" class="form-control"  type="text" placeholder="0.00"  value="" disabled onchange="MASK(this,this.value,'$##,###,##0.00',1);">
+                                </div>
+                            </div>   
+                            <div class="col-md-4" id="divFechaVencimientomixto">
+                                <div class="form-group">
+                                    <label for="fechav" class="font-weight-bold">Fecha Venciminto </label>
+                                    <input id="fechav" class="form-control"  type="datetime"   value="<?php echo date("d-m-Y",strtotime(date("d-m-Y")."+ 1 month"));;?>" >
+                                </div>
+                            </div> 
+                            <div class="col-md-4" id="divnumcredito">
+                                <div class="form-group">
+                                    <label for="numcredito" class="font-weight-bold">NumCredito</label>  
+                                    <input id="numcredito" class="form-control" type="text" placeholder="Cambio" value="0" disabled="">
+                                </div>
+                            </div>   
+                            </div>                  
+                    <table>
+                        <tr>
+                            <td> <input type="checkbox" name="pagom[]" id="pagom[]" value="1"><label>Efectivo</label> </td>
+                            <td><input id="pefectivo"  style="display:none;" name="pefectivo" type="number" class="form-control" type="text" placeholder="0.00"  value=""> </td>
+                        </tr>
+                        <tr>
+                            <td> <input type="checkbox" name="pagom[]" id="pagom[]" value="2"><label>Tarjeta</label> </td>
+                            <td><input id="ptarjeta"  style="display:none;" name="ptarjeta" type="number" class="form-control" type="text" placeholder="0.00"  value=""> </td>
+                        </tr>
+                        <tr>
+                            <td> <input type="checkbox" name="pagom[]" id="pagom[]" value="3"><label>Transferencia</label> </td>
+                            <td><input id="ptransferencia" style="display:none;"   name="ptransferencia" type="number" class="form-control" type="text" placeholder="0.00"  value=""> </td>
+                        </tr>
+                        <tr>
+                            <td> <input type="checkbox" name="pagom[]"  id="pagom[]" value="4"><label>Deposito</label> </td>
+                            <td><input id="pdeposito"   style="display:none;" name="pdeposito"  type="number" class="form-control" type="text" placeholder="0.00"  value=""> </td>
+                        </tr>
+                    </table>
+                
+                </div>     
 
                     </form>                  
                 </div>

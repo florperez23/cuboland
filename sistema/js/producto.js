@@ -254,7 +254,7 @@ $('#txt_cod_pro').keyup(function(e) {
    async: true,
    data: {action:action,producto:productos},
    success: function(response){
-     console.log(response); 
+    // console.log(response); 
      if(response == 0) {
        $('#txt_descripcion').html('-');
        $('#txt_existencia').html('-');
@@ -534,6 +534,22 @@ $('#btn_facturar_venta').click(function(e) {
    } 
    numcredito = document.getElementById("numcredito").value; 
   
+
+   if(tipopago==5)
+{
+  var pefectivo=$('#pefectivo').val();
+  var ptarjeta=$('#ptarjeta').val();
+  var ptransferencia=$('#ptransferencia').val();
+  var pdeposito = $(this).val();
+
+  if(pefectivo==''){pefectivo=0;}
+  if(ptarjeta==''){ptarjeta=0;}
+  if(ptransferencia==''){ptransferencia=0;}
+  if(pdeposito==''){pdeposito=0;}
+
+  var pago=parseFloat(pefectivo)+parseFloat(ptarjeta)+parseFloat(ptransferencia)+parseFloat(pdeposito);
+}
+
    if(pago<=0 || pago=='')
    {
    
@@ -546,17 +562,21 @@ $('#btn_facturar_venta').click(function(e) {
       $('#exampleModal').modal('hide');
       return;
     }
+
+
+
+
  if (rows > 0) {
    $.ajax({
      url: 'modal.php',
      type: 'POST',
      async: true,
-     data: {action:action,codcliente:codcliente,tipoventa:tipoventa, pago:pago,fechaven:fechaven,tipopago:tipopago,referencia:referencia,numcredito:numcredito},
+     data: {action:action,codcliente:codcliente,tipoventa:tipoventa, pago:pago,fechaven:fechaven,tipopago:tipopago,referencia:referencia,numcredito:numcredito,efectivo:pefectivo,tarjeta:ptarjeta,transferencia:ptransferencia,deposito:pdeposito},
      success: function(response) {
      (response); 
      console.log(response);
      if (response != 0) {
-     console.log(response);
+     //console.log(response);
        var info = JSON.parse(response);        
        generarPDF(info.codcliente,info.nofactura);
        location.reload();
@@ -1099,20 +1119,47 @@ document.addEventListener('DOMContentLoaded', () => {
 $('#tipoven').on('change', function() {
   $('.alertCambio').html('');  
   $('#btn_facturar_venta').slideDown();
- if(this.value=='1')
+ if(this.value=='1') //venta a contado
  { 
-   $('#ventacredito').slideUp();
-   $('#ventacontado').slideDown();   
+  if($('#tipopago').val()==5)
+  {
+    $('#pagomixto').slideDown();
+    $('#ventacredito').slideUp();
+   $('#ventacontado').slideUp();
+   $('#divFechaVencimientomixto').slideUp();
+   $('#divnumcredito').slideUp();
+
+   console.log("ebtronoisn");
+  }
+  else{
+    $('#ventacredito').slideUp();
+    $('#ventacontado').slideDown();
+    $('#pagomixto').slideUp();
+    
+  }
+      
 
 }
- else{  
+else{  //venta a credito
+  if($('#tipopago').val()==5)
+  {
+    $('#pagomixto').slideDown();
+    $('#ventacredito').slideUp();
+   $('#ventacontado').slideUp();
+   $('#divFechaVencimientomixto').slideDown();
+  $('#divnumcredito').slideDown();
+  }else{
+  $('#pagomixto').slideUp();
   $('#ventacontado').slideUp();
   $('#ventacredito').slideDown();
+  // $('#divFechaVencimientomixto').slideUp();
+  // $('#divnumcredito').slideUp();
+}
   const total=$('#totalmodal').val();
   $('#totalmodalC').val(total);
   $('#totalFIJOc').val(total);
   numcredito = document.getElementById("numcredito").value; 
- 
+
   if(numcredito==0)
   { 
    $('#divSaldo').slideUp();  
@@ -1122,6 +1169,7 @@ $('#tipoven').on('change', function() {
    $('#divcredito').slideDown();
   
   }
+
    
  }
 });
@@ -1297,18 +1345,20 @@ $('#tipopago').on('change', function() {
   
 
 
-  if(this.value=='2') //Evaluamos si es una transferencia
+  if(this.value=='2') //Evaluamos si es una tarjeta
  {
-  
+ 
   if ($('#tipoven').val()==1)
       {
-              total=parseFloat(total)+parseFloat ((total*5)/100);
-              totalC=parseFloat(totalC)+parseFloat((totalC*5)/100);
-      
+       total=parseFloat(total)+parseFloat ((total*5)/100);
+       totalC=parseFloat(totalC)+parseFloat((totalC*5)/100);
+     
+       $('#ventacontado').slideDown();  
+      $('#ventacredito').slideUp();   
       $('#referencia').slideDown(); 
       $('#divCambio').slideUp();
       $('#divCambioC').slideUp();
-
+      $('#pagomixto').slideUp();  
       
       
      
@@ -1324,42 +1374,106 @@ $('#tipopago').on('change', function() {
       
         $('.alertCambio').html('<p style="color : red;">5% De comisión por pago con Tarjeta</p>'); 
          
+      }else{
+        $('#ventacontado').slideUp();  
+        $('#ventacredito').slideDown();  
+        $('#referencia').slideDown(); 
+        $('#divCambio').slideUp();
+        $('#divCambioC').slideUp();
+        $('#pagomixto').slideUp();  
+        
       }
   
 
- } else if(this.value=='1')  // su es tipo de pago efectivo
+ } 
+ else if(this.value=='1')  // su es tipo de pago efectivo
  { 
-  $('#referencia').slideUp();       
-  $('#divCambio').slideDown();
-  $('#divCambioC').slideDown();
+   console.log("pagoenefectivo");
+   if ($('#tipoven').val()==2)
+      { console.log("credito");
+        $('#ventacontado').slideUp(); 
+        $('#ventacredito').slideDown(); 
+      }else{
+        $('#ventacontado').slideDown();   
+        $('#ventacredito').slideUp();  
+      }
+    $('#pagomixto').slideUp();   
+    $('#referencia').slideUp();       
+    $('#divCambio').slideDown();
+    $('#divCambioC').slideDown(); 
+  
+
    document.getElementById('pagar_con').value="0.00";
    document.getElementById('pagar_conC').value="0.00";
 
    $('.alertCambio').html('<p style="color : red;"></p>');
-
   
-  var totalFijo=$('#totalFIJO').val();
-   var totalFijoc=$('#totalFIJOc').val();
+    var totalFijo=$('#totalFIJO').val();
+    var totalFijoc=$('#totalFIJOc').val();
  
      document.getElementById('totalmodal').value=MASK('', (totalFijo),'$##,###,##0.00',1);
      document.getElementById('totalmodalC').value=MASK('', (totalFijoc),'$##,###,##0.00',1);
 
      document.getElementById('pagar_con').disabled = false;
      document.getElementById('pagar_conC').disabled = false;
-   
 
- }else
- {
+ }
+ 
+ else if(this.value=='5')  // su es tipo de pago mixto
+ { 
 
-  $('.alertCambio').html('<p style="color : red;"></p>');
+  if($('#tipoven').val()==1)
+  {
+    $('#ventacontado').slideUp();    
+    $('#ventacredito').slideUp();  
+    $('#divFechaVencimientomixto').slideUp();
+   $('#divnumcredito').slideUp();
+
+   console.log("divFechaVencimiento");
   
-  $('#referencia').slideDown();       
+  }
+  else
+  {  $('#ventacontado').slideUp();    
+   $('#ventacredito').slideUp();      
+    
+    console.log("credito"); 
+ 
+  }
+  
+  $('#pagomixto').slideDown();      
+  
+  $('#referencia').slideUp();   
+  
+  var totalFijo=$('#totalFIJO').val();
+  var totalFijoc=$('#totalFIJOc').val();
+ 
+  document.getElementById('totalpagomixto').value=MASK('', (totalFijo),'$##,###,##0.00',1);
+
+ }
+ 
+ else
+ {
+ 
+  $('.alertCambio').html('<p style="color : red;"></p>');       
   $('#divCambio').slideUp();
   $('#divCambioC').slideUp();
+  $('#pagomixto').slideUp();  
 
+  if($('#tipoven').val()==1)
+  {
+    $('#ventacredito').slideUp(); 
+    $('#ventacontado').slideDown();  
+    console.log("contado");
+  }
+  else
+  { $('#ventacredito').slideDown(); 
+    $('#ventacontado').slideUp();   
+    console.log("credito"); 
+  }
+   
+  $('#referencia').slideDown();  
   var totalFijo=$('#totalFIJO').val();
-   var totalFijoc=$('#totalFIJOc').val();
-
+  var totalFijoc=$('#totalFIJOc').val();
 
   document.getElementById('totalmodal').value=MASK('', (totalFijo),'$##,###,##0.00',1);
   document.getElementById('totalmodalC').value=MASK('', (totalFijoc),'$##,###,##0.00',1);
@@ -1368,17 +1482,18 @@ $('#tipopago').on('change', function() {
 
   if($('#tipoven').val()==1)
   {    
-  document.getElementById('pagar_con').value=MASK('', (totalFijo),'$##,###,##0.00',1);
-  document.getElementById('pagar_conC').value=MASK('', (totalFijoc),'$##,###,##0.00',1);
-  document.getElementById('pagar_con').disabled = true;
-  document.getElementById('pagar_conC').disabled = true;
-  }else
+    document.getElementById('pagar_con').value=MASK('', (totalFijo),'$##,###,##0.00',1);
+    document.getElementById('pagar_conC').value=MASK('', (totalFijoc),'$##,###,##0.00',1);
+    document.getElementById('pagar_con').disabled = true;
+    document.getElementById('pagar_conC').disabled = true;
+  }
+  else
   {
     document.getElementById('pagar_con').value="0.00";
-   document.getElementById('pagar_conC').value="0.00";
-   document.getElementById('pagar_con').disabled = false;
-   document.getElementById('pagar_conC').disabled = false;
-  
+    document.getElementById('pagar_conC').value="0.00";
+    document.getElementById('pagar_con').disabled = false;
+    document.getElementById('pagar_conC').disabled = false;
+
   }
 }
 
@@ -1439,7 +1554,7 @@ function tipopagocubo(codcubo)
       total=parseFloat(totalFIJO*mesesxadelantar);
     }
     
-    console.log(totalFIJO);
+    
   if (valor==2)
   ///var total=$('#totalmodal'+codcubo).val();
   {
@@ -2345,3 +2460,195 @@ function adelantarMeses(codcubo)
 
 
 }
+
+ $("#pefectivo").keyup(function () {
+  
+  
+  var totalFijo=$('#totalFIJO').val();
+  totalFijo=totalFijo.replace('$','');//Quitamos el la coma para poder hacer la operacion
+  totalFijo=totalFijo.replace(',','');//Quitamos el la coma para poder hacer la operacion 
+  
+  var pefectivo = $(this).val();
+  var ptarjeta=$('#ptarjeta').val();
+  var ptransferencia=$('#ptransferencia').val();
+  var pdeposito=$('#pdeposito').val();
+
+  if(pefectivo==''){pefectivo=0;}
+  if(ptarjeta==''){ptarjeta=0;}
+  if(ptransferencia==''){ptransferencia=0;}
+  if(pdeposito==''){pdeposito=0;}
+
+  var nuevovalor=parseFloat(totalFijo)-parseFloat(pefectivo)-parseFloat(ptarjeta)-parseFloat(ptransferencia)-parseFloat(pdeposito);
+  var suma=parseFloat(pefectivo)+parseFloat(ptarjeta)+parseFloat(ptransferencia)+parseFloat(pdeposito);
+  console.log(suma);
+  if(suma>totalFijo)
+  {   
+    $('.alertCambio').html('<p style="color : red;">Error la cantidad con la que paga debe ser mayor o igual al total!</p>');
+   
+    $(this).val('');   
+    // $('#ptarjeta').val('');
+    // $('#ptransferencia').val('');
+    // $('#pdeposito').val('');
+    $("#saldopmixto").val(0);
+  }else{
+  $("#saldopmixto").val(nuevovalor);
+  }
+});
+
+$("#ptarjeta").keyup(function () {
+ 
+  
+  var totalFijo=$('#totalFIJO').val();
+  totalFijo=totalFijo.replace('$','');//Quitamos el la coma para poder hacer la operacion
+  totalFijo=totalFijo.replace(',','');//Quitamos el la coma para poder hacer la operacion 
+  
+ 
+  var pefectivo=$('#pefectivo').val();
+  var ptarjeta = $(this).val();
+  var ptransferencia=$('#ptransferencia').val();
+  var pdeposito=$('#pdeposito').val();
+
+  if(pefectivo==''){pefectivo=0;}
+  if(ptarjeta==''){ptarjeta=0;}
+  if(ptransferencia==''){ptransferencia=0;}
+  if(pdeposito==''){pdeposito=0;}
+  
+  var nuevovalor=parseFloat(totalFijo)-parseFloat(pefectivo)-parseFloat(ptarjeta)-parseFloat(ptransferencia)-parseFloat(pdeposito);
+  var suma=parseFloat(pefectivo)+parseFloat(ptarjeta)+parseFloat(ptransferencia)+parseFloat(pdeposito);
+
+  if(suma>totalFijo)
+  {   
+    $('.alertCambio').html('<p style="color : red;">Error la cantidad con la que paga debe ser mayor o igual al total!</p>');
+   
+    // $('#pefectivo').val('');
+    $(this).val('');   
+    // $('#ptransferencia').val('');
+    // $('#pdeposito').val('');
+    $("#saldopmixto").val(0);
+
+  }else{
+  $("#saldopmixto").val(nuevovalor);
+  }
+});
+
+$("#ptransferencia").keyup(function () {
+ 
+  
+  var totalFijo=$('#totalFIJO').val();
+  totalFijo=totalFijo.replace('$','');//Quitamos el la coma para poder hacer la operacion
+  totalFijo=totalFijo.replace(',','');//Quitamos el la coma para poder hacer la operacion 
+
+ 
+  var pefectivo=$('#pefectivo').val();
+  var ptarjeta=$('#ptarjeta').val();
+  var ptransferencia = $(this).val();
+  var pdeposito=$('#pdeposito').val();
+
+  if(pefectivo==''){pefectivo=0;}
+  if(ptarjeta==''){ptarjeta=0;}
+  if(ptransferencia==''){ptransferencia=0;}
+  if(pdeposito==''){pdeposito=0;}
+  
+
+  var nuevovalor=parseFloat(totalFijo)-parseFloat(pefectivo)-parseFloat(ptarjeta)-parseFloat(ptransferencia)-parseFloat(pdeposito);
+  var suma=parseFloat(pefectivo)+parseFloat(ptarjeta)+parseFloat(ptransferencia)+parseFloat(pdeposito);
+  console.log(suma);
+  if(suma>totalFijo)
+  {   
+    $('.alertCambio').html('<p style="color : red;">Error la cantidad con la que paga debe ser mayor o igual al total!</p>');
+    //  $('#pefectivo').val('');
+    //  $('#ptarjeta').val('');
+    //  $('#pdeposito').val('');
+     $(this).val('');
+     $("#saldopmixto").val(0);
+  }else{
+  $("#saldopmixto").val(nuevovalor);
+  }
+});
+
+$("#pdeposito").keyup(function () {
+ 
+  
+  var totalFijo=$('#totalFIJO').val();
+  totalFijo=totalFijo.replace('$','');//Quitamos el la coma para poder hacer la operacion
+  totalFijo=totalFijo.replace(',','');//Quitamos el la coma para poder hacer la operacion 
+
+  
+
+  var pefectivo=$('#pefectivo').val();
+  var ptarjeta=$('#ptarjeta').val();
+  var ptransferencia=$('#ptransferencia').val();
+  var pdeposito = $(this).val();
+
+  if(pefectivo==''){pefectivo=0;}
+  if(ptarjeta==''){ptarjeta=0;}
+  if(ptransferencia==''){ptransferencia=0;}
+  if(pdeposito==''){pdeposito=0;}
+
+  var nuevovalor=parseFloat(totalFijo)-parseFloat(pefectivo)-parseFloat(ptarjeta)-parseFloat(ptransferencia)-parseFloat(pdeposito);
+  var suma=parseFloat(pefectivo)+parseFloat(ptarjeta)+parseFloat(ptransferencia)+parseFloat(pdeposito);
+  console.log(suma);
+  if(suma>totalFijo)
+  {   
+    $('.alertCambio').html('<p style="color : red;">Error la cantidad con la que paga debe ser mayor o igual al total!</p>');
+
+    //  $('#pefectivo').val('');
+    //  $('#ptarjeta').val('');
+    //  $('#ptransferencia').val('');
+     $(this).val('');
+     $("#saldopmixto").val(0);
+  }else{
+  $("#saldopmixto").val(nuevovalor);
+  }
+});
+
+$('[name="pagom[]"]').click(function() {
+  
+  if( $(this).is(':checked') ){
+    console.log("marcado");
+    console.log($(this).val());
+    if($(this).val()==1)
+    {
+      $("#pefectivo").show();
+    }
+    else if($(this).val()==2)
+    {
+      $("#ptarjeta").show();
+    }
+    else if($(this).val()==3)
+    {
+      $("#ptransferencia").show();
+    }
+    else if($(this).val()==4)
+    {
+      $("#pdeposito").show();
+    }
+
+  }
+  if( $(this).is(':unchecked') ){
+      
+    console.log("desmarcado");
+    if($(this).val()==1)
+    {
+      $('#pefectivo').val('');
+      $("#pefectivo").hide();
+    }
+    else if($(this).val()==2)
+    { 
+      $('#ptarjeta').val('');
+      $('#ptarjeta').hide();     
+    }
+    else if($(this).val()==3)
+    { 
+      $('#ptransferencia').val('');
+      $('#ptransferencia').hide();
+      
+    }
+    else 
+    { $('#pdeposito').val('');
+    $('#pdeposito').hide();
+    }
+
+  }
+
+});
