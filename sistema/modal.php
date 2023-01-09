@@ -583,6 +583,10 @@ $pagocon = str_replace("$", "", $pagocon);
 $pagocon = str_replace(",", "", $pagocon);
   $newDate = date("Y/m/d", strtotime($fechaven));
 
+  if($tarjeta!="")
+  {
+    $tarjeta=floatval($tarjeta)+floatval (($tarjeta*5)/100);
+  }
 if ($result > 0) {
 $sql="CALL procesar_venta($usuario,$codcliente,'$token',$tipoventa,'$pagocon','$newDate',$tipopago,'$referencia','$numcredito','$efectivo','$tarjeta','$transferencia','$deposito')";
 //echo $sql;    

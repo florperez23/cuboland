@@ -196,7 +196,7 @@ if(HayCajaAbierta()==0)
                             <div class="form-group">
                                 <label for="totalmodalC" class="font-weight-bold">Total</label>
                                 <input id="totalFIJOc"  type="hidden" class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
-                                <input id="totalmodalC"  class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
+                                <input id="totalmodalC" name= "totalmodalC" class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
                             </div>
                             </div>
                             <div class="col-md-4" id="divSaldo">
@@ -236,27 +236,28 @@ if(HayCajaAbierta()==0)
                     <div class="row" > 
                      <div class="col-md-6">
                             <div class="form-group">
-                                <label for="totalpagomixto" class="font-weight-bold">Total</label>
+                                <label for="totalpagomixto" id="etiquetaPago" class="font-weight-bold">Total</label>
                                 <!-- //<input id="totalFIJOc"  type="hidden" class="form-control" type="text" placeholder="Total"  value=""  disabled="" > -->
-                                <input id="totalpagomixto"  class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
+                                <input id="totalpagomixto" name="totalpagomixto" class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
                             </div>
                             </div>
-                            <div class="col-md-6" id="divSaldo">
+                            
+                            <!-- <div class="col-md-6" id="divSaldo">
                                 <div class="form-group">
                                     <label for="saldopmixto" class="font-weight-bold">Saldo</label>
                                     <input id="saldopmixto" class="form-control"  type="text" placeholder="0.00"  value="" disabled onchange="MASK(this,this.value,'$##,###,##0.00',1);">
                                 </div>
-                            </div>   
+                            </div>    -->
                             <div class="col-md-4" id="divFechaVencimientomixto">
                                 <div class="form-group">
-                                    <label for="fechav" class="font-weight-bold">Fecha Venciminto </label>
-                                    <input id="fechav" class="form-control"  type="datetime"   value="<?php echo date("d-m-Y",strtotime(date("d-m-Y")."+ 1 month"));;?>" >
+                                    <label for="fechavm" class="font-weight-bold">Fecha Venciminto </label>
+                                    <input id="fechavm" class="form-control"  type="datetime"   value="<?php echo date("d-m-Y",strtotime(date("d-m-Y")."+ 1 month"));;?>" >
                                 </div>
                             </div> 
                             <div class="col-md-4" id="divnumcredito">
                                 <div class="form-group">
-                                    <label for="numcredito" class="font-weight-bold">NumCredito</label>  
-                                    <input id="numcredito" class="form-control" type="text" placeholder="Cambio" value="0" disabled="">
+                                    <label for="numcreditom" class="font-weight-bold">NumCredito</label>  
+                                    <input id="numcreditom" class="form-control" type="text" placeholder="Cambio" value="0" disabled="">
                                 </div>
                             </div>   
                             </div>                  
@@ -267,7 +268,10 @@ if(HayCajaAbierta()==0)
                         </tr>
                         <tr>
                             <td> <input type="checkbox" name="pagom[]" id="pagom[]" value="2"><label>Tarjeta</label> </td>
-                            <td><input id="ptarjeta"  style="display:none;" name="ptarjeta" type="number" class="form-control" type="text" placeholder="0.00"  value=""> </td>
+                            <td><input id="ptarjeta"  style="display:none;" name="ptarjeta" type="number" class="form-control" type="text" placeholder="0.00"  value=""> 
+                            <label name="etiquetatarjeta"  style="display:none;" id="etiquetatarjeta" class="font-weight-bold"></label> 
+                            <br><label name="etiquetat"  style="display:none; font-size: smaller;    color: red;    font-family: none;" id="etiquetat" class="font-weight-bold">5% de comisión por pago con tarjeta</label> 
+                        </td>
                         </tr>
                         <tr>
                             <td> <input type="checkbox" name="pagom[]" id="pagom[]" value="3"><label>Transferencia</label> </td>

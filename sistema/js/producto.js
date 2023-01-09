@@ -528,13 +528,14 @@ $('#btn_facturar_venta').click(function(e) {
  }
  else
  {
+  console.log("entroal crediot");
    pago = document.getElementById("pagar_conC").value; 
    total=document.getElementById("totalmodal").value;
    fechaven = $('#fechav').val();
    } 
    numcredito = document.getElementById("numcredito").value; 
-  
-
+   console.log(numcredito);
+   
    if(tipopago==5)
 {
   var pefectivo=$('#pefectivo').val();
@@ -1119,7 +1120,9 @@ document.addEventListener('DOMContentLoaded', () => {
 $('#tipoven').on('change', function() {
   $('.alertCambio').html('');  
   $('#btn_facturar_venta').slideDown();
- if(this.value=='1') //venta a contado
+
+
+  if(this.value=='1') //venta a contado
  { 
   if($('#tipopago').val()==5)
   {
@@ -1129,7 +1132,7 @@ $('#tipoven').on('change', function() {
    $('#divFechaVencimientomixto').slideUp();
    $('#divnumcredito').slideUp();
 
-   console.log("ebtronoisn");
+
   }
   else{
     $('#ventacredito').slideUp();
@@ -1155,6 +1158,7 @@ else{  //venta a credito
   // $('#divFechaVencimientomixto').slideUp();
   // $('#divnumcredito').slideUp();
 }
+
   const total=$('#totalmodal').val();
   $('#totalmodalC').val(total);
   $('#totalFIJOc').val(total);
@@ -1319,16 +1323,27 @@ jQuery('#cerrarcorte').on('hidden.bs.modal', function (e) {
 
 function abrirModalAbono(numcredito,total,saldo)
 {
- ;
+ 
+ 
  $('#tipoven').val(2); 
  $('#tipoven').change();
  $('#numcredito').val(numcredito); 
  $('#totalmodalC').val( MASK('', (total),'$##,###,##0.00',1));  
  $('#saldo').val(MASK('', (saldo),'$##,###,##0.00',1));
  $('#divSaldo').slideDown();   
- $('#divFechaVencimiento').slideUp();     
+
+ $('#divcredito').slideDown();  
+ $('#numcreditom').val(numcredito); 
+
+ $('#totalFIJO').val( MASK('', (total),'$##,###,##0.00',1));    
+ $('#totalpagomixto').val(saldo);   
+
+ $('#etiquetaPago').html("Saldo Credito");     
+ $('#divFechaVencimientomixto').slideUp();
+ $('#divFechaVencimiento').slideUp();
  $('#exampleModal').modal('show');
-       
+
+
 }
 
 //EVALUAMOS QUE TIPO DE PAGO SERÁ
@@ -1336,7 +1351,7 @@ $('#tipopago').on('change', function() {
 
   var total=$('#totalmodal').val();
   var totalC=$('#totalmodalC').val();
-
+ 
   total=total.replace('$','');//Quitamos el signo de pesos 
   total=total.replace(',','');//Quitamos el la coma para poder hacer la operacion
 
@@ -1344,7 +1359,7 @@ $('#tipopago').on('change', function() {
   totalC=totalC.replace(',','');//Quitamos el la coma para poder hacer la operacion
   
 
-
+ 
   if(this.value=='2') //Evaluamos si es una tarjeta
  {
  
@@ -1375,6 +1390,8 @@ $('#tipopago').on('change', function() {
         $('.alertCambio').html('<p style="color : red;">5% De comisión por pago con Tarjeta</p>'); 
          
       }else{
+               
+        document.getElementById('pagar_conC').disabled = false;
         $('#ventacontado').slideUp();  
         $('#ventacredito').slideDown();  
         $('#referencia').slideDown(); 
@@ -1388,9 +1405,10 @@ $('#tipopago').on('change', function() {
  } 
  else if(this.value=='1')  // su es tipo de pago efectivo
  { 
-   console.log("pagoenefectivo");
+  
    if ($('#tipoven').val()==2)
-      { console.log("credito");
+      {
+
         $('#ventacontado').slideUp(); 
         $('#ventacredito').slideDown(); 
       }else{
@@ -1429,14 +1447,18 @@ $('#tipopago').on('change', function() {
     $('#divFechaVencimientomixto').slideUp();
    $('#divnumcredito').slideUp();
 
-   console.log("divFechaVencimiento");
   
   }
   else
   {  $('#ventacontado').slideUp();    
    $('#ventacredito').slideUp();      
     
-    console.log("credito"); 
+   var totalFijo=$('#totalFIJO').val();
+  var totalFijoc=$('#totalFIJOc').val();
+   console.log("entro1");
+   console.log(totalFijoc);
+
+
  
   }
   
@@ -1454,6 +1476,8 @@ $('#tipopago').on('change', function() {
  else
  {
  
+  var totalFijo=$('#totalFIJO').val();
+  var totalFijoc=$('#totalFIJOc').val();
   $('.alertCambio').html('<p style="color : red;"></p>');       
   $('#divCambio').slideUp();
   $('#divCambioC').slideUp();
@@ -1463,38 +1487,46 @@ $('#tipopago').on('change', function() {
   {
     $('#ventacredito').slideUp(); 
     $('#ventacontado').slideDown();  
-    console.log("contado");
-  }
-  else
-  { $('#ventacredito').slideDown(); 
-    $('#ventacontado').slideUp();   
-    console.log("credito"); 
-  }
-   
-  $('#referencia').slideDown();  
-  var totalFijo=$('#totalFIJO').val();
-  var totalFijoc=$('#totalFIJOc').val();
 
-  document.getElementById('totalmodal').value=MASK('', (totalFijo),'$##,###,##0.00',1);
-  document.getElementById('totalmodalC').value=MASK('', (totalFijoc),'$##,###,##0.00',1);
-
-
-
-  if($('#tipoven').val()==1)
-  {    
     document.getElementById('pagar_con').value=MASK('', (totalFijo),'$##,###,##0.00',1);
     document.getElementById('pagar_conC').value=MASK('', (totalFijoc),'$##,###,##0.00',1);
     document.getElementById('pagar_con').disabled = true;
     document.getElementById('pagar_conC').disabled = true;
+
+    document.getElementById('totalmodal').value=MASK('', (totalFijo),'$##,###,##0.00',1);
   }
   else
-  {
+  { $('#ventacredito').slideDown(); 
+    $('#ventacontado').slideUp();   
+      
     document.getElementById('pagar_con').value="0.00";
     document.getElementById('pagar_conC').value="0.00";
     document.getElementById('pagar_con').disabled = false;
     document.getElementById('pagar_conC').disabled = false;
-
+   
+   document.getElementById('totalmodalC').value=MASK('', (totalFijo),'$##,###,##0.00',1);
   }
+   
+  $('#referencia').slideDown();  
+
+
+
+
+  // if($('#tipoven').val()==1)
+  // {    
+  //   document.getElementById('pagar_con').value=MASK('', (totalFijo),'$##,###,##0.00',1);
+  //   document.getElementById('pagar_conC').value=MASK('', (totalFijoc),'$##,###,##0.00',1);
+  //   document.getElementById('pagar_con').disabled = true;
+  //   document.getElementById('pagar_conC').disabled = true;
+  // }
+  // else
+  // {
+  //   document.getElementById('pagar_con').value="0.00";
+  //   document.getElementById('pagar_conC').value="0.00";
+  //   document.getElementById('pagar_con').disabled = false;
+  //   document.getElementById('pagar_conC').disabled = false;
+
+  // }
 }
 
 });
@@ -2590,7 +2622,7 @@ $("#pdeposito").keyup(function () {
   console.log(suma);
   if(suma>totalFijo)
   {   
-    $('.alertCambio').html('<p style="color : red;">Error la cantidad con la que paga debe ser mayor o igual al total!</p>');
+    $('.alertCambio').html('<p style="color : red;">Error la cantidad con la que paga no debe ser mayor al total!</p>');
 
     //  $('#pefectivo').val('');
     //  $('#ptarjeta').val('');
@@ -2598,6 +2630,7 @@ $("#pdeposito").keyup(function () {
      $(this).val('');
      $("#saldopmixto").val(0);
   }else{
+    $('.alertCambio').html('<p style="color : red;"></p>');
   $("#saldopmixto").val(nuevovalor);
   }
 });
@@ -2605,8 +2638,7 @@ $("#pdeposito").keyup(function () {
 $('[name="pagom[]"]').click(function() {
   
   if( $(this).is(':checked') ){
-    console.log("marcado");
-    console.log($(this).val());
+    
     if($(this).val()==1)
     {
       $("#pefectivo").show();
@@ -2614,6 +2646,9 @@ $('[name="pagom[]"]').click(function() {
     else if($(this).val()==2)
     {
       $("#ptarjeta").show();
+      $('#etiquetat').val('');
+      $('#etiquetatarjeta').show();
+      $('#etiquetat').show();
     }
     else if($(this).val()==3)
     {
@@ -2637,6 +2672,8 @@ $('[name="pagom[]"]').click(function() {
     { 
       $('#ptarjeta').val('');
       $('#ptarjeta').hide();     
+      $('#etiquetatarjeta').hide();
+      $('#etiquetat').hide();
     }
     else if($(this).val()==3)
     { 
@@ -2650,5 +2687,16 @@ $('[name="pagom[]"]').click(function() {
     }
 
   }
+
+});
+
+
+
+$('#ptarjeta').keyup(function(e) {
+  e.preventDefault();
+  valor=$('#ptarjeta').val();
+  total=parseFloat(valor)+parseFloat ((valor*5)/100);
+  $('#etiquetatarjeta').html("$"+total);
+  //$('#etiquetatarjeta').html('Hola yo voy dentro del label!');
 
 });
