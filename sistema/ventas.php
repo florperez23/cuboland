@@ -47,6 +47,7 @@
 					<option value="2">TARJETA</option>
 					<option value="3">TRANSFERENCIA</option>
 					<option value="4">DEPOSITO</option>
+					<option value="5">MIXTO</option>
 				</select>
 			</div>
 		</div>

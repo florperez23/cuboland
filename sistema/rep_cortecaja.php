@@ -15,7 +15,7 @@ $fechainicio = date("Y-m-d",strtotime($fechainicio."- 1 day"));
 $fechafin =  date("Y-m-d",strtotime($fechafin."+ 1 day"));
 
   $sql = " SELECT f.nofactura, f.fecha, f.usuario, u.usuario as quien, f.codcliente, c.nombre, f.totalfactura, 
-  if(f.idtipoventa = 1, 'Contado', if(f.idtipoventa = 2, 'Crédito', if(f.idtipoventa = 3, 'Devolución', 'Gasto'))) as tipoventa, if(f.idtipopago= 1, 'Efectivo',if(f.idtipopago= 2, 'Tarjeta', if(f.idtipopago= 3, 'Transferencia',''))) as tipopago, if(f.cancelado = 0, 'No', 'Si') as cancelado, p.proveedor 
+  if(f.idtipoventa = 1, 'Contado', if(f.idtipoventa = 2, 'Crédito', if(f.idtipoventa = 3, 'Devolución', 'Gasto'))) as tipoventa, if(f.idtipopago= 1, 'Efectivo',if(f.idtipopago= 2, 'Tarjeta', if(f.idtipopago= 3, 'Transferencia',if(idtipopago=4,'Deposito','Mixto')))) as tipopago, if(f.cancelado = 0, 'No', 'Si') as cancelado, p.proveedor 
   FROM factura f
   left JOIN usuario u on u.idusuario = f.usuario
   left join cliente c on c.idcliente = f.codcliente

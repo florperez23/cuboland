@@ -11,15 +11,22 @@ $hasta = $_POST['hasta'];
 //$desde = date("Y-m-d",strtotime($desde."- 1 day"));
 $hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
 $suma = 0;
+$sumaef= 0;
+$sumata = 0;
+$sumatran = 0;
+$sumadep = 0;
 
 
-
-$sql = 'SELECT f.nofactura, f.fecha, df.*, (df.cantidad * df.precio_promocion) as total, if(f.idtipopago = 1, "EFECTIVO", if(f.idtipopago=2, "TARJETA",if(f.idtipopago=3, "TRANSFERENCIA","DEPOSITO"))) as tipopago
+$sql = 'SELECT f.nofactura, f.fecha, df.*, (df.cantidad * df.precio_promocion) as total, if(f.idtipopago = 1, "EFECTIVO", if(f.idtipopago=2, "TARJETA",if(f.idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago,
+f.efectivo,
+f.tarjeta,
+f.transferencia,
+f.deposito
 FROM detallefactura df
 inner JOIN factura f on f.nofactura = df.nofactura
 inner JOIN producto p on p.codproducto = df.codproducto
 WHERE p.codcubo = '.$codcubo.' and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'"';
-//echo $sql;
+echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
 $vuelta = 1;
@@ -39,6 +46,11 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<th ><b>PRECIO PROMOCION</b></th>';
     $tabla = $tabla.'<th ><b>TOTAL</b></th>';
     $tabla = $tabla.'<th ><b>TIPO PAGO</b></th>';
+    $tabla = $tabla.'<th ><b>EF.</b></th>';
+    $tabla = $tabla.'<th ><b>TA.</b></th>';
+    $tabla = $tabla.'<th ><b>TRAN.</b></th>';
+    $tabla = $tabla.'<th ><b>DEP.</b></th>';
+
 
     $tabla = $tabla."</tr>";
     while($f = $r -> fetch_array())
@@ -61,6 +73,16 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>$'.number_format($f['total'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>'.$f['tipopago'].'</td>';
         $suma = $suma += $f['total'];
+        $tabla = $tabla.'<td>$'.number_format($f['efectivo'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>$'.number_format($f['tarjeta'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>$'.number_format($f['transferencia'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>$'.number_format($f['deposito'], 2, '.', ',').'</td>';
+
+        $sumaef= $sumaef += $f['efectivo'];
+        $sumata = $sumata += $f['tarjeta'];
+        $sumatran = $sumatran += $f['transferencia'];
+        $sumadep = $sumadep += $f['deposito'];
+
         $tabla = $tabla."</tr>";  
         $vuelta++;               
     }
