@@ -25,7 +25,7 @@ f.deposito
 FROM detallefactura df
 inner JOIN factura f on f.nofactura = df.nofactura
 inner JOIN producto p on p.codproducto = df.codproducto
-WHERE p.codcubo = '.$codcubo.' and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'"';
+WHERE p.codcubo = '.$codcubo.' and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" order by f.fecha asc';
 echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
@@ -35,12 +35,12 @@ if ($r -> num_rows >0){
 
     $tabla = $tabla.'<center><span style="font-size: 18px; font-family: sans-serif;"><b> Nombre cubo: </b>'.cubo_nombre($codcubo).' <b>Rentero: </b>'.rentero_cubo($codcubo).'</span></center><br><br>';
 
-    $tabla = $tabla.'<table  align = "center">';
-    $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8">';
+    $tabla = $tabla.'<table  align = "center"  style="font-size: 9.6px;">';
+    $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8" >';
     $tabla = $tabla.'<th ><b>No.</b></th>';
     $tabla = $tabla.'<th ><b>FACTURA</b></th>';
     $tabla = $tabla.'<th ><b>FECHA</b></th>';
-    $tabla = $tabla."<th><b>CODPRODUCTO</b></th>";
+    $tabla = $tabla."<th><b>CODIGO PRODUCTO</b></th>";
     $tabla = $tabla.'<th ><b>CANTIDAD</b></th>';
     $tabla = $tabla.'<th ><b>PRECIO VENTA</b></th>';
     $tabla = $tabla.'<th ><b>PRECIO PROMOCION</b></th>';
