@@ -129,11 +129,13 @@
                             if($codcubo == 0){
                                 $sql = "SELECT p.*, c.cubo
                                 FROM producto p
-                                INNER JOIN cubos c ON c.codcubo = p.codcubo";
+                                INNER JOIN cubos c ON c.codcubo = p.codcubo
+								order by codproducto,numsiguiente ASC";
                             }else{
                                 $sql = "SELECT p.*, c.cubo
                                 FROM producto p
-                                INNER JOIN cubos c ON c.codcubo = p.codcubo WHERE p.codcubo =  $codcubo";
+                                INNER JOIN cubos c ON c.codcubo = p.codcubo WHERE p.codcubo =  $codcubo
+								order by codproducto,numsiguiente ASC";
                             }
 
 						$query = mysqli_query($conexion, $sql);
