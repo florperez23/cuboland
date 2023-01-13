@@ -2515,7 +2515,7 @@ function adelantarMeses(codcubo)
   console.log(suma);
   if(suma>totalFijo)
   {   
-    $('.alertCambio').html('<p style="color : red;">Error la cantidad con la que paga debe ser mayor o igual al total!</p>');
+    $('.alertCambio').html('<p style="color : red;">Error la cantidad con la que paga no debe ser mayor al total!</p>');
    
     $(this).val('');   
     // $('#ptarjeta').val('');
@@ -2523,6 +2523,7 @@ function adelantarMeses(codcubo)
     // $('#pdeposito').val('');
     $("#saldopmixto").val(0);
   }else{
+    $('.alertCambio').html('<p style="color : red;"></p>');
   $("#saldopmixto").val(nuevovalor);
   }
 });
@@ -2550,7 +2551,7 @@ $("#ptarjeta").keyup(function () {
 
   if(suma>totalFijo)
   {   
-    $('.alertCambio').html('<p style="color : red;">Error la cantidad con la que paga debe ser mayor o igual al total!</p>');
+    $('.alertCambio').html('<p style="color : red;">Error la cantidad con la que paga no debe ser mayor al total!</p>');
    
     // $('#pefectivo').val('');
     $(this).val('');   
@@ -2559,6 +2560,7 @@ $("#ptarjeta").keyup(function () {
     $("#saldopmixto").val(0);
 
   }else{
+    $('.alertCambio').html('<p style="color : red;"></p>');
   $("#saldopmixto").val(nuevovalor);
   }
 });
@@ -2587,13 +2589,14 @@ $("#ptransferencia").keyup(function () {
   console.log(suma);
   if(suma>totalFijo)
   {   
-    $('.alertCambio').html('<p style="color : red;">Error la cantidad con la que paga debe ser mayor o igual al total!</p>');
+    $('.alertCambio').html('<p style="color : red;">Error la cantidad con la que paga no debe ser mayor al total!</p>');
     //  $('#pefectivo').val('');
     //  $('#ptarjeta').val('');
     //  $('#pdeposito').val('');
      $(this).val('');
      $("#saldopmixto").val(0);
   }else{
+    $('.alertCambio').html('<p style="color : red;"></p>');
   $("#saldopmixto").val(nuevovalor);
   }
 });
