@@ -36,13 +36,18 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
 
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
+    ,GROUP_CONCAT(df.codproducto) AS codproducto
     from factura f
+    inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
-    WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and idtipoventa in (1,2,3) ';
+    WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and idtipoventa in (1,2,3) 
+    GROUP BY f.nofactura';
 }else if($tipopago <> 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
+    ,GROUP_CONCAT(df.codproducto) AS codproducto
     from factura f
+    inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
     WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" ';
     if($tipopago == 1){
@@ -61,16 +66,23 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
         $sql = $sql.' and idtipopago = "'.$tipopago.'"';
     }
 
-    $sql = $sql.' and idtipoventa in (1,2,3) ';
+    $sql = $sql.' and idtipoventa in (1,2,3) 
+    GROUP BY f.nofactura';
 }else if($tipopago == 0 and $tipoventa <> 0 and $desde <> '' and $hasta <> ''){
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
+    ,GROUP_CONCAT(df.codproducto) AS codproducto
     from factura f
+    inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
-    WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and idtipoventa = "'.$tipoventa.'" and idtipoventa in (1,2,3) ';
+    WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and idtipoventa = "'.$tipoventa.'" and idtipoventa in (1,2,3) 
+    GROUP BY f.nofactura';
 }else if($tipopago <> 0 and $tipoventa <> 0 and $desde <> '' and $hasta <> ''){
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
+    ,GROUP_CONCAT(df.codproducto) AS codproducto
+    from factura f
+    inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
     WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'"';
     
@@ -92,11 +104,14 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     }
 
    
-    $sql = $sql.' and idtipoventa = "'.$tipoventa.'"';
+    $sql = $sql.' and idtipoventa = "'.$tipoventa.'"
+    GROUP BY f.nofactura';
 }else if($tipopago <> 0 and $tipoventa <> 0 and $desde == '' and $hasta == ''){
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
+    ,GROUP_CONCAT(df.codproducto) AS codproducto
     from factura f
+    inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
     WHERE ';
     
@@ -118,18 +133,24 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
 
     
     //idtipopago = "'.$tipopago.'" or (idtipopago=5 and efectivo <> 0 ) or ( idtipopago=5 and tarjeta <> 0) or ( idtipopago=5 and transferencia <> 0) or ( idtipopago=5 and deposito <> 0)
-    $sql = $sql.' and idtipoventa = "'.$tipoventa.'"';
+    $sql = $sql.' and idtipoventa = "'.$tipoventa.'"
+    GROUP BY f.nofactura';
 }else if($desde == '' and $hasta == '' and $tipoventa <> 0 and $tipopago == 0){
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
+    ,GROUP_CONCAT(df.codproducto) AS codproducto
     from factura f
+    inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
-    WHERE idtipoventa = "'.$tipoventa.'"';
+    WHERE idtipoventa = "'.$tipoventa.'"
+    GROUP BY f.nofactura';
 
 }else if($desde == '' and $hasta == '' and $tipoventa == 0 and $tipopago <> 0){
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
+    ,GROUP_CONCAT(df.codproducto) AS codproducto
     from factura f
+    inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
     WHERE ';
     
@@ -149,14 +170,18 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
         $sql = $sql.' and idtipopago = "'.$tipopago.'"';
     }
     //idtipopago = "'.$tipopago.'" or (idtipopago=5 and efectivo <> 0 ) or ( idtipopago=5 and tarjeta <> 0) or ( idtipopago=5 and transferencia <> 0) or ( idtipopago=5 and deposito <> 0)
-    $sql = $sql.' and idtipoventa in (1,2,3) ';
+    $sql = $sql.' and idtipoventa in (1,2,3) 
+    GROUP BY f.nofactura';
 
 }else{
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
+    ,GROUP_CONCAT(df.codproducto) AS codproducto
     from factura f
+    inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
-    WHERE f.fecha and idtipoventa in (1,2,3) ';
+    WHERE f.fecha and idtipoventa in (1,2,3) 
+    GROUP BY f.nofactura';
 }
 echo $sql;
 $r = $conexion -> query($sql);
@@ -172,6 +197,8 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<th ><b>TOTAL</b></th>';
     $tabla = $tabla.'<th ><b>TIPO PAGO</b></th>';
     $tabla = $tabla.'<th ><b>TIPO VENTA</b></th>';
+    
+    $tabla = $tabla.'<th ><b>CÓDIGO PRODUCTO</b></th>';
     $tabla = $tabla."</tr>";
     while($f = $r -> fetch_array())
     {                  
@@ -208,6 +235,8 @@ if ($r -> num_rows >0){
         
         $tabla = $tabla.'<td>'.$f['tipopago'].'</td>';
         $tabla = $tabla.'<td>'.$f['tipoventa'].'</td>';
+        
+        $tabla = $tabla.'<td>'.$f['codproducto'].'</td>';
         $tabla = $tabla."</tr>";  
         $vuelta++;               
     }
