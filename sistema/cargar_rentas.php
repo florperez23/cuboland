@@ -158,9 +158,9 @@
 									<td><?php echo $data['idcubo']; ?></td>
 									<td><?php echo $data['cubo']; ?></td>
 									<td><?php echo $data['nombre']; ?></td>
-									<td><?php echo date("d/m/Y", strtotime($data['fechacontrato'])); ?></td>
-									<td><?php echo date("d/m/Y", strtotime($data['fechaultimopago'])); ?></td>
-                                    <td><?php echo date("d/m/Y", strtotime($data['fechaproximopago'])); ?></td>
+									<td><?php echo $data['fechacontrato']; ?></td>
+									<td><?php echo $data['fechaultimopago']; ?></td>
+                                    <td><?php echo $data['fechaproximopago']; ?></td>
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
 										<a href="editar_renta.php?id=<?php echo $data['id']; ?>" class="btn btn-success"><i class='fas fa-edit'></i></a>

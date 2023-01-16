@@ -13,7 +13,7 @@
 	
 	<!-- Elementos para crear el reporte -->
 	<form action="reporteRentas.php" method="post">
-	<div class="row"> 
+	<div class="row">
 		<div class="col-md-4" >
 			<div class="form-group">
 			<label>FILTRO</label>
