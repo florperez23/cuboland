@@ -154,7 +154,7 @@
 		$pdf->SetFont('Arial', 'B', 7);
 		$pdf->Cell(15, 5, "Vencimiento: ", 0, 0, 'R');		
 		$pdf->SetFont('Arial', '', 7);
-		$pdf->Cell(15, 5, date_format( date_create($result_venta['fecha']), 'd/m/Y') , 0, 1, 'R');
+		$pdf->Cell(15, 5, date_format( date_create($result_credito['fechavencimiento']), 'd/m/Y') , 0, 1, 'R');
 		}
 		if($tipo=='5')
 		{		$pdf->Ln();	
