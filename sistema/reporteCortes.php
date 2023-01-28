@@ -25,7 +25,7 @@ f.deposito
 FROM detallefactura df
 inner JOIN factura f on f.nofactura = df.nofactura
 inner JOIN producto p on p.codproducto = df.codproducto
-WHERE p.codcubo = '.$codcubo.' and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" order by f.fecha asc';
+WHERE p.codcubo = '.$codcubo.' and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and f.cancelado = 0 order by f.fecha asc';
 echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";

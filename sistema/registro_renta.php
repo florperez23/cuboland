@@ -17,7 +17,7 @@ if (!empty($_POST)) {
         $query_insert = mysqli_query($conexion, $sql);
         if ($query_insert) {
 
-            $sql = "UPDATE cubos SET disponible = 1 WHERE codcubo = $cubo";
+            $sql = "UPDATE cubos SET disponible = 1, idarrendatario = '$idarr' WHERE codcubo = $cubo";
             $sql_update = mysqli_query($conexion, $sql);
             if ($sql_update) {
                 historia('Se registro una nueva renta '.$idarr.'_'.$cubo);

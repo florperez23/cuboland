@@ -64,9 +64,15 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 						<?php
 						include "../conexion.php";
 
-						$query = mysqli_query($conexion, "SELECT c.*, r.idarrendatario, a.nombre FROM
-						cubos c left join rentas r on r.idcubo = c.codcubo
-						left join arrendatarios a on a.idarrendatario = r.idarrendatario ORDER BY codcubo ASC");
+						// $query = mysqli_query($conexion, "SELECT c.*, r.idarrendatario, a.nombre FROM
+						// cubos c left join rentas r on r.idcubo = c.codcubo
+						// left join arrendatarios a on a.idarrendatario = r.idarrendatario WHERE  r.cancelado=0 
+						// ORDER BY codcubo ASC");
+
+						$query = mysqli_query($conexion, "select codcubo, nomenclatura,cubo,renta, disponible,(SELECT		arrendatarios.nombre FROM	rentas
+							INNER JOIN	arrendatarios	ON 		rentas.idarrendatario = arrendatarios.idarrendatario 	
+							WHERE rentas.cancelado=0 and codcubo=rentas.idcubo)
+							as nombre	 from cubos ORDER BY codcubo ASC");
 						$result = mysqli_num_rows($query);
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
@@ -187,7 +193,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 														<?php
 														$fechaUltimoPago=obtenerFechaUltimoPago($data['codcubo']);
 
-													    if ($data['disponible'] == 0 or $fechaUltimoPago=='')
+													    if ($data['disponible'] == 0 or $fechaUltimoPago==NULL OR $fechaUltimoPago='0000-00-00')
 														{
 														
 															$DiasMes= date('t'); 

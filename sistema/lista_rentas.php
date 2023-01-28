@@ -45,7 +45,7 @@
 							<th>Arrendatario</th>
 							<th>Fecha Contrato</th>
 							<th>Fecha último pago</th>
-                            <th>Fecha próximo pago</th>
+                            <!-- <th>Fecha próximo pago</th> -->
 							<?php if ($_SESSION['rol'] == 1) { ?>
 							<th>ACCIONES</th>
 							<?php } ?>
@@ -54,7 +54,7 @@
 					<tbody>
 						<?php
 						include "../conexion.php";
-
+  /* <td><?php echo date("d/m/Y", strtotime($data['fechaproximopago'])); ?></td> */
 						$query = mysqli_query($conexion, "SELECT r.*, c.cubo, a.nombre FROM rentas r
                         inner join cubos c on c.codcubo = r.idcubo
                         inner join  arrendatarios a on a.idarrendatario = r.idarrendatario where r.cancelado = 0");
@@ -68,7 +68,7 @@
 									
 									<td><?php echo date("d/m/Y", strtotime($data['fechacontrato'])); ?></td>
 									<td><?php echo date("d/m/Y", strtotime($data['fechaultimopago'])); ?></td>
-                                    <td><?php echo date("d/m/Y", strtotime($data['fechaproximopago'])); ?></td>
+                                 
 									<?php if ($_SESSION['rol'] == 1) { ?>
 									<td>
 										<a href="editar_renta.php?id=<?php echo $data['id']; ?>" class="btn btn-success"><i class='fas fa-edit'></i></a>

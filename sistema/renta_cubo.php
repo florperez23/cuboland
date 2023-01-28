@@ -58,15 +58,15 @@
       $fechaultimopago=$fecha;
     }
 
-    echo $fechaultimopago;
+   
    
     if($estado==0)
     {
-      $sql = "INSERT INTO rentas(idarrendatario,idcubo,fechacontrato,fechaultimopago,fechaproximopago,usuario) values ( '$idarrendatario', '$codcubo', '$fecha', '$fechaultimopago', '$fproximopago', '".$usuario."')";
+      $sql = "INSERT INTO rentas(idarrendatario,idcubo,fechacontrato,fechaultimopago,fechaproximopago,usuario) values ( '$idarrendatario', '$codcubo', '$fecha', '$fechaultimopago', NULL, '".$usuario."')";
     } 
     else
     {
-        $sql="Update rentas set fechaultimopago='".$fecha."' , fechaproximopago='".$fproximopago."' where idcubo='".$codcubo. "'";
+        $sql="Update rentas set fechaultimopago='".$fecha."' , fechaproximopago=null where idcubo='".$codcubo. "' and cancelado=0";
      
         
     }
