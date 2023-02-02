@@ -26,9 +26,9 @@ if(isset($_POST['tipopago'])){
     $tipopago = "";
 }
 
-$desde = date("Y-m-d",strtotime($desde."- 1 day"));
+//$desde = date("Y-m-d",strtotime($desde."- 1 day"));
 
-$hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
+//$hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
 
 $suma = 0;
 echo 'tipopago '.$tipopago.' tipodeventa '.$tipoventa;
@@ -40,7 +40,7 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     from factura f
     inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
-    WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" AND f.idtipoventa IN(1, 2, 3) and f.cancelado = 0
+    WHERE CONVERT(f.fecha,date) BETWEEN "'.$desde.'" and "'.$hasta.'" AND f.idtipoventa IN(1, 2, 3) and f.cancelado = 0
     GROUP BY f.nofactura';
 }else if($tipopago <> 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     echo "caso 2";
@@ -50,7 +50,7 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     from factura f
     inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
-    WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" AND f.idtipoventa IN(1, 2, 3) and f.cancelado = 0 ';
+    WHERE CONVERT(f.fecha,date) BETWEEN "'.$desde.'" and "'.$hasta.'" AND f.idtipoventa IN(1, 2, 3) and f.cancelado = 0 ';
    if($tipopago == 1){
         $sql = $sql.' and f.idtipopago = "'.$tipopago.'" or (f.idtipopago=5 and f.efectivo <> 0 ) ';
 
@@ -78,7 +78,7 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     from factura f
     left join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
-    WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and f.idtipoventa = "'.$tipoventa.'" AND f.idtipoventa IN(1, 2, 3) and f.cancelado = 0
+    WHERE CONVERT(f.fecha,date) BETWEEN "'.$desde.'" and "'.$hasta.'" and f.idtipoventa = "'.$tipoventa.'" AND f.idtipoventa IN(1, 2, 3) and f.cancelado = 0
     GROUP BY f.nofactura';
 }else if($tipopago <> 0 and $tipoventa <> 0 and $desde <> '' and $hasta <> ''){
     echo "caso 4";
@@ -88,7 +88,7 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     from factura f
     left join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
-    WHERE f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and f.idtipoventa = "'.$tipoventa.'" and f.cancelado = 0 ';
+    WHERE CONVERT(f.fecha,date) BETWEEN "'.$desde.'" and "'.$hasta.'" and f.idtipoventa = "'.$tipoventa.'" and f.cancelado = 0 ';
     
     //and idtipopago = "'.$tipopago.'" or (idtipopago=5 and efectivo <> 0 ) or ( idtipopago=5 and tarjeta <> 0) or ( idtipopago=5 and transferencia <> 0) or ( idtipopago=5 and deposito <> 0)
     if($tipopago == 1){
@@ -189,7 +189,7 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     from factura f
     inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
-    WHERE f.fecha and AND f.idtipoventa IN(1, 2, 3) and f.cancelado = 0
+    WHERE f.fecha AND f.idtipoventa IN(1, 2, 3) and f.cancelado = 0
     GROUP BY f.nofactura';
 }
 echo $sql;

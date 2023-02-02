@@ -684,7 +684,7 @@ function rentero_cubo($cod){
 	include "../conexion.php";
 	$sql = "select a.nombre from rentas r
 	inner join arrendatarios a on a.idarrendatario = r.idarrendatario
-	where idcubo = '$cod' and r.cancelado=0";			
+	where idcubo = '$cod' and r.cancelado = 0";			
 	//echo $sql;		
 
 	$rc= $conexion -> query($sql);
