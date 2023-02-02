@@ -69,10 +69,12 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 						// left join arrendatarios a on a.idarrendatario = r.idarrendatario WHERE  r.cancelado=0 
 						// ORDER BY codcubo ASC");
 
-						$query = mysqli_query($conexion, "select codcubo, nomenclatura,cubo,renta, disponible,(SELECT		arrendatarios.nombre FROM	rentas
-							INNER JOIN	arrendatarios	ON 		rentas.idarrendatario = arrendatarios.idarrendatario 	
-							WHERE rentas.cancelado=0 and codcubo=rentas.idcubo)
-							as nombre	 from cubos ORDER BY codcubo ASC");
+
+						$query = mysqli_query($conexion, "select codcubo, nomenclatura,cubo,renta, disponible,
+						(SELECT arrendatarios.idarrendatario FROM rentas INNER JOIN arrendatarios ON rentas.idarrendatario = arrendatarios.idarrendatario WHERE rentas.cancelado=0 and codcubo=rentas.idcubo) as idarrendatario,
+						(SELECT arrendatarios.nombre FROM rentas INNER JOIN arrendatarios ON rentas.idarrendatario = arrendatarios.idarrendatario WHERE rentas.cancelado=0 and codcubo=rentas.idcubo) as nombre from cubos ORDER BY codcubo ASC");
+
+						
 						$result = mysqli_num_rows($query);
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
@@ -192,8 +194,8 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 														<div class="form-group">
 														<?php
 														$fechaUltimoPago=obtenerFechaUltimoPago($data['codcubo']);
-
-													    if ($data['disponible'] == 0 or $fechaUltimoPago==NULL OR $fechaUltimoPago='0000-00-00')
+														
+													    if ($data['disponible'] == 0 or $fechaUltimoPago==NULL OR $fechaUltimoPago=='0000-00-00')
 														{
 														
 															$DiasMes= date('t'); 
@@ -202,7 +204,10 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 															
 															$totalrenta=round(number_format(($DiasMes-$dia)*$precioxDia, 2, '.', ',') ,0);
 															//echo $totalrenta;
-															if($dia==$DiasMes)
+
+															//$dia=11;
+
+															if($dia==$DiasMes or $dia<10)
 															{
 																$totalrenta=$data['renta'];
 															}
@@ -216,17 +221,15 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 															}
 
 														}else
-														{ 
-															$fecha=date("Y-m-d");
-															 
-															
+														{ 															
+															$fecha=date("Y-m-d");															 
 															$mesactual = date("m", strtotime($fecha));
 															$mesultimopago= date("m", strtotime($fechaUltimoPago));
 															$mesesretrazo=(int)$mesactual-(int)$mesultimopago;
-															
-															
-															if($mesesretrazo>=1)
-															{
+															//echo $mesactual;
+															//echo $mesultimopago;
+															if( $mesactual!=$mesultimopago and $mesesretrazo>=1)
+															{ 
 																if($dia>10 or $mesesretrazo>1)
 																{        
 																	$totalrenta=((float)$data['renta']+50)*$mesesretrazo;
@@ -241,7 +244,11 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 																	$totalrenta=$data['renta'];
 																	$texto=''; 
 																}
-															}else
+															
+															}
+
+												
+															if($mesactual==$mesultimopago and ($fechaUltimoPago!=NULL OR $fechaUltimoPago!='0000-00-00'))
 															{
 																$totalrenta=0;
 																$texto='La renta se encuentrá al dia.'; 
