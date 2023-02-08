@@ -206,8 +206,8 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 															//echo $totalrenta;
 
 															//$dia=11;
-
-															if($dia==$DiasMes or $dia<10)
+															//or $dia<10
+															if($dia==$DiasMes )
 															{
 																$totalrenta=$data['renta'];
 															}
