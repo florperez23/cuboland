@@ -11,19 +11,21 @@ if($estatus == 5){
     $sql = 'select c.*, a.nombre, r.fechacontrato
     from cubos c
     left join arrendatarios a on a.idarrendatario = c.idarrendatario 
-    left join rentas r on r.idarrendatario = a.idarrendatario and c.codcubo = r.idcubo
+    left join rentas r on r.idarrendatario = a.idarrendatario and c.codcubo = r.idcubo and r.cancelado = 0
  GROUP BY codcubo';
+
+ $sql = 'SELECT c.*, (SELECT arrendatarios.nombre FROM rentas INNER JOIN arrendatarios ON rentas.idarrendatario = arrendatarios.idarrendatario WHERE rentas.cancelado = 0 AND codcubo = rentas.idcubo ) AS nombre, (SELECT rentas.fechacontrato FROM rentas WHERE rentas.cancelado = 0 AND codcubo = rentas.idcubo ) AS fechacontrato FROM cubos AS c ORDER BY codcubo ASC';
 }else{
 $sql = 'select c.*, a.nombre, r.fechacontrato
 from cubos c
 left join arrendatarios a on a.idarrendatario = c.idarrendatario 
-left join rentas r on r.idarrendatario = a.idarrendatario and c.codcubo = r.idcubo
+left join rentas r on r.idarrendatario = a.idarrendatario and c.codcubo = r.idcubo and r.cancelado = 0
 
 WHERE c.disponible = '.$estatus.' GROUP BY codcubo';
 
 $sql = 'SELECT c.*, (SELECT arrendatarios.nombre FROM rentas INNER JOIN arrendatarios ON rentas.idarrendatario = arrendatarios.idarrendatario WHERE rentas.cancelado = 0 AND codcubo = rentas.idcubo ) AS nombre, (SELECT rentas.fechacontrato FROM rentas WHERE rentas.cancelado = 0 AND codcubo = rentas.idcubo ) AS fechacontrato FROM cubos AS c WHERE c.disponible =  '.$estatus.' ORDER BY codcubo ASC';
 }
-//echo $sql;
+echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
 $vuelta = 1;
