@@ -194,10 +194,10 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 														<div class="form-group">
 														<?php
 														$fechaUltimoPago=obtenerFechaUltimoPago($data['codcubo']);
-														
+															
 													    if ($data['disponible'] == 0 or $fechaUltimoPago==NULL OR $fechaUltimoPago=='0000-00-00')
 														{
-														
+														//echo ' es nuevo';
 															$DiasMes= date('t'); 
 															$dia = date('d', strtotime($fecha));//obtenemos el dia actual
 															$precioxDia=( $data['renta'] / $DiasMes);
@@ -221,31 +221,57 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 															}
 
 														}else
-														{ 															
-															$fecha=date("Y-m-d");															 
+														{ 			
+														//echo 'No es nuevo';												
+															$fecha=date("Y-m-d");													
 															$mesactual = date("m", strtotime($fecha));
 															$mesultimopago= date("m", strtotime($fechaUltimoPago));
-															$mesesretrazo=(int)$mesactual-(int)$mesultimopago;
-															//echo $mesactual;
-															//echo $mesultimopago;
-															if( $mesactual!=$mesultimopago and $mesesretrazo>=1)
-															{ 
-																if($dia>10 or $mesesretrazo>1)
-																{        
+															
+															$diaultimopago= date("d", strtotime($fechaUltimoPago));
+															//$mesesretrazo=(int)$mesactual-(int)$mesultimopago;
+															//	$mesesretrazo=$mesesretrazo*1;
+
+
+															$datetime1=new DateTime($fecha);
+															$datetime2=new DateTime($fechaUltimoPago);
+															 
+															# obtenemos la diferencia entre las dos fechas
+															$interval=$datetime2->diff($datetime1);
+															 
+															# obtenemos la diferencia en meses
+															$mesesretrazo=$interval->format("%m");
+
+															//echo $mesactual."<br>";
+															//echo $mesultimopago."<br>";
+															//echo $dia."<br>";
+															//echo $diaultimopago."<br>";
+															//echo $mesesretrazo."<br>";
+															//$dia=16;
+															if( $mesactual!=$mesultimopago and( $mesesretrazo>1 ))
+															{ //echo 'entro1';
+																if($dia>10 or ( $mesesretrazo>1 ))
+																{       
+																//echo 'entro2'; 
 																	$totalrenta=((float)$data['renta']+50)*$mesesretrazo;
 																	if($mesesretrazo>1){
 																		$texto='Tiene '.$mesesretrazo.' de retrazo!!<br>La renta es de $'. $data['renta'].' + $50.00 por cada mes de retrazo.'; 
 																	}else
-																	{
-																		$texto='La renta es de $'. $data['renta'].' + $50.00 por cada mes de retrazo.'; 
+																	{//echo 'entro3';
+																		$texto='La renta es de $'. $data['renta'].' + $50.00 por retrazo.'; 
 																	}
 																}
-																else{															
+																else{	
+																//echo 'entro4';															
 																	$totalrenta=$data['renta'];
 																	$texto=''; 
 																}
 															
 															}
+															else{	
+																///echo 'No tiene retrazo';															
+																	$totalrenta=$data['renta'];
+																	$texto=''; 
+																}
 
 												
 															if($mesactual==$mesultimopago and ($fechaUltimoPago!=NULL OR $fechaUltimoPago!='0000-00-00'))
