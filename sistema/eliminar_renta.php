@@ -3,7 +3,8 @@
 if (!empty($_GET['id'])) {
     require("../conexion.php");
     $id = $_GET['id'];
-    $query = "UPDATE rentas SET cancelado = 1 WHERE id = $id";
+    $query = "DELETE FROM rentas WHERE id = $id";
+ 
     //echo $query;
     $query_delete = mysqli_query($conexion, $query);
     if ($query_delete) {

@@ -52,16 +52,16 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     inner join usuario u on f.usuario = u.idusuario
     WHERE CONVERT(f.fecha,date) BETWEEN "'.$desde.'" and "'.$hasta.'" AND f.idtipoventa IN(1, 2, 3) and f.cancelado = 0 ';
    if($tipopago == 1){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'" or (f.idtipopago=5 and f.efectivo <> 0 ) ';
+        $sql = $sql.' and (f.idtipopago = "'.$tipopago.'" or (f.idtipopago=5 and f.efectivo <> 0 ) )';
 
     }else if($tipopago == 2){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.tarjeta <> 0) ';
+        $sql = $sql.' and (f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.tarjeta <> 0)) ';
 
     }else if($tipopago == 3){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'"  or ( f.idtipopago=5 and f.transferencia <> 0) ';
+        $sql = $sql.' and (f.idtipopago = "'.$tipopago.'"  or ( f.idtipopago=5 and f.transferencia <> 0) )';
 
     }else if($tipopago == 4){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.deposito <> 0)';
+        $sql = $sql.' and (f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.deposito <> 0))';
 
     }else if($tipopago == 5){
         $sql = $sql.' and f.idtipopago = "'.$tipopago.'"';
@@ -92,16 +92,16 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     
     //and idtipopago = "'.$tipopago.'" or (idtipopago=5 and efectivo <> 0 ) or ( idtipopago=5 and tarjeta <> 0) or ( idtipopago=5 and transferencia <> 0) or ( idtipopago=5 and deposito <> 0)
     if($tipopago == 1){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'" or (f.idtipopago=5 and f.efectivo <> 0 ) ';
+        $sql = $sql.' and (f.idtipopago = "'.$tipopago.'" or (f.idtipopago=5 and f.efectivo <> 0 ))';
 
     }else if($tipopago == 2){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.tarjeta <> 0) ';
+        $sql = $sql.' and ( f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.tarjeta <> 0)) ';
 
     }else if($tipopago == 3){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'"  or ( f.idtipopago=5 and f.transferencia <> 0) ';
+        $sql = $sql.' and (f.idtipopago = "'.$tipopago.'"  or ( f.idtipopago=5 and f.transferencia <> 0) )';
 
     }else if($tipopago == 4){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.deposito <> 0)';
+        $sql = $sql.' and (f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.deposito <> 0))';
 
     }else if($tipopago == 5){
         $sql = $sql.' and f.idtipopago = "'.$tipopago.'"';
@@ -122,16 +122,16 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     WHERE and idtipoventa = "'.$tipoventa.'"  and f.cancelado = 0 ';
     
     if($tipopago == 1){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'" or (f.idtipopago=5 and f.efectivo <> 0 ) ';
+        $sql = $sql.' and (f.idtipopago = "'.$tipopago.'" or (f.idtipopago=5 and f.efectivo <> 0 )) ';
 
     }else if($tipopago == 2){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.tarjeta <> 0) ';
+        $sql = $sql.' and (f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.tarjeta <> 0)) ';
 
     }else if($tipopago == 3){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'"  or ( f.idtipopago=5 and f.transferencia <> 0) ';
+        $sql = $sql.' and (f.idtipopago = "'.$tipopago.'"  or ( f.idtipopago=5 and f.transferencia <> 0) )';
 
     }else if($tipopago == 4){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.deposito <> 0)';
+        $sql = $sql.' and (f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.deposito <> 0))';
 
     }else if($tipopago == 5){
         $sql = $sql.' and f.idtipopago = "'.$tipopago.'"';
@@ -163,16 +163,16 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     WHERE AND f.idtipoventa IN(1, 2, 3) and f.cancelado = 0 ';
 
     if($tipopago == 1){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'" or (f.idtipopago=5 and f.efectivo <> 0 ) ';
+        $sql = $sql.' and (f.idtipopago = "'.$tipopago.'" or (f.idtipopago=5 and f.efectivo <> 0 )) ';
 
     }else if($tipopago == 2){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.tarjeta <> 0) ';
+        $sql = $sql.' and (f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.tarjeta <> 0) )';
 
     }else if($tipopago == 3){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'"  or ( f.idtipopago=5 and f.transferencia <> 0) ';
+        $sql = $sql.' and (f.idtipopago = "'.$tipopago.'"  or ( f.idtipopago=5 and f.transferencia <> 0)) ';
 
     }else if($tipopago == 4){
-        $sql = $sql.' and f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.deposito <> 0)';
+        $sql = $sql.' and (f.idtipopago = "'.$tipopago.'" or ( f.idtipopago=5 and f.deposito <> 0))';
 
     }else if($tipopago == 5){
         $sql = $sql.' and f.idtipopago = "'.$tipopago.'"';
@@ -220,14 +220,14 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['nofactura'].'</td>';
         $tabla = $tabla.'<td>'.date("d/m/Y H:i:s", strtotime($f['fecha'])).'</td>';
         $tabla = $tabla.'<td>'.$f['nomusuario'].'</td>';
-	echo $suma.'<br>';
+	       echo $suma.'<br>';
         if($tipopago <> 5){
             if($f['efectivo']<> 0){
                 $suma = $suma += $f['efectivo'];
                 $tabla = $tabla.'<td>$'.number_format($f['efectivo'], 2, '.', ',').'</td>';
             }else if($f['tarjeta']<> 0){
-                $suma = $suma += $f['tarjeta'];
-                $tabla = $tabla.'<td>$'.number_format($f['tarjeta'], 2, '.', ',').'</td>';
+                $suma = $suma += $f['pagocon'];
+                $tabla = $tabla.'<td>$'.number_format($f['pagocon'], 2, '.', ',').'</td>';
             }else if($f['transferencia']<> 0){
                 $suma = $suma += $f['transferencia'];
                 $tabla = $tabla.'<td>$'.number_format($f['transferencia'], 2, '.', ',').'</td>';
@@ -239,9 +239,18 @@ if ($r -> num_rows >0){
                 $tabla = $tabla.'<td>$'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
             }
         }else{
-	
-            $suma = $suma += $f['totalfactura'];
-            $tabla = $tabla.'<td>$'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
+	       echo '==========ENTRO ELSEE======<BR>';
+            if ($tipopago == 2){
+                 $suma = $suma += $f['pagocon'];
+            }else{
+                 $suma = $suma += $f['totalfactura'];
+            }
+           
+            if($tipopago == 2){
+                $tabla = $tabla.'<td>$'.number_format($f['pagocon'], 2, '.', ',').'</td>';
+            }else{
+                $tabla = $tabla.'<td>$'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
+            }
         }
         
         $tabla = $tabla.'<td>'.$f['tipopago'].'</td>';
