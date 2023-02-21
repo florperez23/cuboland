@@ -1,4 +1,6 @@
-<?php include_once "includes/header.php"; ?>
+<?php include_once "includes/header.php"; 
+
+?>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -103,6 +105,7 @@
 		});
 	}
     
+
 
   </script>
 

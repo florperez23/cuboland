@@ -4,7 +4,9 @@ include "../conexion.php";
 if (!empty($_POST)) {
   $alert = "";
 
+    $codcubo = $_POST['cubop'];
     $codproducto = $_POST['codigo'];
+
     $descripcion = $_POST['descripcion'];
     $precio = $_POST['precio'];
     $mayoreo = $_POST['mayoreo'];
