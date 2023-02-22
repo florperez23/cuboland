@@ -23,7 +23,11 @@
 		if($tipo ==5)
 		{
 			$sql="SELECT * FROM arrendatarios inner join cubos on cubos.idarrendatario=arrendatarios.idarrendatario WHERE arrendatarios.idarrendatario = ".$codCliente." and cubos.codcubo='".$result_venta['observaciones']."'";
+<<<<<<< HEAD
 		//echo $sql;
+=======
+			//echo $sql;
+>>>>>>> 126a5999f2104c4a6db273f0d2342f29f064e959
 			$arrendatarios = mysqli_query($conexion, $sql);
 			$result_cliente= mysqli_fetch_assoc($arrendatarios);		
 		}else

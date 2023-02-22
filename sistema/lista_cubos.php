@@ -68,11 +68,11 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 						// cubos c left join rentas r on r.idcubo = c.codcubo
 						// left join arrendatarios a on a.idarrendatario = r.idarrendatario WHERE  r.cancelado=0 
 						// ORDER BY codcubo ASC");
-
-
-						$query = mysqli_query($conexion, "select codcubo, nomenclatura,cubo,renta, disponible,
+						$sql = "select codcubo, nomenclatura,cubo,renta, disponible,
 						(SELECT arrendatarios.idarrendatario FROM rentas INNER JOIN arrendatarios ON rentas.idarrendatario = arrendatarios.idarrendatario WHERE rentas.cancelado=0 and codcubo=rentas.idcubo) as idarrendatario,
-						(SELECT arrendatarios.nombre FROM rentas INNER JOIN arrendatarios ON rentas.idarrendatario = arrendatarios.idarrendatario WHERE rentas.cancelado=0 and codcubo=rentas.idcubo) as nombre from cubos ORDER BY codcubo ASC");
+						(SELECT arrendatarios.nombre FROM rentas INNER JOIN arrendatarios ON rentas.idarrendatario = arrendatarios.idarrendatario WHERE rentas.cancelado=0 and codcubo=rentas.idcubo) as nombre from cubos ORDER BY codcubo ASC";
+						//echo $sql;
+						$query = mysqli_query($conexion, $sql);
 
 						
 						$result = mysqli_num_rows($query);
