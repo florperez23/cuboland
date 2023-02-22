@@ -117,6 +117,7 @@
 							<th>CÓDIGO</th>
 							<th style="width:250px;">DESCRIPCIÓN</th>
 							<th>PRECIO</th>
+							<th>EXISTENCIA</th>
 							
 							<?php if ($_SESSION['rol'] == 1) { ?>
 							<th>ACCIONES</th>
@@ -129,14 +130,13 @@
                             if($codcubo == 0){
                                 $sql = "SELECT p.*, c.cubo
                                 FROM producto p
-                                INNER JOIN cubos c ON c.codcubo = p.codcubo
-								order by codproducto,numsiguiente ASC";
+                                INNER JOIN cubos c ON c.codcubo = p.codcubo order by numsiguiente,codproducto ASC";
                             }else{
                                 $sql = "SELECT p.*, c.cubo
                                 FROM producto p
-                                INNER JOIN cubos c ON c.codcubo = p.codcubo WHERE p.codcubo =  $codcubo
-								order by codproducto,numsiguiente ASC";
+                                INNER JOIN cubos c ON c.codcubo = p.codcubo WHERE p.codcubo =  $codcubo order by numsiguiente,codproducto ASC";
                             }
+//echo $sql;
 
 						$query = mysqli_query($conexion, $sql);
 						$result = mysqli_num_rows($query);
@@ -148,6 +148,7 @@
 									<td><?php echo $data['descripcion']; ?></td>
 									
 									<td><?php echo $data['precio']; ?></td>
+<td><?php echo $data['existencia']; ?></td>
 									
 									<td><button type="button" id="generar_barcode" onclick="cb('<?php echo $data['codproducto']; ?>');" class="btn btn-info" ><i class="fas fa-solid fa-barcode"></i></button>
 										<?php if ($_SESSION['rol'] == 1) { ?>

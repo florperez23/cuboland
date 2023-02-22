@@ -29,6 +29,7 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<th ><b>CODIGO</b></th>';
     $tabla = $tabla.'<th ><b>DESCRIPCION</b></th>';
     $tabla = $tabla."<th><b>PRECIO</b></th>";
+$tabla = $tabla."<th><b>EXISTENCIA</b></th>";
     $tabla = $tabla."<th><b>FECHA INGRESO</b></th>";
     $tabla = $tabla.'<th ><b>CUBO</b></th>';
     $tabla = $tabla."</tr>";
@@ -42,6 +43,7 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['codproducto'].'</td>';
         $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['precio'], 2, '.', ',').'</td>';
+$tabla = $tabla.'<td>'.$f['existencia'].'</td>';
         $tabla = $tabla.'<td>'.date("d/m/Y", strtotime($f['fecha'])).'</td>';
         $tabla = $tabla.'<td>'.$f['nomcubo'].'</td>';
         $tabla = $tabla."</tr>";  

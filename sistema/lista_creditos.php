@@ -14,11 +14,11 @@
 	
 		<div class="col-md-4">
 			<label for="producto">Desde</label>
-            <input type="date" name="desde" id="desde" class="form-control">
+            <input type="date" name="desde" id="desde" value='<?php echo $fecha ?>'  class="form-control">
 		</div>
 		<div class="col-md-4">
 			<label for="producto">Hasta</label>
-            <input type="date" name="hasta" id="hasta" class="form-control">
+            <input type="date" name="hasta" id="hasta" value='<?php echo $fecha ?>'  class="form-control">
 		</div>
 		<div class="col-md-4">
 			<input type="submit" value="Generar Reporte" class="btn btn-primary">

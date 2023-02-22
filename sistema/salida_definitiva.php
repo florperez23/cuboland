@@ -27,7 +27,9 @@ require_once('pdf/tcpdf.php');
         $tabla = $tabla.'<th ><b>No.</b></th>';
         $tabla = $tabla.'<th ><b>CODIGO PRODUCTO</b></th>';
         $tabla = $tabla.'<th ><b>DESCRIPCION</b></th>';
+        $tabla = $tabla."<th><b>PRECIO</b></th>";  
         $tabla = $tabla."<th><b>CANTIDAD</b></th>";  
+        
         $tabla = $tabla."</tr>";
         while($f = $r -> fetch_array())
         {                  
@@ -39,6 +41,7 @@ require_once('pdf/tcpdf.php');
             $tabla = $tabla.'<td>'.$vuelta.'</td>';
             $tabla = $tabla.'<td>'.$f['codproducto'].'</td>';
             $tabla = $tabla.'<td>'.$f['descripcion'].'</td>';
+            $tabla = $tabla.'<td>'.$f['precio'].'</td>';
             $tabla = $tabla.'<td>'.$f['existencia'].'</td>';
             $tabla = $tabla."</tr>";  
             $vuelta++;   
