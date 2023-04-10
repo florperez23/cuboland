@@ -78,15 +78,10 @@
                                     ?>
                                   </td>
 									<td>
-                                    <button title="Abrir" id="abrirAbonos" name="abrirAbonos" type="button" id="abrir" class="btn btn-primary" data-toggle="modal" data-target="#mostrarCredito">
+                                    <button title="Abrir" id="abrirAbonos" name="abrirAbonos" type="button" id="abrir" class="btn btn-primary" data-toggle="modal" data-target="#mostrarCredito_<?php echo $dato['numcredito']; ?>">
                                     <i class="fa fa-arrow-right" ></i>
                                 </button>
-                                <form action="eliminar_credito.php?id=<?php echo $dato['numcredito']; ?>" method="post" class="cancelar d-inline">
-											<button  title="Cancelar" class="btn btn-danger" type="submit"><i class="fa fa-ban"></i> </button>
-										</form>
-        
-                                <!-- Modal -->
-                                <div class="modal fade" id="mostrarCredito" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                 <div class="modal fade" id="mostrarCredito_<?php echo $dato['numcredito']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                     <div class="modal-header">
@@ -114,13 +109,13 @@
                                                     <tbody>
                                                         <?php
                                                         require "../conexion.php";
-                                                        $sql=" SELECT numcredito, creditos.fecha,totalventa as total, (select totalfactura from factura where numcredito=creditos.numcredito GROUP BY numcredito) as pago,
+                                                        $sql2=" SELECT numcredito, creditos.fecha,totalventa as total, (select totalfactura from factura where numcredito=creditos.numcredito GROUP BY numcredito) as pago,
                                                         totalventa-(select SUM(totalfactura) from factura where numcredito=creditos.numcredito GROUP BY numcredito) AS  adeudo, 
                                                          fechavencimiento,estado,nombre   FROM creditos inner join cliente on cliente.idcliente=creditos.idcliente 
                                                         WHERE creditos.estado=1 and  creditos.numcredito = '". $dato['numcredito']."'" ;
 
-                                                        //echo $sql;
-                                                        $query1 = mysqli_query($conexion, $sql);
+                                                        //echo $sql2;
+                                                        $query1 = mysqli_query($conexion, $sql2);
                                                         mysqli_close($conexion);
                                                         $cli1 = mysqli_num_rows($query1);
                                                         $cont=0;
@@ -156,6 +151,12 @@
                                     </div>
                                 </div>
                                 </div>
+                                <form action="eliminar_credito.php?id=<?php echo $dato['numcredito']; ?>" method="post" class="cancelar d-inline">
+											<button  title="Cancelar" class="btn btn-danger" type="submit"><i class="fa fa-ban"></i> </button>
+										</form>
+        
+                                <!-- Modal -->
+                               
                                     </td>
 								</tr>
 						<?php }

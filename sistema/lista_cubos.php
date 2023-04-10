@@ -248,7 +248,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 															//echo $mesesretrazo."<br>";
 															//$dia=11;
 															//and $dia>$diaultimopago
-															if( $mesactual!=$mesultimopago and( $mesesretrazo>1 ))
+															if( $mesactual!=$mesultimopago and( $mesesretrazo>=1 ))
 															{ //echo 'entro1';
 																if($dia>10 or ( $mesesretrazo>1 ))
 																{       
@@ -376,7 +376,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 										<button type="button" style="text-align: center;" class="btn btn-danger" data-dismiss="modal" id="btnCerrar" name="btnCerrar">Close</button>										
 										
 										
-										<button class="btn btn-primary"  style="text-align: center;" type="submit">TerminarRenta </button>
+										<button class="btn btn-primary" id="regitrarRenta" name="regitrarRenta" style="text-align: center;" type="submit">TerminarRenta </button>
 										
 										</div>
 									</div>
@@ -402,5 +402,16 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 <!-- /.container-fluid -->
 
 
+<!-- <script type="text/javascript">
+    // usando javascript
+    window.addEventListener("load", function() {
+    input = document.getElementById("regitrarRenta");
+ 
+    input.addEventListener("click", clicked2, false);
+});
 
+function clicked2() {
+document.getElementById("regitrarRenta").disabled = true;
+}
+</script> -->
 <?php include_once "includes/footer.php"; ?>
