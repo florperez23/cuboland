@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 ob_start();
 
@@ -357,4 +358,5 @@ $pdf->lastPage();
 //Close and output PDF document}
 ob_end_clean();
 $pdf->Output('reporte.pdf', 'I');
+
 ?>
