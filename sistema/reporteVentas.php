@@ -220,20 +220,41 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['nofactura'].'</td>';
         $tabla = $tabla.'<td>'.date("d/m/Y H:i:s", strtotime($f['fecha'])).'</td>';
         $tabla = $tabla.'<td>'.$f['nomusuario'].'</td>';
-	       echo $suma.'<br>';
+	      // echo $suma.'<br>';
         if($tipopago <> 5){
-            if($f['efectivo']<> 0){
+            //if($f['efectivo']<> 0){
+            if($f['idtipopago'] == 1){
                 $suma = $suma += $f['efectivo'];
                 $tabla = $tabla.'<td>$'.number_format($f['efectivo'], 2, '.', ',').'</td>';
-            }else if($f['tarjeta']<> 0){
-                $suma = $suma += $f['pagocon'];
-                $tabla = $tabla.'<td>$'.number_format($f['pagocon'], 2, '.', ',').'</td>';
-            }else if($f['transferencia']<> 0){
+            }else if($f['idtipopago']== 2){//($f['tarjeta']<> 0){
+              
+                $suma = $suma += $f['tarjeta'];
+                $tabla = $tabla.'<td>$'.number_format($f['tarjeta'], 2, '.', ',').'</td>';
+            }else if($f['idtipopago']== 3){
                 $suma = $suma += $f['transferencia'];
                 $tabla = $tabla.'<td>$'.number_format($f['transferencia'], 2, '.', ',').'</td>';
-            }else if($f['deposito']<> 0){
+            }else if($f['idtipopago']== 4){
                 $suma = $suma += $f['deposito'];
                 $tabla = $tabla.'<td>$'.number_format($f['deposito'], 2, '.', ',').'</td>';
+            }else if($f['idtipopago']== 5){
+                if ($tipopago == 1){
+                    $suma = $suma += $f['efectivo'];
+                    $tabla = $tabla.'<td>$'.number_format($f['efectivo'], 2, '.', ',').'</td>';
+                }else if ($tipopago == 2){
+                    $suma = $suma += $f['tarjeta'];
+                    $tabla = $tabla.'<td>$'.number_format($f['tarjeta'], 2, '.', ',').'</td>';
+                }else if($tipopago == 3){
+                    $suma = $suma += $f['transferencia'];
+                    $tabla = $tabla.'<td>$'.number_format($f['transferencia'], 2, '.', ',').'</td>';
+                }else if ($tipopago == 4){
+                    $suma = $suma += $f['deposito'];
+                    $tabla = $tabla.'<td>$'.number_format($f['deposito'], 2, '.', ',').'</td>';
+
+                }else{
+                     $suma = $suma += $f['totalfactura'];
+                    $tabla = $tabla.'<td>$'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
+                }
+                
             }else{
                 $suma = $suma += $f['totalfactura'];
                 $tabla = $tabla.'<td>$'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
@@ -251,6 +272,8 @@ if ($r -> num_rows >0){
             }else{
                 $tabla = $tabla.'<td>$'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
             }
+
+         
         }
         
         $tabla = $tabla.'<td>'.$f['tipopago'].'</td>';
