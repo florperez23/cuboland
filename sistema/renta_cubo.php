@@ -19,10 +19,10 @@
     $token = md5($_SESSION['idUser']);
     $usuario = $_SESSION['idUser'];
     $tipoventa = $_POST['tipoven'.$codcubo];
-    $fechaven = $_POST['fechaven'.$codcubo];
+   // $fechaven = $_POST['fechaven'.$codcubo];
     // $numcredito=$_POST['numcredito'.$codcubo];
     $tipopago = $_POST['tipopago'.$codcubo];
-    $newDate = date("Y/m/d", strtotime($fechaven));
+    //$newDate = date("Y/m/d", strtotime($fechaven));
     $totalrenta=$_POST['totalmodal'.$codcubo];
     $estado=$_POST['disponible'.$codcubo];
     $pagocon=$_POST['pagar_con'.$codcubo];
@@ -70,14 +70,47 @@
      
         
     }
+
+
+
+    
+  if(isset($_POST['referenciac'.$codcubo])){
+    $referencia = $_POST['referenciac'.$codcubo];
+  }else{
+    $referencia = "";
+  }
+
+  if(isset($_POST['pefectivoc'.$codcubo])){
+    $efectivo = $_POST['pefectivoc'.$codcubo];;
+  }else{
+    $efectivo = "0";
+  }
+
+  if(isset($_POST['ptarjetac'.$codcubo])){
+    $tarjeta = $_POST['ptarjetac'.$codcubo];;
+  }else{
+    $tarjeta = "0";
+  }
+    if(isset($_POST['ptransferenciac'.$codcubo])){
+    $transferencia = $_POST['ptransferenciac'.$codcubo];;
+  }else{
+    $transferencia = "0";
+  }
+
+  if(isset($_POST['pdepositoc'.$codcubo])){
+    $deposito = $_POST['pdepositoc'.$codcubo];
+  }else{
+    $deposito = "0";
+  }
   
+  //echo $_POST['pdepositoc'.$codcubo]."deposito";
   //echo $sql;	
       $query_insert = mysqli_query($conexion, $sql);
       if ($query_insert) {
 
     // //     //HACER el insert el factura para tomarlo en cuenta en los reportes
-       $sql = "INSERT INTO factura(fecha,usuario,codcliente,totalfactura,idtipoventa,idtipopago,	cancelado,totalventa,referencia,pagocon,numcredito,	saldo,fechacancelacion,usuario_id_mod,subtotal,iva,observaciones) 
-      values ( now(), '$usuario','$idarrendatario', '$totalrenta','5','$tipopago',0,'$renta','$referencia','$pagocon','','','','','$totalrenta', '$totalrenta','".$codcubo."')";
+       $sql = "INSERT INTO factura(fecha,usuario,codcliente,totalfactura,idtipoventa,idtipopago,	cancelado,totalventa,referencia,pagocon,numcredito,	saldo,fechacancelacion,usuario_id_mod,subtotal,iva,observaciones,efectivo,tarjeta,transferencia,deposito) 
+      values ( now(), '$usuario','$idarrendatario', '$totalrenta','5','$tipopago',0,'$renta','$referencia','$pagocon','','','','','$totalrenta', '$totalrenta','".$codcubo."','$efectivo','$tarjeta','$transferencia','$deposito')";
          //echo $sql;	
          $query_insert = mysqli_query($conexion, $sql);
          if ($query_insert) {

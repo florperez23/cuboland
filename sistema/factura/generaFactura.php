@@ -196,7 +196,9 @@
 			
 		
 			$pdf->Cell(9, 5, '$'.number_format($totalfactura ,2, '.', ','), 0, 1, 'R');
-			
+
+
+		
 		}else
 		{	
 			while ($row = mysqli_fetch_assoc($productos)) {
@@ -315,11 +317,28 @@
 			
 		}else if($tipo=='5')
 		{
+			if($tipop==5) /* ES UN PAGO MIXO*/		
+			{		
+					
+				$pdf->SetFont('Arial', 'B', 7);
+				$pdf->Cell(70, 5, 'Total: $' . number_format($totalfactura, 2, '.', ','), 0, 1, 'R');	
+					$pdf->Cell(70, 5, 'Efectivo: $' . $efectivo, 0, 1, 'R');		
+					 $pdf->Cell(70, 5, 'Tarjeta: $' . $tarjeta, 0, 1, 'R');
+					$pdf->Cell(70, 5, 'Transferencia: $' . $transferencia, 0, 1, 'R');
+					$pdf->Cell(70, 5, 'Deposito: $' . $deposito, 0, 1, 'R');
+					$pdf->Ln();	
+					// $pdf->Cell(70, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
+						if($tarjeta!="" and  $tarjeta!="0.00")
+						{
+						$pdf->Cell(70, 5,  '5% de comision por pago con tarjeta', 0, 1, 'R');	
+						} 
+			}
+			else{	
 			$pdf->Cell(70, 5, 'Total: $' . number_format($totalfactura, 2, '.', ','), 0, 1, 'R');	
 			$pdf->Cell(70, 5, 'Pago: $' . number_format($pagocon, 2, '.', ','), 0, 1, 'R');		
 			if($tipop!=2){
 			$pdf->Cell(70, 5, 'Cambio: $' .number_format(($pagocon-$totalfactura), 2, '.', ','), 0, 1, 'R');
-		     }	
+		     }	}
 		}		
 		else{
 			$pdf->Cell(70, 5, 'Total: $' . number_format($totalventa, 2, '.', ','), 0, 1, 'R');	
