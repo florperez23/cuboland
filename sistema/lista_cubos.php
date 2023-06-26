@@ -184,7 +184,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 															<option value="2">Tarjeta</option>  
 															<option value="3">Transferencia</option>    
 															<option value="4">Deposito</option>       
-															<option value="5">Pago Mixto</option>                            
+															<!-- <option value="5">Pago Mixto</option>                             -->
 														</select>
 													</div>
 												</div> 
@@ -359,7 +359,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 														
 												</div> -->
 
-												
+<!-- 												
 												<div class="form-group" id='referencia<?php echo $data['codcubo']; ?>' style="display:none;">
 													<label for="numreferencia" class="font-weight-bold">Referencia</label>  
 													<input id="numreferencia<?php echo $data['codcubo']; ?>" name="numreferencia<?php echo $data['codcubo']; ?>"  class="form-control" type="text" placeholder="Referencia" value="">
@@ -369,7 +369,6 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 												<div class="col-md-2">
 														<div class="form-group" id="divpagomixto" style="display:none;">
 															<label  id="etiquetaPago" class="font-weight-bold">Total</label>
-															<!-- //<input id="totalFIJOc"  type="hidden" class="form-control" type="text" placeholder="Total"  value=""  disabled="" > -->
 															<input   id='totalpagomixtocubos<?php echo $data['codcubo']; ?>' name='totalpagomixtocubos<?php echo $data['codcubo']; ?>' class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
 														</div>
 														</div>
@@ -402,7 +401,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 											</div>   					
 											
 						
-									</div>
+									</div> -->
 					
 								</div>
 				
