@@ -17,7 +17,7 @@ $sumatran = 0;
 $sumadep = 0;
 
 
-$sql = 'SELECT f.nofactura, f.fecha, df.*, (df.cantidad * df.precio_promocion) as total, if(f.idtipopago = 1, "EFECTIVO", if(f.idtipopago=2, "TARJETA",if(f.idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago,
+$sql = 'SELECT f.nofactura, f.fecha,  f.totalfactura, f.pagocon, df.*, (df.cantidad * f.pagocon) as total, if(f.idtipopago = 1, "EFECTIVO", if(f.idtipopago=2, "TARJETA",if(f.idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago,
 f.efectivo,
 f.tarjeta,
 f.transferencia,
@@ -43,7 +43,9 @@ if ($r -> num_rows >0){
     $tabla = $tabla."<th><b>CODIGO PRODUCTO</b></th>";
     $tabla = $tabla.'<th ><b>CANTIDAD</b></th>';
     $tabla = $tabla.'<th ><b>PRECIO VENTA</b></th>';
-    $tabla = $tabla.'<th ><b>PRECIO PROMOCION</b></th>';
+     $tabla = $tabla.'<th ><b>PRECIO PROMOCION</b></th>';
+    $tabla = $tabla.'<th ><b>PAGADO</b></th>';
+   
     $tabla = $tabla.'<th ><b>TOTAL</b></th>';
     $tabla = $tabla.'<th ><b>TIPO PAGO</b></th>';
    // $tabla = $tabla.'<th ><b>EF.</b></th>';
@@ -70,6 +72,8 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['cantidad'].'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['precio_venta'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
+        $tabla = $tabla.'<td>$'.number_format($f['pagocon'], 2, '.', ',').'</td>';
+        
         $tabla = $tabla.'<td>$'.number_format($f['total'], 2, '.', ',').'</td>';
         $tabla = $tabla.'<td>'.$f['tipopago'].'</td>';
         $suma = $suma += $f['total'];
