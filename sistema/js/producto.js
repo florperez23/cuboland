@@ -872,7 +872,7 @@ function delProduct() {
 
 }
 
-if (document.getElementById("sales-chart")) {
+/*if (document.getElementById("sales-chart")) {
  const action = "sales";
  $.ajax({
    url: 'chart.php',
@@ -989,7 +989,30 @@ if (document.getElementById("sales-chart")) {
      console.log(error);
    }
  });
-}
+}*/
+
+if (document.getElementById("sales-chart")) {
+  const action = "sales-chart";
+ 
+  $.ajax({
+    url: 'chart.php',
+    type: 'POST',
+    async: true,
+    data: {action},
+    success: function (response) {
+     //alert(response);
+     console.log(response);
+     $("#sales-chart").val(response);
+     $('#sales-chart').html(response);
+    },
+    error: function (error) {
+      console.log(error);
+ 
+    }
+  });
+ }
+
+
 
 if (document.getElementById("polarChart")) {
  const action = "polarChart";
@@ -2082,11 +2105,11 @@ $('#cubop').change(function(e) {
    success: function(response) {
      //console.log(response);
      document.getElementById('nom').value = response; 
+     
    },
    error: function(error) {
    }
  });
-
 
  var action = 'signumero';
  $.ajax({
@@ -2097,6 +2120,7 @@ $('#cubop').change(function(e) {
    success: function(response) {
      //console.log(response);
       document.getElementById('numsig').value = response;
+     
       var nomenclatura = $('#nom').val();
       var numsig = $('#numsig').val();
       $('#codigo').val(nomenclatura+'-'+numsig);

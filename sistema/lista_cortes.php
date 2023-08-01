@@ -38,7 +38,7 @@
 			?>
 
 			<select id="cubo" name="cubo" class="form-control">
-				<option value='0'>Seleccione una opción</option>
+				<option value='0'>TODOS</option>
 				<?php
 				if ($res > 0) {
 					while ($f = mysqli_fetch_array($query)) {

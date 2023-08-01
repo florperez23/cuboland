@@ -32,7 +32,7 @@
       $query_insert = mysqli_query($conexion, $sql );
       if ($query_insert) {
         historia('Se registro el nuevo producto '.$codigo);
-        mensajeicono('Se ha registrado con éxito el producto!', 'lista_productos.php','','exito');
+        mensajeicono('Se ha registrado con éxito el producto!', 'registro_producto.php?volver='.$idcubo,'','exito');
 
       } else {
         historia('Error al intentar registrar el nuevo producto '.$codigo);
@@ -75,20 +75,79 @@
                  <?php
                   if ($res > 0) {
                     while ($f = mysqli_fetch_array($query)) {
-                      
-                  ?>
-                     <option value="<?php echo $f['codcubo']; ?>"><?php echo $f['cubo']; ?></option>
-                 <?php
+                      if($_GET['volver'] == $f['codcubo']){
+                        ?>
+                          <option value="<?php echo $f['codcubo']; ?>" selected><?php echo $f['cubo']; ?></option>
+                        <?php
+                      }else{
+                        ?>
+                       
+                          <option value="<?php echo $f['codcubo']; ?>"><?php echo $f['cubo']; ?></option>
+                      <?php
+                      }
+                  
                     }
                   }
                   ?>
                </select>
              </div>
 
-             <div class="form-group">
-               <label for="codigo">Nomenclatura</label>
-               <input type="text"  name="nom" id="nom" class="form-control" readonly>
-             </div>
+             <?php
+
+             if(isset ($_GET['volver'])){
+              $codcubo = $_GET['volver'];
+              $sql = "select nomenclatura from cubos where codcubo = '$codcubo' ";
+              $query = mysqli_query($conexion, $sql);
+           
+            
+              $result = mysqli_num_rows($query);
+              if ($result > 0) {
+                $data = mysqli_fetch_assoc($query);   
+                $nomenclatura = $data["nomenclatura"];
+                ?>
+                  <div class="form-group">
+                    <label for="codigo">Nomenclatura</label>
+                    <input type="text"  name="nom" id="nom" value = <?php echo $nomenclatura; ?> class="form-control" readonly>
+                  </div>
+                <?php
+                
+              }
+
+             
+              $sql = "select if(ISNULL(max(numsiguiente)), 0, max(numsiguiente)) + 1 as signum from producto where codcubo = '$codcubo' ";
+              // echo $sql;
+                $query = mysqli_query($conexion, $sql);
+              
+                $result = mysqli_num_rows($query);
+                if ($result > 0) {
+                  $data = mysqli_fetch_assoc($query);     
+                  $signum = $data["signum"];
+                  ?>
+                    <div class="form-group">
+                      <label for="codigo">Siguiente número</label>
+                      <input type="text"  name="numsig" id="numsig" value = <?php echo $signum;?> class="form-control" >
+                    </div>
+
+                <?php
+             
+                }
+
+
+                ?>
+                <div class="form-group">
+                  <label for="codigo">Código del producto</label>
+                  <input type="text"  name="codigo" id="codigo" value = <?php echo $nomenclatura.'-'.$signum;?>  class="form-control">
+                </div>
+
+              <?php
+
+             }else{
+              ?>
+
+              <div class="form-group">
+                    <label for="codigo">Nomenclatura</label>
+                    <input type="text"  name="nom" id="nom" class="form-control" readonly>
+                  </div>
              <div class="form-group">
                <label for="codigo">Siguiente número</label>
                <input type="text"  name="numsig" id="numsig" class="form-control" >
@@ -98,6 +157,15 @@
                <label for="codigo">Código del producto</label>
                <input type="text"  name="codigo" id="codigo" class="form-control">
              </div>
+             <?php
+             }
+             
+    ?>
+
+              
+
+
+
              <div class="form-group">
                <label for="producto">Descripción del producto</label>
                <input type="text" maxlength="23" placeholder="Ingrese la descripcion del producto" name="descripcion" id="descripcion" class="form-control">

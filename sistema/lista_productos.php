@@ -26,7 +26,7 @@
 			<label style='color:#000'>Reporte por Cubos</label>
 			<?php
 			
-			$query = mysqli_query($conexion, "SELECT * FROM cubos ORDER BY codcubo ASC");
+			$query = mysqli_query($conexion, "SELECT * FROM cubos ORDER BY codcubo, cubo ASC");
 			$res = mysqli_num_rows($query);
 			
 			?>
@@ -38,7 +38,7 @@
 					while ($d = mysqli_fetch_array($query)) {	
 				?>
 					
-					<option value="<?php echo $d['codcubo']; ?>"><?php echo $d['cubo']; ?></option>
+					<option value="<?php echo $d['codcubo']; ?>"><?php echo $d['nomenclatura'].'-'.$d['cubo']; ?></option>
 				<?php
 						
 					}

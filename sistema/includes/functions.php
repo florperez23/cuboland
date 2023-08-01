@@ -492,7 +492,7 @@ function idcuboanterior($id){
 }
 
 function ExiteUnaPromocion($codproducto){
-	require("..\conexion.php");
+	require("../conexion.php");
 	
 	$sql="select * from promociones inner join producto on promociones.ididentificador=producto.codproducto 
 	or promociones.ididentificador= producto.codcubo	

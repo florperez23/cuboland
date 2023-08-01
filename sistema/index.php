@@ -160,8 +160,10 @@
 	 	<div class="col-lg-6">
 			<div class="au-card m-b-30">
 				<div class="au-card-inner">
-					<h3 class="title-2 m-b-40">Productos con stock mínimo</h3>
-					<canvas id="sales-chart"></canvas>
+					<h3 class="title-2 m-b-40">Separos por vencer</h3>
+					<!-- <canvas id="sales-chart"></canvas>-->
+					<div id="sales-chart" name="sales-chart" style="width:100%; height:280px; overflow: scroll;"></div>
+
 				</div>
 			</div>
 		</div>

@@ -23,7 +23,7 @@ if($tipo == 0){
     $sql = 'SELECT
 	r.*,
 	a.nombre,
-	c.cubo, f.totalfactura
+	c.cubo, f.totalfactura, f.idtipopago
 FROM
 	rentas r
 	LEFT JOIN arrendatarios a ON a.idarrendatario = r.idarrendatario
@@ -57,6 +57,7 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<th ><b>FECHA ULTIMO PAGO</b></th>';
     if($tipo == 1){
         $tabla = $tabla.'<th ><b>TOTAL PAGO</b></th>';
+        $tabla = $tabla.'<th ><b>TIPO PAGO</b></th>';
     }
    
     $tabla = $tabla."</tr>";
@@ -80,6 +81,18 @@ if ($r -> num_rows >0){
         if($tipo == 1){
             $tabla = $tabla.'<td> $'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
             $suma = $suma += $f['totalfactura'];
+            if($f['idtipopago'] == 1){
+                $tabla = $tabla.'<td>EFECTIVO</td>';
+            }else if($f['idtipopago'] == 2){
+                $tabla = $tabla.'<td>TARJETA</td>';
+            }else if($f['idtipopago'] == 3){
+                $tabla = $tabla.'<td>TRANSFERENCIA</td>';
+            }else if($f['idtipopago'] == 4){
+                $tabla = $tabla.'<td>DEPOSITO</td>';
+            }else if($f['idtipopago'] == 4){
+                $tabla = $tabla.'<td>MIXTO</td>';
+            }
+            
         }
         $tabla = $tabla."</tr>";  
         $vuelta++;               

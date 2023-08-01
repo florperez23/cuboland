@@ -1,14 +1,46 @@
 
 <?php
 include("../conexion.php");
-if ($_POST['action'] == 'sales') {
-    $arreglo = array();
+if ($_POST['action'] == 'sales-chart') {
+   /* $arreglo = array();
     $query = mysqli_query($conexion, "SELECT descripcion, existencia FROM producto WHERE existencia <= 10 ORDER BY existencia ASC LIMIT 10");
     while ($data = mysqli_fetch_array($query)) {
         $arreglo[] = $data;
     }
     echo json_encode($arreglo);
-    die();
+    die();*/
+    $ultimo = date("Y-m-t", strtotime($fecha));
+    $primero = date('Y-m-01');
+    
+    $desde = date("Y-m-d",strtotime($primero));//."- 1 day"
+    $hasta =  date("Y-m-d",strtotime($ultimo));//."+ 1 day"
+    $query = mysqli_query($conexion, 'SELECT cr.*, c.nombre FROM creditos cr LEFT join cliente c on c.idcliente = cr.idcliente WHERE cr.fechavencimiento BETWEEN  "'.$desde.'" and "'.$hasta.'" and cr.estado = 1');
+    
+    //echo "<table class='table table-striped table-bordered'>";
+    //echo "<tr>";
+       // echo "<th>Cubo</th>";
+       // echo "<th>Rentero</th>";
+      //  echo "<th>Último pago</th>";
+    //echo "</tr>";
+    while ($data = mysqli_fetch_array($query)) {
+
+        $date = date_create($data['fechavencimiento']);
+        $fecha = date_format($date,"Y-m-d");
+       // echo "<tr>";
+        echo "<div class='card_span'>";
+        echo "<table>";
+        echo "<td style='width:100px;'>";
+            echo '<center><i class="fas fa-user fa-2x text-gray-300"></i></center>';
+        echo "</td>";
+        echo "<td>";
+            echo "<center><span ><b style='color:#CCC8C8'>Crédito: </b>".$data['numcredito']." <b style='color:#CCC8C8'>Cliente: </b>".$data['nombre']." <br><b style='color:#CCC8C8'>Fecha vencimiento: </b>".$fecha ." </span></center>";
+        echo "</td>";
+        echo "</table>";
+        echo "</div>"; 
+            //echo "<td>".$data['nombre']."</td>";
+            //echo "<td>".$data['fechaultimopago']."</td>";
+       // echo "</tr>";
+    }
 }
 
 if ($_POST['action'] == 'polarChart') {

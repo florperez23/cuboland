@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 ob_start();
 
@@ -32,25 +31,27 @@ if(isset($_POST['tipopago'])){
 //$hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
 
 $suma = 0;
-echo 'tipopago '.$tipopago.' tipodeventa '.$tipoventa;
+//echo 'tipopago '.$tipopago.' tipodeventa '.$tipoventa;
 if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     echo "caso 1";
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
-    ,GROUP_CONCAT(df.codproducto) AS codproducto
+    ,GROUP_CONCAT(df.codproducto) AS codproducto,GROUP_CONCAT(p.descripcion) AS concepto
     from factura f
     inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
+    left join producto p on df.codproducto = p.codproducto
     WHERE CONVERT(f.fecha,date) BETWEEN "'.$desde.'" and "'.$hasta.'" AND f.idtipoventa IN(1, 2, 3) and f.cancelado = 0
     GROUP BY f.nofactura';
 }else if($tipopago <> 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     echo "caso 2";
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
-    ,GROUP_CONCAT(df.codproducto) AS codproducto
+    ,GROUP_CONCAT(df.codproducto) AS codproducto,GROUP_CONCAT(p.descripcion) AS concepto
     from factura f
     inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
+    left join producto p on df.codproducto = p.codproducto
     WHERE CONVERT(f.fecha,date) BETWEEN "'.$desde.'" and "'.$hasta.'" AND f.idtipoventa IN(1, 2, 3) and f.cancelado = 0 ';
    if($tipopago == 1){
         $sql = $sql.' and (f.idtipopago = "'.$tipopago.'" or (f.idtipopago=5 and f.efectivo <> 0 ) )';
@@ -75,7 +76,7 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     echo "caso 3";
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
-    ,GROUP_CONCAT(df.codproducto) AS codproducto
+    ,GROUP_CONCAT(df.codproducto) AS codproducto,GROUP_CONCAT(p.descripcion) AS concepto
     from factura f
     left join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
@@ -85,10 +86,11 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     echo "caso 4";
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
-    ,GROUP_CONCAT(df.codproducto) AS codproducto
+    ,GROUP_CONCAT(df.codproducto) AS codproducto,GROUP_CONCAT(p.descripcion) AS concepto
     from factura f
     left join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
+    left join producto p on df.codproducto = p.codproducto
     WHERE CONVERT(f.fecha,date) BETWEEN "'.$desde.'" and "'.$hasta.'" and f.idtipoventa = "'.$tipoventa.'" and f.cancelado = 0 ';
     
     //and idtipopago = "'.$tipopago.'" or (idtipopago=5 and efectivo <> 0 ) or ( idtipopago=5 and tarjeta <> 0) or ( idtipopago=5 and transferencia <> 0) or ( idtipopago=5 and deposito <> 0)
@@ -116,10 +118,11 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     echo "caso 5";
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
-    ,GROUP_CONCAT(df.codproducto) AS codproducto
+    ,GROUP_CONCAT(df.codproducto) AS codproducto,GROUP_CONCAT(p.descripcion) AS concepto
     from factura f
     inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
+    left join producto p on df.codproducto = p.codproducto
     WHERE and idtipoventa = "'.$tipoventa.'"  and f.cancelado = 0 ';
     
     if($tipopago == 1){
@@ -146,10 +149,11 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     echo "caso 6";
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
-    ,GROUP_CONCAT(df.codproducto) AS codproducto
+    ,GROUP_CONCAT(df.codproducto) AS codproducto,GROUP_CONCAT(p.descripcion) AS concepto
     from factura f
     inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
+    left join producto p on df.codproducto = p.codproducto
     WHERE idtipoventa = "'.$tipoventa.'" and f.cancelado = 0
     GROUP BY f.nofactura';
 
@@ -157,10 +161,11 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     echo "caso 7";
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
-    ,GROUP_CONCAT(df.codproducto) AS codproducto
+    ,GROUP_CONCAT(df.codproducto) AS codproducto,GROUP_CONCAT(p.descripcion) AS concepto
     from factura f
     inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
+    left join producto p on df.codproducto = p.codproducto
     WHERE AND f.idtipoventa IN(1, 2, 3) and f.cancelado = 0 ';
 
     if($tipopago == 1){
@@ -186,10 +191,11 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     echo "caso 8";
     $sql = 'select *, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
-    ,GROUP_CONCAT(df.codproducto) AS codproducto
+    ,GROUP_CONCAT(df.codproducto) AS codproducto,GROUP_CONCAT(p.descripcion) AS concepto
     from factura f
     inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
+    left join producto p on df.codproducto = p.codproducto
     WHERE f.fecha AND f.idtipoventa IN(1, 2, 3) and f.cancelado = 0
     GROUP BY f.nofactura';
 }
@@ -200,7 +206,7 @@ $vuelta = 1;
 if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8">';
-    $tabla = $tabla.'<th ><b>No.</b></th>';
+    $tabla = $tabla.'<th width="20px"  ><b>No.</b></th>';
     $tabla = $tabla.'<th ><b>ID VENTA</b></th>';
     $tabla = $tabla.'<th ><b>FECHA CAPTURA</b></th>';
     $tabla = $tabla."<th><b>USUARIO</b></th>";
@@ -209,6 +215,7 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<th ><b>TIPO VENTA</b></th>';
     
     $tabla = $tabla.'<th ><b>CÓDIGO PRODUCTO</b></th>';
+    $tabla = $tabla.'<th width="200px"><b>CONCEPTO</b></th>';
     $tabla = $tabla."</tr>";
     while($f = $r -> fetch_array())
     {                  
@@ -217,9 +224,9 @@ if ($r -> num_rows >0){
         }else{
             $tabla = $tabla.'<tr bgcolor="#D7E9F0">'; 
         }
-        $tabla = $tabla.'<td>'.$vuelta.'</td>';
+        $tabla = $tabla.'<td width="20px" >'.$vuelta.'</td>';
         $tabla = $tabla.'<td>'.$f['nofactura'].'</td>';
-        $tabla = $tabla.'<td>'.date("d/m/Y H:i:s", strtotime($f['fecha'])).'</td>';
+        $tabla = $tabla.'<td>'.date("d/m/Y", strtotime($f['fecha'])).'</td>';
         $tabla = $tabla.'<td>'.$f['nomusuario'].'</td>';
 	      // echo $suma.'<br>';
         if($tipopago <> 5){
@@ -281,6 +288,7 @@ if ($r -> num_rows >0){
         $tabla = $tabla.'<td>'.$f['tipoventa'].'</td>';
         
         $tabla = $tabla.'<td>'.$f['codproducto'].'</td>';
+        $tabla = $tabla.'<td width="200px" >'.$f['concepto'].'</td>';
         $tabla = $tabla."</tr>";  
         $vuelta++;               
     }
