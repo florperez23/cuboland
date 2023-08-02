@@ -40,7 +40,7 @@
 				<table class="table table-striped table-bordered" id="table">
 					<thead class="thead-dark">
 						<tr>
-							<th>Codcubo</th>
+							<!--<th>Codcubo</th>-->
 							<th>Cubo</th>
 							<th>Arrendatario</th>
 							<th>Fecha Contrato</th>
@@ -57,12 +57,13 @@
   /* <td><?php echo date("d/m/Y", strtotime($data['fechaproximopago'])); ?></td> */
 						$query = mysqli_query($conexion, "SELECT r.*, c.cubo, a.nombre FROM rentas r
                         inner join cubos c on c.codcubo = r.idcubo
-                        inner join  arrendatarios a on a.idarrendatario = r.idarrendatario where r.cancelado = 0");
+                        inner join  arrendatarios a on a.idarrendatario = r.idarrendatario where r.cancelado = 0
+						ORDER BY SUBSTR(c.nomenclatura, 1, 1), CAST(SUBSTR(c.nomenclatura, 2, LENGTH(c.nomenclatura)) AS UNSIGNED) ");
 						$result = mysqli_num_rows($query);
-						if ($result > 0) {
+						if ($result > 0) { 
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
-									<td><?php echo $data['idcubo']; ?></td>
+									<!--<td><?php echo $data['idcubo']; ?></td>-->
 									<td><?php echo $data['cubo']; ?></td>
 									<td><?php echo $data['nombre']; ?></td>
 									
