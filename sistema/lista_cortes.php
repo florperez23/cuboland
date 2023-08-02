@@ -28,7 +28,7 @@
 </div>
 
 	<!-- Elementos para crear el reporte -->
-	<form action="reporteCortes.php" method="post">
+	<form action="reporteCortesController.php" method="get">
 	<div class="row">
 		<div class="col-md-4">
 			<label>Cubo</label>

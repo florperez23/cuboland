@@ -318,6 +318,12 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 																<input onkeyup="adelantarMeses('<?php echo $data['codcubo']; ?>')" name="adelantar<?php echo $data['codcubo']; ?>" id="adelantar<?php echo $data['codcubo']; ?>" class="form-control" type="text"  value="0" >
 															
 														</div>
+														<div class="col-md-6" id="divFechaPago<?php echo $data['codcubo']; ?>" >
+															
+																<label for="FechaPago<?php echo $data['codcubo']; ?>" class="font-weight-bold">Fecha Pago</label>  
+																<input  name="FechaPago<?php echo $data['codcubo']; ?>" id="FechaPago<?php echo $data['codcubo']; ?>" class="form-control" type="date" value="<?php echo $fecha; ?>" >
+															
+														</div>
 													<?php
 															//if($dia>10 && $data['disponible']==1)	
 															//{				

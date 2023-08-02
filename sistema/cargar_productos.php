@@ -63,7 +63,7 @@
 			<div class="form-group">
 			<label style='color:#000'>Reporte por Cubos</label>
 			<?php
-			$query = mysqli_query($conexion, "SELECT * FROM cubos ORDER BY codcubo ASC");
+			$query = mysqli_query($conexion, "SELECT * FROM cubos ORDER BY SUBSTR(nomenclatura, 1, 1), CAST(SUBSTR(nomenclatura, 2, LENGTH(nomenclatura)) AS UNSIGNED)");
 			$res = mysqli_num_rows($query);
 			
 			?>
@@ -106,13 +106,14 @@
     </div>
 </div>
 
-
+<form action="eliminar_producto.php" method="post" class="confirmar d-inline">
 <div class="row">
 		<div class="col-lg-12">
 			<div class="table-responsive">
 				<table class="table table-striped table-bordered" id="table">
 					<thead class="thead-dark">
 						<tr>
+							<th></th>
 							<th>CUBO</th>
 							<th>CÓDIGO</th>
 							<th style="width:250px;">DESCRIPCIÓN</th>
@@ -143,6 +144,7 @@
 						if ($result > 0) {
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
+									<td><input type='checkbox' name="seleccionados[]"  value='<?php echo $data['codproducto']; ?>'></td>
 									<td><?php echo $data['cubo']; ?></td>
 									<td><input type='hidden' name='codigob<?php echo $data['codproducto']; ?>' id='codigob<?php echo $data['codproducto']; ?>' value='<?php echo $data['codproducto']; ?>'><?php echo $data['codproducto']; ?></td>
 									<td><?php echo $data['descripcion']; ?></td>
@@ -169,7 +171,43 @@
 					</tbody>
 
 				</table>
+
+			
+			</div>
+			<div class="col" style='align:left;'>
+				<div class="d-sm-flex align-items-center justify-content-between mb-4">
+
+					
+						<input type='hidden' name="enviar" value="enviar" value='1'>
+						<button class="btn btn-danger"  type="submit">Eliminar seleccionados </button>
+					
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
+</form>
+
+<script>
+	function seleccionados() {
+		var allElements = document.querySelectorAll('input[type=checkbox]');
+		
+		var mResult = [];
+
+		/*
+		Recorremos todos los checkbox
+		verificamos estado y guardamos en mResult
+		*/
+		allElements.forEach((v) => {
+			mResult.push(v.value);
+		});
+		/*
+		Prueba ...
+		Por el índice del array podrás saber
+		a qué checkbox pertenece cada estado
+		*/
+		console.log(mResult);
+	}
+
+
+</script>

@@ -5,9 +5,9 @@ include "../conexion.php";
 require_once('pdf/tcpdf.php');
 require_once('includes/functions.php');
 
-$codcubo = $_POST['cubo'];
-$desde = $_POST['desde'];
-$hasta = $_POST['hasta'];
+$codcubo = $_GET['cubo'];
+$desde = $_GET['desde'];
+$hasta = $_GET['hasta'];
 //$desde = date("Y-m-d",strtotime($desde."- 1 day"));
 $hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
 $suma = 0;
@@ -172,6 +172,7 @@ $pdf->writeHTML($html, true, false, true, false, '');
 $pdf->lastPage();
 //Close and output PDF document}
 ob_end_clean();
-$pdf->Output('reporte.pdf', 'I');
+$pdf->Output('reporte-'.$codcubo.'.pdf', 'D');
+
 
 ?>
