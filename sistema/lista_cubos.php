@@ -44,7 +44,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="table-responsive">
-				<table class="table table-striped table-bordered" id="table">
+				<table class="table table-striped table-bordered" id="table" style="aria-sort:disabled">
 					<thead class="thead-dark">
 						<tr>
 							<th style='display:none;'>algo</th>
@@ -67,7 +67,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 						 $query = mysqli_query($conexion, "SELECT c.codcubo, c.nomenclatura, c.cubo, c.renta, c.disponible, r.idarrendatario, a.nombre FROM
 						 cubos c left join rentas r on r.idcubo = c.codcubo
 						 left join arrendatarios a on a.idarrendatario = r.idarrendatario WHERE  r.cancelado=0 
-						 ORDER BY c.codcubo, c.cubo ASC");
+						 ORDER BY SUBSTR(nomenclatura, 1, 1), CAST(SUBSTR(nomenclatura, 2, LENGTH(nomenclatura)) AS UNSIGNED) ");
 						//$sql = "select codcubo, nomenclatura,cubo,renta, disponible,
 						//(SELECT arrendatarios.idarrendatario FROM rentas INNER JOIN arrendatarios ON rentas.idarrendatario = arrendatarios.idarrendatario WHERE rentas.cancelado=0 and codcubo=rentas.idcubo) as idarrendatario,
 						//(SELECT arrendatarios.nombre FROM rentas INNER JOIN arrendatarios ON rentas.idarrendatario = arrendatarios.idarrendatario WHERE rentas.cancelado=0 and codcubo=rentas.idcubo) as nombre from cubos ORDER BY codcubo ASC";
@@ -188,7 +188,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 															<option value="2">Tarjeta</option>  
 															<option value="3">Transferencia</option>    
 															<option value="4">Deposito</option>       
-															<option value="5">Pago Mixto</option>                             -->
+															<option value="5">Pago Mixto</option>                             
 														</select>
 													</div>
 												</div> 

@@ -14,7 +14,7 @@ if ($_POST['action'] == 'sales-chart') {
     
     $desde = date("Y-m-d",strtotime($primero));//."- 1 day"
     $hasta =  date("Y-m-d",strtotime($ultimo));//."+ 1 day"
-    $query = mysqli_query($conexion, 'SELECT cr.*, c.nombre FROM creditos cr LEFT join cliente c on c.idcliente = cr.idcliente WHERE cr.fechavencimiento BETWEEN  "'.$desde.'" and "'.$hasta.'" and cr.estado = 1');
+    $query = mysqli_query($conexion, 'SELECT cr.*, c.nombre,c.telefono, (select saldo from factura where numcredito = cr.numcredito order by nofactura desc limit 1 ) as saldo FROM creditos cr LEFT join cliente c on c.idcliente = cr.idcliente WHERE cr.fechavencimiento BETWEEN  "'.$desde.'" and "'.$hasta.'" and cr.estado = 1');
     
     //echo "<table class='table table-striped table-bordered'>";
     //echo "<tr>";
@@ -33,7 +33,7 @@ if ($_POST['action'] == 'sales-chart') {
             echo '<center><i class="fas fa-user fa-2x text-gray-300"></i></center>';
         echo "</td>";
         echo "<td>";
-            echo "<center><span ><b style='color:#CCC8C8'>Crédito: </b>".$data['numcredito']." <b style='color:#CCC8C8'>Cliente: </b>".$data['nombre']." <br><b style='color:#CCC8C8'>Fecha vencimiento: </b>".$fecha ." </span></center>";
+            echo "<center><span ><b style='color:#CCC8C8'>Crédito: </b>".$data['numcredito']." <b style='color:#CCC8C8'>Cliente: </b>".$data['nombre']." <b style='color:#CCC8C8'>Tel.:</b> ".$data['telefono']." <br><b style='color:#CCC8C8'>Fecha vencimiento: </b>".$fecha ." <b style='color:#CCC8C8'> Saldo: </b> $".$data['saldo']." </span></center>";
         echo "</td>";
         echo "</table>";
         echo "</div>"; 
