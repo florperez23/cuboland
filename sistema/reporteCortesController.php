@@ -3,7 +3,7 @@ ob_start();
 
 include "../conexion.php";
 require_once('pdf/tcpdf.php');
-require_once('includes/functions.php');
+
 
 $codcubo = $_GET['cubo'];
 $desde = $_GET['desde'];
@@ -16,22 +16,57 @@ $sumata = 0;
 $sumatran = 0;
 $sumadep = 0;
 
+function nombreCubo($codcubo){
+    require("..\conexion.php");
+    $sql = "SELECT cubo FROM cubos WHERE codcubo=".$codcubo."";	
+    $r = $conexion -> query($sql);
+    if ($r -> num_rows >0) {
+        while($f = $r -> fetch_array())
+        {
+            return $f['cubo'];
+        }
+         
+    }else{
+        return 0;
+    }
+                    
+}
+
+
 if ($codcubo == 0){
 
-    $query = mysqli_query($conexion, "SELECT * FROM cubos WHERE disponible = 1 ");
+   
+    $query = mysqli_query($conexion, "SELECT * FROM cubos  ORDER BY SUBSTR(nomenclatura, 1, 1), CAST(SUBSTR(nomenclatura, 2, LENGTH(nomenclatura)) AS UNSIGNED)  ");
     $result = mysqli_num_rows($query);
     if ($result > 0) {
+        include_once "includes/header.php"; ?>
+        <h4>Cortes Generados:</h4>
+        <table style="width: 100%; height: 100%;">
+            <td>
+        <?php
         while ($data = mysqli_fetch_assoc($query)) { 
             $codcuboNvo = $data['codcubo'];
            ?>
-           <a href="descarga.php?cubo='<?php echo $codcuboNvo ?>'&desde='<?php echo $desde ?>'&hasta='<?php echo $hasta ?>">Descargar corte <?php echo $codcuboNvo ?></a>
-               
+                <a target="iframe_corte" style='font-size:10px;' href="reporteCortes.php?cubo=<?php echo $codcuboNvo ?>&desde=<?php echo $desde ?>&hasta=<?php echo $hasta ?>"><?php echo 'Corte-'.nombreCubo($codcuboNvo) ?></a>
+                
+                <br> 
            <?php
         }      
-    
+        ?>
+            </td>
+            <td>
+                <iframe name="iframe_corte" style="width: 100%; height: 1080px; top:5px;" src="" ></iframe> 
+            </td>
+    </table>
+
+        <?php
+        include_once "includes/footer.php"; 
     }
+
+    
+
 }else{
-   
+    require_once('includes/functions.php');
     $sql = 'SELECT f.nofactura, f.numcredito, f.fecha,  f.totalfactura, f.pagocon, df.*, (df.cantidad * f.pagocon) as total, if(f.idtipopago = 1, "EFECTIVO", if(f.idtipopago=2, "TARJETA",if(f.idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago,
     f.efectivo,
     f.tarjeta,

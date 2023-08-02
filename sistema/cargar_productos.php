@@ -174,13 +174,22 @@
 
 			
 			</div>
-			<div class="col" style='align:left;'>
-				<div class="d-sm-flex align-items-center justify-content-between mb-4">
 
-					
+			<div class="row">
+				<div class="col" style='width: 500px;'>
+					<div class="d-sm-flex align-items-center justify-content-between mb-4">
 						<input type='hidden' name="enviar" value="enviar" value='1'>
 						<button class="btn btn-danger"  type="submit">Eliminar seleccionados </button>
-					
+							
+					</div>
+				</div>
+				<div class="col" style='align:right;'>
+					<div class="d-sm-flex align-items-center justify-content-between mb-4">
+						<input type='hidden' name="eliminarTodo"  value='<?php echo $codcubo; ?>'>
+						<button class="btn btn-danger"  type="submit">Eliminar todos </button>
+						
+						
+					</div>
 				</div>
 			</div>
 		</div>

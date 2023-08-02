@@ -31,5 +31,15 @@ if (isset($_POST['enviar'])) {
     mensajeicono('Se han eliminado con éxito los productos!', 'lista_productos.php','','exito');
     
 }  
+if (isset($_POST['eliminarTodo'])) {
+    require("../conexion.php");
+    echo "entro a eliminar todos";
+    $cubo = $_POST['eliminarTodo'];
+    $query_delete = mysqli_query($conexion, "DELETE FROM producto WHERE codcubo = '$cubo'");
+    historia('Se eliminaron los productos del cubo '.$cubo);
+    mysqli_close($conexion);
+    mensajeicono('Se han eliminado con éxito los productos!', 'lista_productos.php','','exito');
+    
+}  
 ?>
 <?php include_once "includes/footer.php"; ?>
