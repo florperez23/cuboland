@@ -23,7 +23,7 @@ $sumadep = 0;
     f.tarjeta,
     f.transferencia,
     f.deposito,
-    cr.estado, cr.totalventa
+    cr.estado, cr.totalventa, p.descripcion AS concepto
     FROM detallefactura df
     inner JOIN factura f on f.nofactura = df.nofactura
     inner JOIN producto p on p.codproducto = df.codproducto
@@ -38,19 +38,20 @@ $sumadep = 0;
     if ($r -> num_rows >0){
 
         $tabla = $tabla.'<center><span style="font-size: 18px; font-family: sans-serif;"><b> Nombre cubo: </b>'.cubo_nombre($codcubo).' <b>Rentero: </b>'.rentero_cubo($codcubo).'</span></center><br><br>';
-        $tabla = $tabla.'<table  align = "center"  style="font-size: 9.6px;">';
+        $tabla = $tabla.'<table  align = "center"  style="font-size: 9px;">';
         $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8" >';
-        $tabla = $tabla.'<th ><b>No.</b></th>';
+        $tabla = $tabla.'<th width="22px" ><b>No.</b></th>';
         $tabla = $tabla.'<th ><b>FACTURA</b></th>';
         $tabla = $tabla.'<th ><b>FECHA</b></th>';
-        $tabla = $tabla."<th><b>CODIGO PRODUCTO</b></th>";
+        $tabla = $tabla.'<th width="80px"><b>CODIGO PRODUCTO</b></th>';
+        $tabla = $tabla.'<th  width="130px"><b>CONCEPTO</b></th>';
         $tabla = $tabla.'<th ><b>CANTIDAD</b></th>';
         $tabla = $tabla.'<th ><b>PRECIO VENTA</b></th>';
         $tabla = $tabla.'<th ><b>PRECIO PROMOCION</b></th>';
         $tabla = $tabla.'<th ><b>PAGADO</b></th>';
     
         $tabla = $tabla.'<th ><b>TOTAL</b></th>';
-        $tabla = $tabla.'<th ><b>TIPO PAGO</b></th>';
+        $tabla = $tabla.'<th width="120px"><b>TIPO PAGO</b></th>';
     // $tabla = $tabla.'<th ><b>EF.</b></th>';
         //$tabla = $tabla.'<th ><b>TA.</b></th>';
         //$tabla = $tabla.'<th ><b>TRAN.</b></th>';
@@ -72,13 +73,14 @@ $sumadep = 0;
                 }else{
                     $tabla = $tabla.'<tr bgcolor="#D7E9F0">'; 
                 }
-                $tabla = $tabla.'<td>'.$vuelta.'</td>';
+                $tabla = $tabla.'<td width="22px" >'.$vuelta.'</td>';
                 $tabla = $tabla.'<td>'.$f['nofactura'].'</td>';
             
                     $fecha = date("d/m/Y", strtotime($f['fecha']));
                     
                 $tabla = $tabla.'<td>'.$fecha.'</td>';
-                $tabla = $tabla.'<td>'.$f['codproducto'].'</td>';
+                $tabla = $tabla.'<td width="80px">'.$f['codproducto'].'</td>';
+                $tabla = $tabla.'<td width="130px">'.$f['concepto'].'</td>';
                 $tabla = $tabla.'<td>'.$f['cantidad'].'</td>';
                 $tabla = $tabla.'<td>$'.number_format($f['precio_venta'], 2, '.', ',').'</td>';
                 $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
@@ -91,7 +93,7 @@ $sumadep = 0;
                     $suma = $suma += $f['total'];
                 }
                 
-                $tabla = $tabla.'<td>'.$f['tipopago'].'</td>';
+                $tabla = $tabla.'<td width="120px">'.$f['tipopago'].'</td>';
                 
             // $tabla = $tabla.'<td>$'.number_format($f['efectivo'], 2, '.', ',').'</td>';
                 //$tabla = $tabla.'<td>$'.number_format($f['tarjeta'], 2, '.', ',').'</td>';
