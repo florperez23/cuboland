@@ -89,8 +89,11 @@
 								<tr>
 									<td><?php echo $dato['nofactura']; ?></td>
 									<td><?php echo date("d/m/Y H:i:s", strtotime($dato['fecha'])); ?></td>
-									<td><?php if( $dato['idtipoventa']==1 || $dato['idtipoventa']==2 ||$dato['idtipoventa']==3){
+									<td><?php if( $dato['idtipoventa']==1 || $dato['idtipoventa']==2){
 										echo 'VENTA';
+									}else if($dato['idtipoventa']==3){
+										echo 'CANCELACIÓN';
+									}
 									}else if($dato['idtipoventa']==4){
 										echo 'GASTO (EGRESO)';
 									}else if($dato['idtipoventa']==5){
