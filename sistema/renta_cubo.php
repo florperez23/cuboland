@@ -112,8 +112,8 @@ echo 'fecha'.$_POST['FechaPago'.$codcubo];
 
     // //     //HACER el insert el factura para tomarlo en cuenta en los reportes
        $sql = "INSERT INTO factura(fecha,usuario,codcliente,totalfactura,idtipoventa,idtipopago,	cancelado,totalventa,referencia,pagocon,numcredito,	saldo,fechacancelacion,usuario_id_mod,subtotal,iva,observaciones,efectivo,tarjeta,transferencia,deposito) 
-      values ( $fecha, '$usuario','$idarrendatario', '$totalrenta','5','$tipopago',0,'$renta','$referencia','$pagocon','','','','','$totalrenta', '$totalrenta','".$codcubo."','$efectivo','$tarjeta','$transferencia','$deposito')";
-         //echo $sql;	
+      values ( '$fecha', '$usuario','$idarrendatario', '$totalrenta','5','$tipopago',0,'$renta','$referencia','$pagocon','','','','','$totalrenta', '$totalrenta','".$codcubo."','$efectivo','$tarjeta','$transferencia','$deposito')";
+         echo $sql;	
          $query_insert = mysqli_query($conexion, $sql);
          if ($query_insert) {
            $nofactura= obtenerUltimoNoFactura();

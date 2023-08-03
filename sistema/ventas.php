@@ -72,13 +72,14 @@
 							<th>Id</th>
 							<th>Fecha</th>
 							<th>Total</th>
+							<th>Tipo</th>
 							<th>Acciones</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
 						require "../conexion.php";
-						$query = mysqli_query($conexion, "SELECT nofactura, fecha,codcliente, totalfactura,idtipoventa,totalventa FROM factura WHERE cancelado = 0 and idtipoventa in (1,2,3) ORDER BY nofactura DESC");
+						$query = mysqli_query($conexion, "SELECT nofactura, fecha,codcliente, totalfactura,idtipoventa,totalventa FROM factura WHERE cancelado = 0 and idtipoventa IN (1,2,3,5) ORDER BY nofactura DESC");
 						mysqli_close($conexion);
 						$cli = mysqli_num_rows($query);
 
@@ -88,6 +89,17 @@
 								<tr>
 									<td><?php echo $dato['nofactura']; ?></td>
 									<td><?php echo date("d/m/Y H:i:s", strtotime($dato['fecha'])); ?></td>
+									<td><?php if( $dato['idtipoventa']==1 || $dato['idtipoventa']==2 ||$dato['idtipoventa']==3){
+										echo 'VENTA';
+									}else if($dato['idtipoventa']==4){
+										echo 'GASTO (EGRESO)';
+									}else if($dato['idtipoventa']==5){
+										echo 'PAGO DE RENTA';
+									}
+									
+									
+									
+									?></td>
 									<td><?php echo $dato['totalfactura']; ?></td>
 									<td>
 										<button type="button" class="btn btn-primary view_factura" cl="<?php echo $dato['codcliente'];  ?>" f="<?php echo $dato['nofactura']; ?>" p="<?php echo $dato['totalfactura']; ?>" t="<?php echo $dato['idtipoventa']; ?>">Ver</button>
