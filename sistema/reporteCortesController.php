@@ -9,7 +9,7 @@ $codcubo = $_GET['cubo'];
 $desde = $_GET['desde'];
 $hasta = $_GET['hasta'];
 //$desde = date("Y-m-d",strtotime($desde."- 1 day"));
-$hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
+
 $suma = 0;
 $sumaef= 0;
 $sumata = 0;
@@ -67,6 +67,7 @@ if ($codcubo == 0){
 
 }else{
     require_once('includes/functions.php');
+    $hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
     $sql = 'SELECT f.nofactura, f.numcredito, f.fecha,  f.totalfactura, f.pagocon, df.*, (df.cantidad * f.pagocon) as total, if(f.idtipopago = 1, "EFECTIVO", if(f.idtipopago=2, "TARJETA",if(f.idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago,
     f.efectivo,
     f.tarjeta,
