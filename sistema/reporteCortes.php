@@ -9,7 +9,7 @@ $codcubo = $_GET['cubo'];
 $desde = $_GET['desde'];
 $hasta = $_GET['hasta'];
 //$desde = date("Y-m-d",strtotime($desde."- 1 day"));
-$hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
+//$hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
 
 $suma = 0;
 $sumaef= 0;
@@ -89,12 +89,13 @@ $sumadep = 0;
                 $tabla = $tabla.'<td>$'.number_format($f['precio_venta'], 2, '.', ',').'</td>';
                 $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
                 //$tabla = $tabla.'<td>$'.number_format($f['pagocon'], 2, '.', ',').'</td>';
+                $precio = ($f['precio_promocion']*$f['cantidad']);
                 if ($f['numcredito'] <> 0 and $f['estado'] == 0){
-                    $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
-                    $suma = $suma += $f['precio_promocion'];
+                    $tabla = $tabla.'<td>$'.number_format($precio, 2, '.', ',').'</td>';
+                    $suma = $suma += $precio;
                 }else{
                     $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
-                    $suma = $suma += $f['precio_promocion'];
+                    $suma = $suma += $precio;
                 }
                 
                 $tabla = $tabla.'<td width="120px">'.$f['tipopago'].'</td>';
