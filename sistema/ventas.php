@@ -93,7 +93,6 @@
 										echo 'VENTA';
 									}else if($dato['idtipoventa']==3){
 										echo 'CANCELACIÓN';
-									}
 									}else if($dato['idtipoventa']==4){
 										echo 'GASTO (EGRESO)';
 									}else if($dato['idtipoventa']==5){
