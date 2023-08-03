@@ -81,18 +81,20 @@ if ($r -> num_rows >0){
         if($tipo == 1){
             $tabla = $tabla.'<td> $'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
             $suma = $suma += $f['totalfactura'];
+            echo "tipo pago".$f['idtipopago'].'<br>';
+            $tabla = $tabla.'<td>';
             if($f['idtipopago'] == 1){
-                $tabla = $tabla.'<td>EFECTIVO</td>';
+                $tabla = $tabla.'EFECTIVO';
             }else if($f['idtipopago'] == 2){
-                $tabla = $tabla.'<td>TARJETA</td>';
+                $tabla = $tabla.'TARJETA';
             }else if($f['idtipopago'] == 3){
-                $tabla = $tabla.'<td>TRANSFERENCIA</td>';
+                $tabla = $tabla.'TRANSFERENCIA';
             }else if($f['idtipopago'] == 4){
-                $tabla = $tabla.'<td>DEPOSITO</td>';
+                $tabla = $tabla.'DEPOSITO';
             }else if($f['idtipopago'] == 4){
-                $tabla = $tabla.'<td>MIXTO</td>';
+                $tabla = $tabla.'MIXTO';
             }
-            
+            $tabla = $tabla.'</td>';
         }
         $tabla = $tabla."</tr>";  
         $vuelta++;               

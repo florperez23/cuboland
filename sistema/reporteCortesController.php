@@ -72,14 +72,17 @@ if ($codcubo == 0){
     f.tarjeta,
     f.transferencia,
     f.deposito,
-    cr.estado, cr.totalventa, p.descripcion AS concepto
+    cr.estado, cr.totalventa, p.descripcion as concepto, df.codproducto as codproducto1
     FROM detallefactura df
     inner JOIN factura f on f.nofactura = df.nofactura
     inner JOIN producto p on p.codproducto = df.codproducto
     left join creditos cr on cr.numcredito = f.numcredito
-    WHERE p.codcubo = '.$codcubo.' and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and f.cancelado = 0 order by f.fecha asc';
+    WHERE p.codcubo = '.$codcubo.' and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and f.cancelado = 0 
+   
+    order by f.fecha asc';
     
-
+//, GROUP_CONCAT(p.descripcion) AS concepto,GROUP_CONCAT(df.codproducto) as codproducto1
+// group by f.nofactura
     echo $sql;
     $r = $conexion -> query($sql);
     $tabla = "";
@@ -97,7 +100,7 @@ if ($codcubo == 0){
         $tabla = $tabla.'<th ><b>CANTIDAD</b></th>';
         $tabla = $tabla.'<th ><b>PRECIO VENTA</b></th>';
         $tabla = $tabla.'<th ><b>PRECIO PROMOCION</b></th>';
-        $tabla = $tabla.'<th ><b>PAGADO</b></th>';
+      //  $tabla = $tabla.'<th ><b>PAGADO</b></th>';
     
         $tabla = $tabla.'<th ><b>TOTAL</b></th>';
         $tabla = $tabla.'<th width="120px"><b>TIPO PAGO</b></th>';
@@ -128,18 +131,18 @@ if ($codcubo == 0){
                     $fecha = date("d/m/Y", strtotime($f['fecha']));
                     
                 $tabla = $tabla.'<td>'.$fecha.'</td>';
-                $tabla = $tabla.'<td width="80px">'.$f['codproducto'].'</td>';
+                $tabla = $tabla.'<td width="80px">'.$f['codproducto1'].'</td>';
                 $tabla = $tabla.'<td width="130px">'.$f['concepto'].'</td>';
                 $tabla = $tabla.'<td>'.$f['cantidad'].'</td>';
                 $tabla = $tabla.'<td>$'.number_format($f['precio_venta'], 2, '.', ',').'</td>';
                 $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
-                $tabla = $tabla.'<td>$'.number_format($f['pagocon'], 2, '.', ',').'</td>';
+               // $tabla = $tabla.'<td>$'.number_format($f['pagocon'], 2, '.', ',').'</td>';
                 if ($f['numcredito'] <> 0 and $f['estado'] == 0){
-                    $tabla = $tabla.'<td>$'.number_format($f['totalventa'], 2, '.', ',').'</td>';
-                    $suma = $suma += $f['totalventa'];
+                    $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
+                    $suma = $suma += $f['precio_promocion'];
                 }else{
-                    $tabla = $tabla.'<td>$'.number_format($f['total'], 2, '.', ',').'</td>';
-                    $suma = $suma += $f['total'];
+                    $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
+                    $suma = $suma += $f['precio_promocion'];
                 }
                 
                 $tabla = $tabla.'<td width="120px">'.$f['tipopago'].'</td>';
