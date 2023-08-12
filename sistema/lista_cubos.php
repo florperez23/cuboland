@@ -44,7 +44,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="table-responsive">
-				<table class="table table-striped table-bordered" id="table">
+				<table class="table table-striped table-bordered" id="table" style="aria-sort:disabled">
 					<thead class="thead-dark">
 						<tr>
 							<th style='display:none;'>algo</th>
@@ -67,7 +67,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 						 $query = mysqli_query($conexion, "SELECT c.codcubo, c.nomenclatura, c.cubo, c.renta, c.disponible, r.idarrendatario, a.nombre FROM
 						 cubos c left join rentas r on r.idcubo = c.codcubo
 						 left join arrendatarios a on a.idarrendatario = r.idarrendatario WHERE  r.cancelado=0 
-						 ORDER BY c.codcubo, c.cubo ASC");
+						 ORDER BY SUBSTR(nomenclatura, 1, 1), CAST(SUBSTR(nomenclatura, 2, LENGTH(nomenclatura)) AS UNSIGNED) ");
 						//$sql = "select codcubo, nomenclatura,cubo,renta, disponible,
 						//(SELECT arrendatarios.idarrendatario FROM rentas INNER JOIN arrendatarios ON rentas.idarrendatario = arrendatarios.idarrendatario WHERE rentas.cancelado=0 and codcubo=rentas.idcubo) as idarrendatario,
 						//(SELECT arrendatarios.nombre FROM rentas INNER JOIN arrendatarios ON rentas.idarrendatario = arrendatarios.idarrendatario WHERE rentas.cancelado=0 and codcubo=rentas.idcubo) as nombre from cubos ORDER BY codcubo ASC";
@@ -188,7 +188,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 															<option value="2">Tarjeta</option>  
 															<option value="3">Transferencia</option>    
 															<option value="4">Deposito</option>       
-															<!-- <option value="5">Pago Mixto</option>                             -->
+															<option value="5">Pago Mixto</option>                             
 														</select>
 													</div>
 												</div> 
@@ -318,6 +318,12 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 																<input onkeyup="adelantarMeses('<?php echo $data['codcubo']; ?>')" name="adelantar<?php echo $data['codcubo']; ?>" id="adelantar<?php echo $data['codcubo']; ?>" class="form-control" type="text"  value="0" >
 															
 														</div>
+														<div class="col-md-6" id="divFechaPago<?php echo $data['codcubo']; ?>" >
+															
+																<label for="FechaPago<?php echo $data['codcubo']; ?>" class="font-weight-bold">Fecha Pago</label>  
+																<input  name="FechaPago<?php echo $data['codcubo']; ?>" id="FechaPago<?php echo $data['codcubo']; ?>" class="form-control" type="date" value="<?php echo $fecha; ?>" >
+															
+														</div>
 													<?php
 															//if($dia>10 && $data['disponible']==1)	
 															//{				
@@ -363,40 +369,40 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 														
 												</div> -->
 
-<!-- 												
-												<div class="form-group" id='referencia<?php //echo $data['codcubo']; ?>' style="display:none;">
+ 												
+												<div class="form-group" id='referencia<?php echo $data['codcubo']; ?>' style="display:none;">
 													<label for="numreferencia" class="font-weight-bold">Referencia</label>  
-													<input id="numreferencia<?php //echo $data['codcubo']; ?>" name="numreferencia<?php //echo $data['codcubo']; ?>"  class="form-control" type="text" placeholder="Referencia" value="">
+													<input id="numreferencia<?php echo $data['codcubo']; ?>" name="numreferencia<?php echo $data['codcubo']; ?>"  class="form-control" type="text" placeholder="Referencia" value="">
 												</div>
-												<div class="form-group" id='pagomixtocubos<?php //echo $data['codcubo']; ?>' style="display:none;">  
+												<div class="form-group" id='pagomixtocubos<?php echo $data['codcubo']; ?>' style="display:none;">  
 												<div class="row" > 
 												<div class="col-md-2">
 														<div class="form-group" id="divpagomixto" style="display:none;">
 															<label  id="etiquetaPago" class="font-weight-bold">Total</label>
-															<input   id='totalpagomixtocubos<?php //echo $data['codcubo']; ?>' name='totalpagomixtocubos<?php //echo $data['codcubo']; ?>' class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
+															<input   id='totalpagomixtocubos<?php echo $data['codcubo']; ?>' name='totalpagomixtocubos<?php echo $data['codcubo']; ?>' class="form-control" type="text" placeholder="Total"  value=""  disabled="" >
 														</div>
 														</div>
 												
 													
 												<table>
 													<tr>
-														<td> <input type="checkbox" name="pagomcubos<?php //echo $data['codcubo']; ?>[]" id="pagomcubos<?php //echo $data['codcubo']; ?>[]" value="1"><label>Efectivo</label> </td>
-														<td><input onkeyup="functionefectivo(<?php //echo $data['codcubo']; ?>)" id="pefectivoc<?php// echo $data['codcubo']; ?>"  style="display:none;" name="pefectivoc<?php //echo $data['codcubo']; ?>" type="number" class="form-control" type="text" placeholder="0.00"  value=""> </td>
+														<td> <input type="checkbox" name="pagomcubos<?php echo $data['codcubo']; ?>[]" id="pagomcubos<?php echo $data['codcubo']; ?>[]" value="1"><label>Efectivo</label> </td>
+														<td><input onkeyup="functionefectivo(<?php echo $data['codcubo']; ?>)" id="pefectivoc<?php echo $data['codcubo']; ?>"  style="display:none;" name="pefectivoc<?php echo $data['codcubo']; ?>" type="number" class="form-control" type="text" placeholder="0.00"  value=""> </td>
 													</tr>
 													<tr>
-														<td> <input type="checkbox" name="pagomcubos<?php// echo $data['codcubo']; ?>[]" id="pagomcubos<?php //echo $data['codcubo']; ?>[]" value="2"><label>Tarjeta</label> </td>
-														<td><input onkeyup="functiontarjeta(<?php //echo $data['codcubo']; ?>)" id="ptarjetac<?php //echo $data['codcubo']; ?>"  style="display:none;" name="ptarjetac<?php //echo $data['codcubo']; ?>" type="number" class="form-control" type="text" placeholder="0.00"  value=""> 
-														<label name="etiquetatarjeta<?php //echo $data['codcubo']; ?>"  style="display:none;" id="etiquetatarjetac<?php //echo $data['codcubo']; ?>" class="font-weight-bold"></label> 
-														<br><label name="etiquetat<?php //echo $data['codcubo']; ?>"  style="display:none; font-size: smaller;    color: red;    font-family: none;" id="etiquetat" class="font-weight-bold">5% de comisión por pago con tarjeta</label> 
+														<td> <input type="checkbox" name="pagomcubos<?php echo $data['codcubo']; ?>[]" id="pagomcubos<?php echo $data['codcubo']; ?>[]" value="2"><label>Tarjeta</label> </td>
+														<td><input onkeyup="functiontarjeta(<?php echo $data['codcubo']; ?>)" id="ptarjetac<?php echo $data['codcubo']; ?>"  style="display:none;" name="ptarjetac<?php echo $data['codcubo']; ?>" type="number" class="form-control" type="text" placeholder="0.00"  value=""> 
+														<label name="etiquetatarjeta<?php echo $data['codcubo']; ?>"  style="display:none;" id="etiquetatarjetac<?php echo $data['codcubo']; ?>" class="font-weight-bold"></label> 
+														<br><label name="etiquetat<?php echo $data['codcubo']; ?>"  style="display:none; font-size: smaller;    color: red;    font-family: none;" id="etiquetat" class="font-weight-bold">5% de comisión por pago con tarjeta</label> 
 													</td>
 													</tr>
 													<tr>
-														<td> <input type="checkbox" name="pagomcubos<?php //echo $data['codcubo']; ?>[]" id="pagomcubos<?php //echo $data['codcubo']; ?>[]" value="3"><label>Transferencia</label> </td>
-														<td><input onkeyup="functiontransferencia(<?php //echo $data['codcubo']; ?>)"  id="ptransferenciac<?php //echo $data['codcubo']; ?>" style="display:none;"   name="ptransferenciac<?php //echo $data['codcubo']; ?>" type="number" class="form-control" type="text" placeholder="0.00"  value=""> </td>
+														<td> <input type="checkbox" name="pagomcubos<?php echo $data['codcubo']; ?>[]" id="pagomcubos<?php echo $data['codcubo']; ?>[]" value="3"><label>Transferencia</label> </td>
+														<td><input onkeyup="functiontransferencia(<?php echo $data['codcubo']; ?>)"  id="ptransferenciac<?php echo $data['codcubo']; ?>" style="display:none;"   name="ptransferenciac<?php echo $data['codcubo']; ?>" type="number" class="form-control" type="text" placeholder="0.00"  value=""> </td>
 													</tr>
 													<tr>
-														<td> <input type="checkbox" name="pagomcubos<?php //echo $data['codcubo']; ?>[]"  id="pagomcubos<?php// echo $data['codcubo']; ?>[]" value="4"><label>Deposito</label> </td>
-														<td><input onkeyup="functiondeposito(<?php //echo $data['codcubo']; ?>)" id="pdepositoc<?php //echo $data['codcubo']; ?>"   style="display:none;" name="pdepositoc<?php //echo $data['codcubo']; ?>"  type="number" class="form-control" type="text" placeholder="0.00"  value=""> </td>
+														<td> <input type="checkbox" name="pagomcubos<?php echo $data['codcubo']; ?>[]"  id="pagomcubos<?php echo $data['codcubo']; ?>[]" value="4"><label>Deposito</label> </td>
+														<td><input onkeyup="functiondeposito(<?php echo $data['codcubo']; ?>)" id="pdepositoc<?php echo $data['codcubo']; ?>"   style="display:none;" name="pdepositoc<?php echo $data['codcubo']; ?>"  type="number" class="form-control" type="text" placeholder="0.00"  value=""> </td>
 													</tr>
 												</table>
 											
@@ -405,8 +411,8 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 											</div>   					
 											
 						
-									</div> -->
-					
+									</div> 
+					 
 								</div>
 				
 									</div>

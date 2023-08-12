@@ -5,11 +5,12 @@ include "../conexion.php";
 require_once('pdf/tcpdf.php');
 require_once('includes/functions.php');
 
-$codcubo = $_POST['cubo'];
-$desde = $_POST['desde'];
-$hasta = $_POST['hasta'];
+$codcubo = $_GET['cubo'];
+$desde = $_GET['desde'];
+$hasta = $_GET['hasta'];
 //$desde = date("Y-m-d",strtotime($desde."- 1 day"));
 $hasta =  date("Y-m-d",strtotime($hasta."+ 1 day"));
+
 $suma = 0;
 $sumaef= 0;
 $sumata = 0;
@@ -17,17 +18,23 @@ $sumatran = 0;
 $sumadep = 0;
 
 
-    $sql = 'SELECT f.nofactura, f.fecha,  f.totalfactura, f.pagocon, df.*, (df.cantidad * f.pagocon) as total, if(f.idtipopago = 1, "EFECTIVO", if(f.idtipopago=2, "TARJETA",if(f.idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago,
+    $sql = 'SELECT f.nofactura, f.numcredito, f.fecha,  f.totalfactura, f.pagocon, df.*, (df.cantidad * f.pagocon) as total, if(f.idtipopago = 1, "EFECTIVO", if(f.idtipopago=2, "TARJETA",if(f.idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago,
     f.efectivo,
     f.tarjeta,
     f.transferencia,
-    f.deposito
+    f.deposito,
+    cr.estado, cr.totalventa, p.descripcion as concepto, df.codproducto as codproducto1
     FROM detallefactura df
     inner JOIN factura f on f.nofactura = df.nofactura
     inner JOIN producto p on p.codproducto = df.codproducto
-    WHERE p.codcubo = '.$codcubo.' and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and f.cancelado = 0 order by f.fecha asc';
+    left join creditos cr on cr.numcredito = f.numcredito
+    WHERE p.codcubo = '.$codcubo.' and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and f.cancelado = 0 
+   
+    order by f.fecha asc
+    ';
     
-
+//, GROUP_CONCAT(p.descripcion) AS concepto,GROUP_CONCAT(df.codproducto) as codproducto1
+// group by f.nofactura
     echo $sql;
     $r = $conexion -> query($sql);
     $tabla = "";
@@ -35,19 +42,20 @@ $sumadep = 0;
     if ($r -> num_rows >0){
 
         $tabla = $tabla.'<center><span style="font-size: 18px; font-family: sans-serif;"><b> Nombre cubo: </b>'.cubo_nombre($codcubo).' <b>Rentero: </b>'.rentero_cubo($codcubo).'</span></center><br><br>';
-        $tabla = $tabla.'<table  align = "center"  style="font-size: 9.6px;">';
+        $tabla = $tabla.'<table  align = "center"  style="font-size: 9px;">';
         $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8" >';
-        $tabla = $tabla.'<th ><b>No.</b></th>';
+        $tabla = $tabla.'<th width="22px" ><b>No.</b></th>';
         $tabla = $tabla.'<th ><b>FACTURA</b></th>';
         $tabla = $tabla.'<th ><b>FECHA</b></th>';
-        $tabla = $tabla."<th><b>CODIGO PRODUCTO</b></th>";
+        $tabla = $tabla.'<th width="80px"><b>CODIGO PRODUCTO</b></th>';
+        $tabla = $tabla.'<th  width="130px"><b>CONCEPTO</b></th>';
         $tabla = $tabla.'<th ><b>CANTIDAD</b></th>';
         $tabla = $tabla.'<th ><b>PRECIO VENTA</b></th>';
         $tabla = $tabla.'<th ><b>PRECIO PROMOCION</b></th>';
-        $tabla = $tabla.'<th ><b>PAGADO</b></th>';
+       // $tabla = $tabla.'<th ><b>PAGADO</b></th>';
     
         $tabla = $tabla.'<th ><b>TOTAL</b></th>';
-        $tabla = $tabla.'<th ><b>TIPO PAGO</b></th>';
+        $tabla = $tabla.'<th width="120px"><b>TIPO PAGO</b></th>';
     // $tabla = $tabla.'<th ><b>EF.</b></th>';
         //$tabla = $tabla.'<th ><b>TA.</b></th>';
         //$tabla = $tabla.'<th ><b>TRAN.</b></th>';
@@ -57,38 +65,54 @@ $sumadep = 0;
         $tabla = $tabla."</tr>";
         while($f = $r -> fetch_array())
         {                  
-            if (($vuelta % 2) == 0) {
-                $tabla = $tabla.'<tr bgcolor="#FFFFFF">';
+
+            //condicion para si es credito y no esta liquidado se omita esa row
+
+            if($f['numcredito'] <> 0 and $f['estado']<>0){
+
             }else{
-                $tabla = $tabla.'<tr bgcolor="#D7E9F0">'; 
-            }
-            $tabla = $tabla.'<td>'.$vuelta.'</td>';
-            $tabla = $tabla.'<td>'.$f['nofactura'].'</td>';
-        
-                $fecha = date("d/m/Y", strtotime($f['fecha']));
-                
-            $tabla = $tabla.'<td>'.$fecha.'</td>';
-            $tabla = $tabla.'<td>'.$f['codproducto'].'</td>';
-            $tabla = $tabla.'<td>'.$f['cantidad'].'</td>';
-            $tabla = $tabla.'<td>$'.number_format($f['precio_venta'], 2, '.', ',').'</td>';
-            $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
-            $tabla = $tabla.'<td>$'.number_format($f['pagocon'], 2, '.', ',').'</td>';
+
+                if (($vuelta % 2) == 0) {
+                    $tabla = $tabla.'<tr bgcolor="#FFFFFF">';
+                }else{
+                    $tabla = $tabla.'<tr bgcolor="#D7E9F0">'; 
+                }
+                $tabla = $tabla.'<td width="22px" >'.$vuelta.'</td>';
+                $tabla = $tabla.'<td>'.$f['nofactura'].'</td>';
             
-            $tabla = $tabla.'<td>$'.number_format($f['total'], 2, '.', ',').'</td>';
-            $tabla = $tabla.'<td>'.$f['tipopago'].'</td>';
-            $suma = $suma += $f['total'];
-        // $tabla = $tabla.'<td>$'.number_format($f['efectivo'], 2, '.', ',').'</td>';
-            //$tabla = $tabla.'<td>$'.number_format($f['tarjeta'], 2, '.', ',').'</td>';
-            //$tabla = $tabla.'<td>$'.number_format($f['transferencia'], 2, '.', ',').'</td>';
-            //$tabla = $tabla.'<td>$'.number_format($f['deposito'], 2, '.', ',').'</td>';
+                    $fecha = date("d/m/Y", strtotime($f['fecha']));
+                    
+                $tabla = $tabla.'<td>'.$fecha.'</td>';
+                $tabla = $tabla.'<td width="80px">'.$f['codproducto1'].'</td>';
+                $tabla = $tabla.'<td width="130px">'.$f['concepto'].'</td>';
+                $tabla = $tabla.'<td>'.$f['cantidad'].'</td>';
+                $tabla = $tabla.'<td>$'.number_format($f['precio_venta'], 2, '.', ',').'</td>';
+                $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
+                //$tabla = $tabla.'<td>$'.number_format($f['pagocon'], 2, '.', ',').'</td>';
+                $precio = ($f['precio_promocion']*$f['cantidad']);
+                if ($f['numcredito'] <> 0 and $f['estado'] == 0){
+                    $tabla = $tabla.'<td>$'.number_format($precio, 2, '.', ',').'</td>';
+                    $suma = $suma += $precio;
+                }else{
+                    $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
+                    $suma = $suma += $precio;
+                }
+                
+                $tabla = $tabla.'<td width="120px">'.$f['tipopago'].'</td>';
+                
+            // $tabla = $tabla.'<td>$'.number_format($f['efectivo'], 2, '.', ',').'</td>';
+                //$tabla = $tabla.'<td>$'.number_format($f['tarjeta'], 2, '.', ',').'</td>';
+                //$tabla = $tabla.'<td>$'.number_format($f['transferencia'], 2, '.', ',').'</td>';
+                //$tabla = $tabla.'<td>$'.number_format($f['deposito'], 2, '.', ',').'</td>';
 
-            //$sumaef= $sumaef += $f['efectivo'];
-            //$sumata = $sumata += $f['tarjeta'];
-            //$sumatran = $sumatran += $f['transferencia'];
-            //$sumadep = $sumadep += $f['deposito'];
+                //$sumaef= $sumaef += $f['efectivo'];
+                //$sumata = $sumata += $f['tarjeta'];
+                //$sumatran = $sumatran += $f['transferencia'];
+                //$sumadep = $sumadep += $f['deposito'];
 
-            $tabla = $tabla."</tr>";  
-            $vuelta++;               
+                $tabla = $tabla."</tr>";  
+                $vuelta++;        
+            }       
         }
         $tabla = $tabla.'</table>';
     }
@@ -157,5 +181,6 @@ $pdf->lastPage();
 //Close and output PDF document}
 ob_end_clean();
 $pdf->Output('reporte.pdf', 'I');
+
 
 ?>

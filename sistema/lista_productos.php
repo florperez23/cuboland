@@ -26,7 +26,7 @@
 			<label style='color:#000'>Reporte por Cubos</label>
 			<?php
 			
-			$query = mysqli_query($conexion, "SELECT * FROM cubos ORDER BY codcubo, cubo ASC");
+			$query = mysqli_query($conexion, "SELECT * FROM cubos ORDER BY SUBSTR(nomenclatura, 1, 1), CAST(SUBSTR(nomenclatura, 2, LENGTH(nomenclatura)) AS UNSIGNED)");
 			$res = mysqli_num_rows($query);
 			
 			?>

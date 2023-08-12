@@ -30,7 +30,7 @@ FROM
 	LEFT JOIN cubos c ON c.codcubo = r.idcubo 
 	LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
 WHERE
-	r.cancelado = 0 
+	f.cancelado = 0 and r.cancelado = 0
 	AND r.fechaultimopago BETWEEN  "'.$desde.'" and "'.$hasta.'"' ;
 }else if($tipo == 2){
     $sql = 'select r.*, a.nombre, c.cubo
@@ -56,7 +56,7 @@ if ($r -> num_rows >0){
     $tabla = $tabla.'<th ><b>FECHA CONTRATO</b></th>';
     $tabla = $tabla.'<th ><b>FECHA ULTIMO PAGO</b></th>';
     if($tipo == 1){
-        $tabla = $tabla.'<th ><b>TOTAL PAGO</b></th>';
+        $tabla = $tabla.'<th ><b>TOTAL PAGADO</b></th>';
         $tabla = $tabla.'<th ><b>TIPO PAGO</b></th>';
     }
    
@@ -81,18 +81,20 @@ if ($r -> num_rows >0){
         if($tipo == 1){
             $tabla = $tabla.'<td> $'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
             $suma = $suma += $f['totalfactura'];
+            echo "tipo pago".$f['idtipopago'].'<br>';
+            $tabla = $tabla.'<td>';
             if($f['idtipopago'] == 1){
-                $tabla = $tabla.'<td>EFECTIVO</td>';
+                $tabla = $tabla.'EFECTIVO';
             }else if($f['idtipopago'] == 2){
-                $tabla = $tabla.'<td>TARJETA</td>';
+                $tabla = $tabla.'TARJETA';
             }else if($f['idtipopago'] == 3){
-                $tabla = $tabla.'<td>TRANSFERENCIA</td>';
+                $tabla = $tabla.'TRANSFERENCIA';
             }else if($f['idtipopago'] == 4){
-                $tabla = $tabla.'<td>DEPOSITO</td>';
+                $tabla = $tabla.'DEPOSITO';
             }else if($f['idtipopago'] == 4){
-                $tabla = $tabla.'<td>MIXTO</td>';
+                $tabla = $tabla.'MIXTO';
             }
-            
+            $tabla = $tabla.'</td>';
         }
         $tabla = $tabla."</tr>";  
         $vuelta++;               

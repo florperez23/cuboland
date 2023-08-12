@@ -28,6 +28,7 @@
   
   $(document).ready(function() {
     $('#table').DataTable({
+      "sort": false, 
       language: {
         "decimal": "",
         "emptyTable": "No hay datos",
@@ -46,11 +47,11 @@
           "last": "Ultimo",
           "next": "Siguiente",
           "previous": "Anterior"
-        },
-        "aria": {
-          "sortAscending": ": Activar orden de columna ascendente",
-          "sortDescending": ": Activar orden de columna desendente"
-        }
+         }, 
+         "aria": {
+           "sortAscending": ": Activar orden de columna ascendente",
+           "sortDescending": ": Activar orden de columna desendente"
+         } 
       }
     });
     var usuarioid = '<?php echo $_SESSION['idUser']; ?>';

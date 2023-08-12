@@ -28,12 +28,12 @@
 </div>
 
 	<!-- Elementos para crear el reporte -->
-	<form action="reporteCortes.php" method="post">
+	<form action="reporteCortesController.php" method="get">
 	<div class="row">
 		<div class="col-md-4">
 			<label>Cubo</label>
 			<?php
-				$query = mysqli_query($conexion, "select * from cubos");
+				$query = mysqli_query($conexion, "select * from cubos ORDER BY SUBSTR(nomenclatura, 1, 1), CAST(SUBSTR(nomenclatura, 2, LENGTH(nomenclatura)) AS UNSIGNED) ");
 				$res = mysqli_num_rows($query);
 			?>
 
@@ -43,7 +43,7 @@
 				if ($res > 0) {
 					while ($f = mysqli_fetch_array($query)) {
 				?>
-					<option value="<?php echo $f['codcubo']; ?>"><?php echo $f['cubo']; ?></option>
+					<option value="<?php echo $f['codcubo']; ?>"><?php echo $f['nomenclatura'].'-'.$f['cubo']; ?></option>
 				<?php
 					}
 				}
