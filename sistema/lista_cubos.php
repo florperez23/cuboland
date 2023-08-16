@@ -1,5 +1,38 @@
 <?php include_once "includes/header.php"; ?>
+<script>
 
+function calcularRenta(codcubo){
+	var fecha = document.getElementById("FechaPago"+codcubo).value;
+	var renta = document.getElementById("renta"+codcubo).value;
+	var mes = fecha.getMonth();
+	var anio =  fecha.getFullYear();
+	var dia = fecha.getDate();
+	var diasMes  = diasEnUnMes(mes, anio); 
+	var disponible = document.getElementById("disponible"+codcubo).value;
+	 console.log(fecha);
+
+
+	if (disponible = 0 ){
+		 var precioxDia=( renta / diasMes);
+															
+		var totalrenta=(diasMes-dia)*precioxDia;
+
+		if(dia==diasMes )
+		{
+			totalrenta=renta
+		}
+
+	}
+
+}
+
+
+function diasEnUnMes(mes, año) {
+	return new Date(año, mes, 0).getDate();
+}
+
+
+</script>
 <?php
 $DiasMes=0;
 $dia=0;
@@ -321,7 +354,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 														<div class="col-md-6" id="divFechaPago<?php echo $data['codcubo']; ?>" >
 															
 																<label for="FechaPago<?php echo $data['codcubo']; ?>" class="font-weight-bold">Fecha Pago</label>  
-																<input  name="FechaPago<?php echo $data['codcubo']; ?>" id="FechaPago<?php echo $data['codcubo']; ?>" class="form-control" type="date" value="<?php echo $fecha; ?>" >
+																<input  onchange = "calcularRenta(<?php echo $data['codcubo']; ?>)" name="FechaPago<?php echo $data['codcubo']; ?>" id="FechaPago<?php echo $data['codcubo']; ?>" class="form-control" type="date" value="<?php echo $fecha; ?>" >
 															
 														</div>
 													<?php
@@ -443,6 +476,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 
 
 </div>
+
 <!-- echo $mesesretrazo; if($mesesretrazo!=0)  -->
 <!-- /.container-fluid -->
 
