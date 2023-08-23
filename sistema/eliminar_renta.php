@@ -13,18 +13,10 @@ if (!empty($_GET['id'])) {
 
             //SI ELIMINA UNA RENTA QUIERE DECIR QUE YA SE VA, ASI QUE CREAMOS UN PDF DE SALIDA DE PRODUCTOS CON FIRMA
             echo "<div>";
-                echo "<iframe id='frameSalida' name='frameSalida' src='salida_definitiva.php?idcubo=".$idcubo."' style='width:100%; height:800px; border:0; border:none;'>Tu navegador no soporta iframes...</iframe>";
+                echo "<iframe id='frameSalida' name='frameSalida' src='salida_definitiva.php?idcubo=".$idcubo."&idrenta=".$id."' style='width:100%; height:800px; border:0; border:none;'>Tu navegador no soporta iframes...</iframe>";
               echo "</div>";
 
-                  $query = "DELETE FROM rentas WHERE id = $id";
-                   // echo $query;
-                    $query_delete = mysqli_query($conexion, $query);
-                    if ($query_delete){
-                      }else{
-                        historia('Error al eliminar la renta '.$id);
-                        mensajeicono('Error al momento de eliminar la renta, intente de nuevo!', 'lista_rentas.php','','error');
-
-                      }
+                 
    
            
            // historia('Se elimino la renta '.$id);

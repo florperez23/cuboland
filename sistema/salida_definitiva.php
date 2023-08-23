@@ -6,16 +6,12 @@ require_once('pdf/tcpdf.php');
 
 
     $idcubo = $_GET['idcubo'];
+    $idrenta = $_GET['idrenta'];
+    $nombre = "";
 
-
-    $sql = 'SELECT
-    p.*,
-    a.nombre
-    FROM
-    producto p 
-    INNER JOIN rentas r on r.idcubo = p.codcubo
-    INNER JOIN arrendatarios a on a.idarrendatario = r.idarrendatario
-   where p.codcubo = '.$idcubo.' and p.existencia > 0 GROUP BY p.codproducto';
+    $sql = 'SELECT p.*, a.nombre FROM producto p 
+    LEFT JOIN rentas r on r.idcubo = p.codcubo 
+    LEFT JOIN arrendatarios a on a.idarrendatario = r.idarrendatario where p.codcubo ='.$idcubo.' ';
     echo $sql;
     $r = $conexion -> query($sql);
     $tabla = "";
@@ -57,7 +53,7 @@ require_once('pdf/tcpdf.php');
            
             <td></td>
             <td></td>
-            <td style="font-size:12px; border-top: 1px solid #000;">Arrendatario del Cubo '.$nombre.'</td>
+            <td style="font-size:12px; border-top: 1px solid #000;">Arrendatario del Cubo <br>'.$nombre.'</td>
         </tr>
         <tr>
         
@@ -73,8 +69,17 @@ require_once('pdf/tcpdf.php');
        $sql = "DELETE FROM producto WHERE codcubo = ".$idcubo."";
        echo $sql;
        $query_delete = mysqli_query($conexion, $sql);
-      mysqli_close($conexion);
     
+    $query = "DELETE FROM rentas WHERE id = $idrenta";
+    // echo $query;
+     $query_delete = mysqli_query($conexion, $query);
+     if ($query_delete){
+    }else{
+        historia('Error al eliminar la renta '.$id);
+        mensajeicono('Error al momento de eliminar la renta, intente de nuevo!', 'lista_rentas.php','','error');
+
+    }
+    mysqli_close($conexion);
     echo $tabla;
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 // set document information
