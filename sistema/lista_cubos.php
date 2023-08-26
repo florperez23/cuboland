@@ -46,7 +46,7 @@ function calcularRenta(codcubo){
 	//console.log(fechaformateada);
     
 	//si es nuevo
-	if (disponible == 0 || nuevo==0){
+	if ( nuevo==0){
 	console.log("esta disponible");
 		//verifica si exite una promocion en renta inicial;
 	action="existepromocion";
