@@ -1190,12 +1190,86 @@ $sql = "select * from producto where codcubo = '$codcubo' ";
    echo $data["mayoreo"];
     exit;
   }else{
-    $data = "0";
+    echo $data = "0";
   }
 
 exit;
 }
 
+// FechaUltimoPago
+if ($_POST['action'] == 'fechaultimopago') {
+  $codcubo = $_POST['idcubo'];
 
+  include "../conexion.php";
+	$sql = "SELECT * FROM rentas where idcubo='$codcubo' and cancelado=0";
+	//echo $sql;
+	$rc= $conexion -> query($sql);
+	if($f = $rc -> fetch_array())
+		{		
+					
+			echo $f['fechaultimopago'];
+		}
+		else {echo 'NoExiste';}
+
+ 
+  
+  exit;
+  }
+
+// Existe Promocion
+if ($_POST['action'] == 'existepromocion') {
+   $codcubo = $_POST['idcubo'];
+   $fechapago = $_POST['fechapago'];
+ // $sql="select * from promociones where ididentificador='".$codcubo."' AND (DATE(promociones.fechainicio) <=CURRENT_DATE() AND DATE(promociones.fechatermino) >DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY))";
+  $sql="select * from promociones where ididentificador='".$codcubo."' AND (DATE(promociones.fechainicio) <='".$fechapago."' AND DATE(promociones.fechatermino) >DATE_SUB('".$fechapago."', INTERVAL 1 DAY))";
+  //echo $sql;
+    $query = mysqli_query($conexion, $sql);
+    mysqli_close($conexion);
+    $result = mysqli_num_rows($query);
+    if ($result > 0) {
+      //$data = mysqli_fetch_assoc($query);     
+     echo "Existe";
+      exit;
+    }else{
+      echo "No Existe";
+    } 
+  }
+
+  // Precio Promocion
+if ($_POST['action'] == 'preciopromocion') {
+  $codcubo = $_POST['idcubo'];
+  $fechapago = $_POST['fechapago'];
+  $sql="select * from promociones inner join cubos on cubos.codcubo=promociones.ididentificador where ididentificador='".$codcubo."' AND (DATE(promociones.fechainicio) <='".$fechapago."' AND DATE(promociones.fechatermino) >DATE_SUB('".$fechapago."', INTERVAL 1 DAY))";
+
+
+require("..\conexion.php");
+//$sql="select * from promociones where ididentificador='".$codcubo."' AND (DATE(promociones.fechainicio) <='".$fechapago."' AND DATE(promociones.fechatermino) >DATE_SUB('".$fechapago."', INTERVAL 1 DAY))";
+ //echo $sql;
+ $r = $conexion -> query($sql);
+ if ($r -> num_rows >0) {
+   while($f = $r -> fetch_array())
+   {
+   
+     $tipo= $f['idtipo'];
+     $promocion=$f['promocion'];
+     $renta=$f['renta'];
+     if($tipo==1)
+     {
+       //cantidad/total				
+       $newPrecio=$renta-floatval (($renta*$promocion)/100);
+     }else
+     {
+       $newPrecio=$promocion;
+
+     }
+     $newPrecio=number_format($newPrecio, 2, '.', ',');
+   }
+   echo $newPrecio;
+    
+ }else{
+   
+     echo "0";
+   }
+ }
 }
  ?>

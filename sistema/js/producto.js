@@ -2433,6 +2433,7 @@ function adelantarMeses(codcubo)
   total=total.replace(',','');//Quitamos el la coma para poder hacer la operacion
   totalFIJO=totalFIJO.replace('$','');//Quitamos el la coma para poder hacer la operacion
   totalFIJO=totalFIJO.replace(',','');//Quitamos el la coma para poder hacer la operacion
+  console.log(total);
   if($('#tipopago'+codcubo).val()==2)
   {
     if(mesesxadelantar==0)
