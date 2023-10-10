@@ -549,8 +549,10 @@ if (empty($_POST['codcliente'])) {
 
   if(isset($_POST['efectivo'])){
     $efectivo = $_POST['efectivo'];;
+    
   }else{
     $efectivo = "0";
+   
   }
 
   if(isset($_POST['tarjeta'])){
