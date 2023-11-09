@@ -650,9 +650,11 @@ $('#btn_facturar_venta').click(function(e) {
    success: function(response) {
      console.log(response);
    if (response != 0) {
-     var info = JSON.parse(response);        
+     var info = JSON.parse(response);   
+     //location.reload();     
      generarPDF(info.codcliente,info.nofactura);
-     location.reload();
+    
+
    }else {
      console.log('no hay dato');
    }
@@ -775,6 +777,7 @@ $('.alertChangePass').slideDown();
 function generarPDF(cliente,factura) {
  url = 'factura/generaFactura.php?cl='+cliente+'&f='+factura;
  window.open(url, '_blank');
+ location.reload();
 }
 
 function del_product_detalle(correlativo) {
