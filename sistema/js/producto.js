@@ -2300,7 +2300,7 @@ $('#add_product_salida').click(function(e) {
      data: {action:action,producto:codproducto,cantidad:cantidad},
      success: function(response) {    
         
-       //alert(response);
+       console.log(response);
        if (response != 'error') {   
 
          var info = JSON.parse(response);
