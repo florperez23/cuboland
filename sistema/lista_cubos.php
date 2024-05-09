@@ -10,7 +10,12 @@
 // }
 
 
+function PasarValor(codcubo)
+{
+	document.getElementById("totalFIJO").value.replace('$','');//Quitamos el signo de pesos 
+	document.getElementById("totalmodal"+codcubo).value=document.getElementById("totalFIJO"+codcubo).value;
 
+}
 
 function calcularRenta(codcubo){
 	var fecha = document.getElementById("FechaPago"+codcubo).value;
@@ -507,10 +512,10 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 
 
 
-<input id="nuevo<?php echo $data['codcubo']; ?>"  name="nuevo<?php echo $data['codcubo']; ?>" class="form-control" type="hidden"   value="<?php echo $nuevo	 ?>"  >
+															<input id="nuevo<?php echo $data['codcubo']; ?>"  name="nuevo<?php echo $data['codcubo']; ?>" class="form-control" type="hidden"   value="<?php echo $nuevo	 ?>"  >
 															<label for="totalmodal" class="font-weight-bold">Renta</label>
 															<input id="totalFIJO<?php echo $data['codcubo']; ?>"  name="totalFIJO<?php echo $data['codcubo']; ?>" class="form-control" type="hidden" placeholder="totalFIJO"  value="$<?php echo $totalrenta ?>"  readonly >
-															<input id="totalmodal<?php echo $data['codcubo']; ?>"  name="totalmodal<?php echo $data['codcubo']; ?>" class="form-control" type="text" placeholder="Total"  value="$<?php echo $totalrenta ?>"   >
+															<input id="totalmodal<?php echo $data['codcubo']; ?>"  name="totalmodal<?php echo $data['codcubo']; ?>" class="form-control" type="text" placeholder="Total" onkeyup="PasarValor(<?php echo $data['codcubo']; ?>);" value="$<?php echo $totalrenta ?>"   >
 														
 														</div>
 														</div>

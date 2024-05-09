@@ -23,7 +23,7 @@
 		if($tipo ==5)
 		{
 			$sql="SELECT * FROM arrendatarios inner join cubos on cubos.idarrendatario=arrendatarios.idarrendatario WHERE arrendatarios.idarrendatario = ".$codCliente." and cubos.codcubo='".$result_venta['observaciones']."'";
-			//echo $sql;
+			///echo $sql;
 			$arrendatarios = mysqli_query($conexion, $sql);
 			$result_cliente= mysqli_fetch_assoc($arrendatarios);		
 		}else
@@ -65,6 +65,9 @@
 		$saldo = $result_venta['saldo'];
 		$totalfactura = $result_venta['totalfactura'];
 		$totalventa = $result_venta['totalventa'];
+		$subtotal = $result_venta['subtotal'];
+		$saldo = $result_venta['saldo'];
+
 		$tipopago='';
 		$pagocon=$result_venta['pagocon'];
 		if($tipop=='2')
@@ -273,7 +276,8 @@
 				
 				/*EVALUAMOS SI HAY MAS ABONOS, PARA MOSTRAR EL SALDO*/ 	
 				if(nabonos($result_venta['numcredito'])>1){
-					$pdf->Cell(70, 5,  'Saldo: $' .number_format($saldo, 2, '.', ','), 0, 1, 'R');
+					$pdf->Cell(70, 5,  'Saldo: $' .number_format($subtotal, 2, '.', ','), 0, 1, 'R');
+					
 				}
 
 				if($tipop==2)

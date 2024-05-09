@@ -549,8 +549,10 @@ if (empty($_POST['codcliente'])) {
 
   if(isset($_POST['efectivo'])){
     $efectivo = $_POST['efectivo'];;
+    
   }else{
     $efectivo = "0";
+   
   }
 
   if(isset($_POST['tarjeta'])){
@@ -980,7 +982,7 @@ if (empty($_POST['producto']) || empty($_POST['cantidad'])){
   $codproducto = $_POST['producto'];
   $cantidad = $_POST['cantidad'];
   $token = md5($_SESSION['idUser']);
-
+//echo $token;
   //antes de agregar analizamos de que cubo son las ya agregadas
   $idcuboant = cubo_producto_anterior();
   $codcubonvo = cubo_producto($codproducto);
@@ -989,9 +991,9 @@ if (empty($_POST['producto']) || empty($_POST['cantidad'])){
 
   //si son iguales entra o si es la primera vez 
   if($idcuboant == $codcubonvo or $idcuboant == ''){
-    //echo 'entro';
+   // echo 'entro';
     $sql="CALL add_detalle_temp_salidas('$codproducto',$cantidad,'$token')";
-  //echo $sql;
+ // echo $sql;
     $query_detalle_temp = mysqli_query($conexion, $sql);
     $result = mysqli_num_rows($query_detalle_temp);
     
@@ -1015,7 +1017,7 @@ if (empty($_POST['producto']) || empty($_POST['cantidad'])){
       }
     }
   }else{
-    //echo 'entro else';
+   // echo 'entro else';
     $detalleTabla .= '0';
   } 
 

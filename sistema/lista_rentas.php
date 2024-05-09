@@ -103,6 +103,7 @@
 			type: "post",
 			data: {tipo: tipo},
 			success: function(data){
+
 				$('#respuesta').html(data+"\n");
 			}
 		});

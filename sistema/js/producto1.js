@@ -650,11 +650,9 @@ $('#btn_facturar_venta').click(function(e) {
    success: function(response) {
      console.log(response);
    if (response != 0) {
-     var info = JSON.parse(response);   
-     //location.reload();     
+     var info = JSON.parse(response);        
      generarPDF(info.codcliente,info.nofactura);
-    
-
+     location.reload();
    }else {
      console.log('no hay dato');
    }
@@ -777,7 +775,6 @@ $('.alertChangePass').slideDown();
 function generarPDF(cliente,factura) {
  url = 'factura/generaFactura.php?cl='+cliente+'&f='+factura;
  window.open(url, '_blank');
- location.reload();
 }
 
 function del_product_detalle(correlativo) {
@@ -1365,49 +1362,6 @@ function abrirModalAbono(numcredito,total,saldo)
 
 
 }
-
-
-
-$('#tipoven').on('change', function() {
-
-  if ($('#tipoven').val()==2)
-  {
-    console.log("entro3");
-    var totalFijo=$('#totalFIJO').val();
-    var totalFijoc=$('#totalFIJOc').val();
-    $('#ventacontado').slideUp(); 
-    $('#ventacredito').slideDown(); 
-  }else{
-    console.log("entro4");
-    $('#ventacontado').slideDown();   
-    $('#ventacredito').slideUp();  
-  }
-$('#pagomixto').slideUp();   
-$('#referencia').slideUp();       
-$('#divCambio').slideDown();
-$('#divCambioC').slideDown(); 
-
-
-
-
-$('.alertCambio').html('<p style="color : red;"></p>');
-
-var totalFijo=$('#totalFIJO').val();
-var totalFijoc=$('#totalFIJOc').val();
-
-//  document.getElementById('totalmodal').value=MASK('', (totalFijo),'$##,###,##0.00',1);
-//  document.getElementById('totalmodalC').value=MASK('', (totalFijoc),'$##,###,##0.00',1);
-
-document.getElementById('pagar_con').value="0.00";
-document.getElementById('pagar_conC').value="0.00";
-document.getElementById('pagar_con').disabled = false;
-document.getElementById('pagar_conC').disabled = false;
-
-document.getElementById('totalmodalC').value=MASK('', (totalFijo),'$##,###,##0.00',1);
-document.getElementById('totalmodal').value=MASK('', (totalFijo),'$##,###,##0.00',1);
-//document.getElementById('totalmodalC').value=MASK('', (totalFijoc),'$##,###,##0.00',1);
-});
-
 
 //EVALUAMOS QUE TIPO DE PAGO SERÁ
 $('#tipopago').on('change', function() {
@@ -2343,7 +2297,7 @@ $('#add_product_salida').click(function(e) {
      data: {action:action,producto:codproducto,cantidad:cantidad},
      success: function(response) {    
         
-      // alert(response);
+       //alert(response);
        if (response != 'error') {   
 
          var info = JSON.parse(response);
