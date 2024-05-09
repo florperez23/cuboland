@@ -16,8 +16,8 @@ p.descripcion, a.nombre
 FROM
 detalle_temp_salidas dts
 inner join producto p on p.codproducto = dts.codproducto
-INNER JOIN rentas r on r.idcubo = p.codcubo
-INNER JOIN arrendatarios a on a.idarrendatario = r.idarrendatario
+LEFT OUTER JOIN rentas r on r.idcubo = p.codcubo
+LEFT OUTER JOIN arrendatarios a on a.idarrendatario = r.idarrendatario
 GROUP BY dts.codproducto';
 //echo $sql;
 $r = $conexion -> query($sql);
