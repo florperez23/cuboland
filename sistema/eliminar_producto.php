@@ -9,29 +9,33 @@ if (!empty($_GET['id'])) {
     mensajeicono('Se ha eliminado con éxito el producto!', 'lista_productos.php','','exito');
     //header("location: lista_productos.php");
 }
-if (isset($_POST['enviar'])) {
+
+if (isset($_POST['enviar']) and $_POST['enviar'] == 1) {
+    echo $_POST['enviar'].'valor de varios';
     require("../conexion.php");
     echo "entro a eliminar varios";
-    if (is_array($_POST['seleccionados'])) {
+
         $selected = '';
         $num_prod = count($_POST['seleccionados']);
+        echo $num_prod.'num produc';
         $current = 0;
         foreach ($_POST['seleccionados'] as $key => $value) {
-            if ($current != $num_prod-1){
+            if ($current != $num_prod){
                 echo "eliminando ".$value;
                 $query_delete = mysqli_query($conexion, "DELETE FROM producto WHERE codproducto = '$value'");
             }
             $current++;
         }
 
-    }
-    else {
-        mensajeicono('Debes seleccionar algun producto!', 'lista_productos.php','','info');
-    }
-    mensajeicono('Se han eliminado con éxito los productos!', 'lista_productos.php','','exito');
-    
+        if ($current == $num_prod){
+            mensajeicono('Se han eliminado con éxito los productos!', 'lista_productos.php','','exito');
+        }
+       // mensajeicono('Debes seleccionar algun producto!', 'lista_productos.php','','info');
+
 }  
-if (isset($_POST['eliminarTodo'])) {
+
+if (isset($_POST['eliminarTodo']) and $_POST['eliminarTodo'] <> 0) {
+    echo $_POST['eliminarTodo'].'valor de eliminar todo';
     require("../conexion.php");
     echo "entro a eliminar todos";
     $cubo = $_POST['eliminarTodo'];

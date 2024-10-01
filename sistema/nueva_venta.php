@@ -263,22 +263,22 @@ if(HayCajaAbierta()==0)
                             </div>                  
                     <table>
                         <tr>
-                            <td> <input type="checkbox" name="pagom[]" id="pagom[]" value="1"><label>Efectivo</label> </td>
+                            <td> <input type="checkbox" name="pagomv[]" id="pagomv[]" value="1"><label>Efectivo</label> </td>
                             <td><input id="pefectivo"  style="display:none;" name="pefectivo" type="number" class="form-control" type="text" placeholder="0.00"  value=""> </td>
                         </tr>
                         <tr>
-                            <td> <input type="checkbox" name="pagom[]" id="pagom[]" value="2"><label>Tarjeta</label> </td>
+                            <td> <input type="checkbox" name="pagomv[]" id="pagomv[]" value="2"><label>Tarjeta</label> </td>
                             <td><input id="ptarjeta"  style="display:none;" name="ptarjeta" type="number" class="form-control" type="text" placeholder="0.00"  value=""> 
                             <label name="etiquetatarjeta"  style="display:none;" id="etiquetatarjeta" class="font-weight-bold"></label> 
                             <br><label name="etiquetat"  style="display:none; font-size: smaller;    color: red;    font-family: none;" id="etiquetat" class="font-weight-bold">5% de comisión por pago con tarjeta</label> 
                         </td>
                         </tr>
                         <tr>
-                            <td> <input type="checkbox" name="pagom[]" id="pagom[]" value="3"><label>Transferencia</label> </td>
+                            <td> <input type="checkbox" name="pagomv[]" id="pagomv[]" value="3"><label>Transferencia</label> </td>
                             <td><input id="ptransferencia" style="display:none;"   name="ptransferencia" type="number" class="form-control" type="text" placeholder="0.00"  value=""> </td>
                         </tr>
                         <tr>
-                            <td> <input type="checkbox" name="pagom[]"  id="pagom[]" value="4"><label>Deposito</label> </td>
+                            <td> <input type="checkbox" name="pagomv[]"  id="pagomv[]" value="4"><label>Deposito</label> </td>
                             <td><input id="pdeposito"   style="display:none;" name="pdeposito"  type="number" class="form-control" type="text" placeholder="0.00"  value=""> </td>
                         </tr>
                     </table>

@@ -146,9 +146,9 @@
                         inner join arrendatarios a on a.idarrendatario = r.idarrendatario
                         inner join cubos c on c.codcubo = r.idcubo
                      
-                        where r.cancelado = 0 and (r.fechaultimopago <= "'.$desde.'" or r.fechaultimopago is null)' ;
+                        where r.cancelado = 0 and (r.fechaultimopago < "'.$desde.'" or r.fechaultimopago is null)' ;
                     }
-                    
+             
 
 						$query = mysqli_query($conexion, $sql);
 						$result = mysqli_num_rows($query);

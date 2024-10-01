@@ -1,30 +1,215 @@
 <?php include_once "includes/header.php"; ?>
 <script>
 
+// function getDateSpanishFromDate(dateTime, separator){
+//     var year = dateTime.getFullYear();
+//     var month = dateTime.getMonth() + 1;
+//     var month = month > 9 ? month : "0" + month;
+//     var day = dateTime.getDate() > 9 ? dateTime.getDate() : "0" + dateTime.getDate();
+//     return day + separator + month + separator + year;
+// }
+
+
+function PasarValor(codcubo)
+{
+	document.getElementById("totalFIJO").value.replace('$','');//Quitamos el signo de pesos 
+	document.getElementById("totalmodal"+codcubo).value=document.getElementById("totalFIJO"+codcubo).value;
+
+}
+
 function calcularRenta(codcubo){
 	var fecha = document.getElementById("FechaPago"+codcubo).value;
 	var renta = document.getElementById("renta"+codcubo).value;
-	var mes = fecha.getMonth();
-	var anio =  fecha.getFullYear();
-	var dia = fecha.getDate();
+
+	//console.log(fecha);
+	//var fedt = new Date(fecha);
+	// var mes = fedt.getMonth() + 1; 
+	// var anio =  fedt.getFullYear();
+	// var dia = fedt.getDate()+ 1;
+
+	
+
+	var fechasep=fecha.split('-');
+	var anio =  fechasep[0];
+	var mes = fechasep[1]
+	var dia =fechasep[2]
+
 	var diasMes  = diasEnUnMes(mes, anio); 
 	var disponible = document.getElementById("disponible"+codcubo).value;
-	 console.log(fecha);
+	var nuevo = document.getElementById("nuevo"+codcubo).value;	
+	// console.log(dia);
+	// console.log(mes);
+	// console.log(anio);
+	//console.log(diasMes);
+	
+    var promocion="No Existe";
+	var totalrenta=0;
+	var texto;
+	var fechaultimopago;
+	var tamañoFecha=0;
+	var fechaformateada= anio+mes+dia;
+	//console.log(fechaformateada);
+    
+	//si es nuevo
+	if ( nuevo==0){
+	console.log("esta disponible");
+		//verifica si exite una promocion en renta inicial;
+	action="existepromocion";
+	$.ajax({
+	url: 'modal.php',
+	type: "POST",
+	async: true,
+	data: {action:action, idcubo: codcubo,fechapago:fechaformateada},
+	success: function(response) {
+	promocion=response.trim();
+	console.log(response);
+		// si Existe promomocion se verifica la cantidad de promocion
+	if(promocion == "Existe")	
+	{  
+		console.log("Tiene una promocion");
+		action="preciopromocion";
+		$.ajax({
+		url: 'modal.php',
+		type: "POST",
+		async: true,
+		data: {action:action, idcubo: codcubo,fechapago:fechaformateada},
+		success: function(response) {
+		totalrenta=response.trim();
+		// console.log(totalrenta);
+		//console.log(response);
+		document.getElementById("totalmodal"+codcubo).value=totalrenta;
+		document.getElementById("totalFIJO"+codcubo).value="$"+totalrenta;
+		
+		texto='Renta normal $'+ renta+', precio promoción  $'+totalrenta; 
+		document.getElementById("mensajeAlerta"+codcubo).innerHTML=texto;		
+		//console.log(texto);
+		},
+		error: function(error) {
+		}
+		});
+		
+	}
+	else
+	{	
+		//console.log("No tiene promocion");											 
+		var precioxDia=( renta / diasMes);															
+		var totalrenta=(diasMes-dia)*precioxDia;		
+		 totalrenta=(Math.round(totalrenta));
 
-
-	if (disponible = 0 ){
-		 var precioxDia=( renta / diasMes);
-															
-		var totalrenta=(diasMes-dia)*precioxDia;
-
+		// console.log(diasMes);
+		// console.log(precioxDia);
+		// console.log(totalrenta);
 		if(dia==diasMes )
 		{
-			totalrenta=renta
+		 	totalrenta=renta;			
 		}
-
+		texto='';
+		document.getElementById("totalmodal"+codcubo).value=totalrenta;
+		document.getElementById("totalFIJO"+codcubo).value="$"+totalrenta;
+		document.getElementById("mensajeAlerta"+codcubo).innerHTML=texto;	
+    }
+		
+	},
+	error: function(error) {
 	}
+ 	});
+	
+	
+ 	
+	}
+	else
+	{
+	console.log('No es nuevo');	
+	//consulta la fechaultimopago;
+    action="fechaultimopago";
+	$.ajax({
+	url: 'modal.php',
+	type: "POST",
+	async: true,
+	data: {action:action, idcubo: codcubo},
+	success: function(response) {
+		console.log(response.trim());
+		var fechaultimopago=response.trim();
+
+		var feultpag=fechaultimopago.split('-');
+		var anio =  feultpag[0];
+		var mesultimopago = feultpag[1];
+		var diaultimopago =feultpag[2];
+
+		console.log( mesultimopago);	
+		console.log( diaultimopago);
+
+		 var mesesretrazo=mes-mesultimopago;
+		 console.log( mesesretrazo);	
+		 if( mes!=mesultimopago &&( mesesretrazo>=1 ))
+	    { console.log( "entro1");
+			if(dia>10 || (mesesretrazo>1 ))
+				{       
+					console.log( "entro2");
+					totalrenta=(parseFloat(renta)+50)*mesesretrazo;
+					if(mesesretrazo>1)
+					{
+						texto='Tiene '+mesesretrazo+' de retrazo!!<br>La renta es de $'+ renta+'+  $50.00 por cada mes de retrazo.'; 
+					}
+					else
+						{console.log( "entro3");
+							texto='La renta es de $'+renta +' + $50.00 por retrazo.'; 
+						}
+						console.log(texto);
+				}
+				else
+				{	
+					//echo 'entro4';															
+					totalrenta=renta;
+					texto=''; 					
+				}
+				document.getElementById("totalmodal"+codcubo).value=totalrenta;
+				document.getElementById("totalFIJO"+codcubo).value="$"+totalrenta;
+				document.getElementById("mensajeAlerta"+codcubo).innerHTML=texto;	
+															
+		}
+		else{	
+																///echo 'No tiene retrazo';															
+			totalrenta=renta;
+			texto=''; 
+			document.getElementById("totalmodal"+codcubo).value=totalrenta;
+			document.getElementById("totalFIJO"+codcubo).value="$"+totalrenta;
+			document.getElementById("mensajeAlerta"+codcubo).innerHTML=texto;	
+		}
+		
+
+												
+			if(mes==mesultimopago )
+			{
+			totalrenta=0;
+			texto='La renta se encuentrá al dia.'; 
+			document.getElementById("totalmodal"+codcubo).value=totalrenta;
+			document.getElementById("totalFIJO"+codcubo).value="$"+totalrenta;
+			document.getElementById("mensajeAlerta"+codcubo).innerHTML=texto;	
+
+			}
+			
+	},
+	error: function(error) {
+	}
+ 	});
+
+		
+		// var feultpag = new Date(fechaultimopago);											
+		// var mesultimopago = feultpag.getMonth();										
+		// var diaultimopago = feultpag.getdate();
+		
+		
+															
+
+
+		
+	}
+	
+	
 
 }
+
 
 
 function diasEnUnMes(mes, año) {
@@ -99,7 +284,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 
 						 $query = mysqli_query($conexion, "SELECT c.codcubo, c.nomenclatura, c.cubo, c.renta, c.disponible, r.idarrendatario, a.nombre FROM
 						 cubos c left join rentas r on r.idcubo = c.codcubo
-						 left join arrendatarios a on a.idarrendatario = r.idarrendatario WHERE  r.cancelado=0 
+						 left join arrendatarios a on a.idarrendatario = r.idarrendatario WHERE  ( r.cancelado=0 or r.cancelado is null)
 						 ORDER BY SUBSTR(nomenclatura, 1, 1), CAST(SUBSTR(nomenclatura, 2, LENGTH(nomenclatura)) AS UNSIGNED) ");
 						//$sql = "select codcubo, nomenclatura,cubo,renta, disponible,
 						//(SELECT arrendatarios.idarrendatario FROM rentas INNER JOIN arrendatarios ON rentas.idarrendatario = arrendatarios.idarrendatario WHERE rentas.cancelado=0 and codcubo=rentas.idcubo) as idarrendatario,
@@ -231,7 +416,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 														<div class="form-group">
 														<?php
 														$fechaUltimoPago=obtenerFechaUltimoPago($data['codcubo']);
-															
+														$nuevo=0;	
 													    if ($data['disponible'] == 0 or $fechaUltimoPago==NULL OR $fechaUltimoPago=='0000-00-00')
 														{
 														//echo ' es nuevo';
@@ -260,6 +445,7 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 														}else
 														{ 			
 														//echo 'No es nuevo';												
+														   $nuevo=1;
 															$fecha=date("Y-m-d");													
 															$mesactual = date("m", strtotime($fecha));
 															$mesultimopago= date("m", strtotime($fechaUltimoPago));
@@ -326,10 +512,10 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 
 
 
-														    
+															<input id="nuevo<?php echo $data['codcubo']; ?>"  name="nuevo<?php echo $data['codcubo']; ?>" class="form-control" type="hidden"   value="<?php echo $nuevo	 ?>"  >
 															<label for="totalmodal" class="font-weight-bold">Renta</label>
 															<input id="totalFIJO<?php echo $data['codcubo']; ?>"  name="totalFIJO<?php echo $data['codcubo']; ?>" class="form-control" type="hidden" placeholder="totalFIJO"  value="$<?php echo $totalrenta ?>"  readonly >
-															<input id="totalmodal<?php echo $data['codcubo']; ?>"  name="totalmodal<?php echo $data['codcubo']; ?>" class="form-control" type="text" placeholder="Total"  value="$<?php echo $totalrenta ?>"  readonly >
+															<input id="totalmodal<?php echo $data['codcubo']; ?>"  name="totalmodal<?php echo $data['codcubo']; ?>" class="form-control" type="text" placeholder="Total" onkeyup="PasarValor(<?php echo $data['codcubo']; ?>);" value="$<?php echo $totalrenta ?>"   >
 														
 														</div>
 														</div>
@@ -360,9 +546,10 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 													<?php
 															//if($dia>10 && $data['disponible']==1)	
 															//{				
-																       echo '<center  style="width:100%"><label class="font-weight-bold" style="color:#f44336">'.$texto.'</label></center>';
-														//}?>
-														
+															//'<center  style="width:100%"><label class="font-weight-bold" style="color:#f44336" id="mensajeAlerta" name="mensajeAlerta">'.$texto.'</label></center>';
+														//}
+														?>
+														<center  style="width:100%"><label class="font-weight-bold" style="color:#f44336" id="mensajeAlerta<?php echo $data['codcubo']; ?>" name="mensajeAlerta<?php echo $data['codcubo']; ?>"><?php echo $texto ?></label></center>
 														
 														
 													
@@ -449,7 +636,10 @@ $precioxDia=( (float)255 / (float)$DiasMes);
 								</div>
 				
 									</div>
-										<div class="alert alertCambio"></div>
+										<div class="alert alertCambio">
+										<center  style="width:100%">
+										<label class="font-weight-bold" id="mensaje<?php echo $data['codcubo']; ?>" name="mensaje<?php echo $data['codcubo']; ?>"style="color:#f44336"></label></center>
+										</div>
 										<div class="modal-footer">     
 										<button type="button" style="text-align: center;" class="btn btn-danger" data-dismiss="modal" id="btnCerrar" name="btnCerrar">Close</button>										
 										<?php if($totalrenta!=0)
