@@ -15,7 +15,7 @@ $desde = date("Y-m-d",strtotime($primero));//."- 1 day"
 $hasta =  date("Y-m-d",strtotime($ultimo));//."+ 1 day"
 
 if($tipo == 0){
-    $sql = 'select r.*, a.nombre, c.cubo from rentas r
+    $sql = 'select r.*, a.nombre, c.cubo, c.renta from rentas r
     inner join arrendatarios a on a.idarrendatario = r.idarrendatario
     inner join cubos c on c.codcubo = r.idcubo
     where r.cancelado = 0 ';
@@ -23,7 +23,7 @@ if($tipo == 0){
     $sql = 'SELECT
 	r.*,
 	a.nombre,
-	c.cubo, f.totalfactura, f.idtipopago
+	c.cubo, c.renta, f.totalfactura, f.idtipopago
 FROM
 	rentas r
 	LEFT JOIN arrendatarios a ON a.idarrendatario = r.idarrendatario
@@ -33,7 +33,7 @@ WHERE
 	f.cancelado = 0 and r.cancelado = 0
 	AND r.fechaultimopago BETWEEN  "'.$desde.'" and "'.$hasta.'"' ;
 }else if($tipo == 2){
-    $sql = 'select r.*, a.nombre, c.cubo
+    $sql = 'select r.*, a.nombre, c.cubo, c.renta
     from rentas r
     inner join arrendatarios a on a.idarrendatario = r.idarrendatario
     inner join cubos c on c.codcubo = r.idcubo
@@ -46,13 +46,19 @@ $r = $conexion -> query($sql);
 $tabla = "";
 $vuelta = 1;
 $suma = 0;
+$suma1 = 0;
+$suma2 = 0;
+$suma3 = 0;
+$suma4 = 0;
+$suma5 = 0;
 if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8">';
+    $tabla = $tabla.'<th width="20px"><b>No.</b></th>';
     $tabla = $tabla.'<th ><b>IDRENTA.</b></th>';
     $tabla = $tabla.'<th ><b>CUBO</b></th>';
     $tabla = $tabla."<th><b>ARRENDATARIO</b></th>";
-    
+    $tabla = $tabla."<th><b>PRECIO</b></th>";
     $tabla = $tabla.'<th ><b>FECHA CONTRATO</b></th>';
     $tabla = $tabla.'<th ><b>FECHA ULTIMO PAGO</b></th>';
     if($tipo == 1){
@@ -67,12 +73,12 @@ if ($r -> num_rows >0){
             $tabla = $tabla.'<tr bgcolor="#FFFFFF">';
         }else{
             $tabla = $tabla.'<tr bgcolor="#D7E9F0">'; 
-        }
-      
+        } 
+        $tabla = $tabla.'<td>'.$vuelta.'</td>';
         $tabla = $tabla.'<td>'.$f['id'].'</td>';
         $tabla = $tabla.'<td>'.$f['cubo'].'</td>';
         $tabla = $tabla.'<td>'.$f['nombre'].'</td>';
-
+        $tabla = $tabla.'<td>'.$f['renta'].'</td>';
         $fechaContrato = date("d/m/Y", strtotime($f['fechacontrato']));
         $tabla = $tabla.'<td>'.$fechaContrato.'</td>';
 
@@ -85,14 +91,19 @@ if ($r -> num_rows >0){
             $tabla = $tabla.'<td>';
             if($f['idtipopago'] == 1){
                 $tabla = $tabla.'EFECTIVO';
+                $suma1 += $suma1;
             }else if($f['idtipopago'] == 2){
                 $tabla = $tabla.'TARJETA';
+                $suma2 += $suma2;
             }else if($f['idtipopago'] == 3){
                 $tabla = $tabla.'TRANSFERENCIA';
+                $suma3 += $suma3;
             }else if($f['idtipopago'] == 4){
                 $tabla = $tabla.'DEPOSITO';
+                $suma4 += $suma4;
             }else if($f['idtipopago'] == 4){
                 $tabla = $tabla.'MIXTO';
+                $suma5 += $suma5;
             }
             $tabla = $tabla.'</td>';
         }
@@ -110,7 +121,12 @@ if($tipo == 1){
                 
             </td>
             <td  bgcolor="#D7E9F0">
-                MONTO TOTAL GENERADO $'.number_format($suma, 2, '.', ',').'
+                MONTO TOTAL GENERADO $'.number_format($suma, 2, '.', ',').'<BR>
+                EFECTIVO $'.number_format($suma1, 2, '.', ',').'<BR>
+                TARJETA $'.number_format($suma2, 2, '.', ',').'<BR>
+                TRANSFERENCIA $'.number_format($suma3, 2, '.', ',').'<BR>
+                DEPOSITO $'.number_format($suma4, 2, '.', ',').'<BR>
+                MIXTO $'.number_format($suma5, 2, '.', ',').'<BR>
             </td>
         </tr>
         
