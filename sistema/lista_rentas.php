@@ -77,6 +77,27 @@
 										<form action="eliminar_renta.php?id=<?php echo $data['id']; ?>" method="post" class="confirmar d-inline">
 											<button class="btn btn-danger" type="submit"><i class='fas fa-trash-alt'></i> </button>
 										</form>
+										
+										<?php
+										//creamos la consulta para quenos traiga los datos del ticket
+										$sql = "SELECT nofactura, fecha,codcliente, totalfactura,idtipoventa,totalventa FROM factura WHERE cancelado = 0 and idtipoventa = 5 and CAST(fecha AS DATE) = '".$data['fechaultimopago']."' and observaciones = ".$data['idcubo']." ";
+										//echo $sql;
+										$query = mysqli_query($conexion, $sql);
+										mysqli_close($conexion);
+										$cli = mysqli_num_rows($query);
+										if ($cli > 0) {
+											while ($dato = mysqli_fetch_array($query)) {
+										?>
+										<button type="button" class="btn btn-primary view_factura" cl="<?php echo $dato['codcliente'];  ?>" f="<?php echo $dato['nofactura']; ?>" p="<?php echo $dato['totalfactura']; ?>" t="<?php echo $dato['idtipoventa']; ?>">Ver</button>
+										<?php
+											}
+										}else{
+											?>
+											<button type="button" class="btn btn-primary view_factura" cl="<?php echo $dato['codcliente'];  ?>" f="<?php echo $dato['nofactura']; ?>" p="<?php echo $dato['totalfactura']; ?>" t="<?php echo $dato['idtipoventa']; ?>">Ver</button>
+
+										<?php
+										}
+										?>
 									</td>
 									<?php } ?>
 								</tr>
