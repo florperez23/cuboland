@@ -11,21 +11,42 @@ if (!empty($_POST)) {
         $cubo = $_POST['cubo'];
         $fecha = $_POST['fecha'];
         $usuario_id = $_SESSION['idUser'];
+
+
+        //OBTENEMOS PRECIO DEL CUBO 
+        $sql = mysqli_query($conexion, "SELECT renta FROM cubos WHERE codcubo = '$cubo'");
+        $result_sql = mysqli_num_rows($sql);
+        if ($result_sql == 0) {
+            $precio = 0;
+        } else {
+            while ($data = mysqli_fetch_array($sql)) {
+                $precio = $data['renta'];
+            }
+        } 
        
         $sql = "INSERT INTO rentas(idarrendatario,idcubo, fechacontrato) values ('$idarr', '$cubo', '$fecha')";
         
         $query_insert = mysqli_query($conexion, $sql);
         if ($query_insert) {
 
-            $sql = "UPDATE cubos SET disponible = 1, idarrendatario = '$idarr' WHERE codcubo = $cubo";
-            $sql_update = mysqli_query($conexion, $sql);
-            if ($sql_update) {
-                historia('Se registro una nueva renta '.$idarr.'_'.$cubo);
-                mensajeicono('Se ha registrado con éxito la nueva renta!', 'lista_rentas.php','','exito');
-            }else{
-                historia('Error al intentar registrar la nueva renta '.$idarr.'_'.$cubo);
-                mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_rentas.php','','error'); 
+            $sql = "INSERT INTO historial_rentas(id_cubo,fecha_renta, precio) values ('$cubo', '$fecha', '$precio')";
+        
+            $query_insert = mysqli_query($conexion, $sql);
+            if ($query_insert) {
+                $sql = "UPDATE cubos SET disponible = 1, idarrendatario = '$idarr' WHERE codcubo = $cubo";
+                $sql_update = mysqli_query($conexion, $sql);
+                if ($sql_update) {
+    
+                    historia('Se registro una nueva renta '.$idarr.'_'.$cubo);
+                    mensajeicono('Se ha registrado con éxito la nueva renta!', 'lista_rentas.php','','exito');
+                }else{
+                    historia('Error al intentar registrar la nueva renta '.$idarr.'_'.$cubo);
+                    mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_rentas.php','','error'); 
+                }
+
             }
+
+           
         } else {
             historia('Error al intentar registrar la nueva renta '.$idarr.'_'.$cubo);
             mensajeicono('Hubo un error, favor de intentarlo de nuevo.', 'lista_rentas.php','','error');   

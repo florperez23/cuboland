@@ -7,6 +7,7 @@
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-800">Informacion de los rentas</h1>
 		<a href="registro_renta.php" class="btn btn-primary">Nuevo</a>
+		<a href="historial_rentas.php" class="btn btn-primary">Historial</a>
 	</div>
 
 	<div id="respuesta">
