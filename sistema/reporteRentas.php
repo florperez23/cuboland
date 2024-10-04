@@ -91,19 +91,19 @@ if ($r -> num_rows >0){
             $tabla = $tabla.'<td>';
             if($f['idtipopago'] == 1){
                 $tabla = $tabla.'EFECTIVO';
-                $suma1 += $suma1;
+                $suma1 = $suma1 += $f['totalfactura'];
             }else if($f['idtipopago'] == 2){
                 $tabla = $tabla.'TARJETA';
-                $suma2 += $suma2;
+                $suma2 = $suma2 += $f['totalfactura'];
             }else if($f['idtipopago'] == 3){
                 $tabla = $tabla.'TRANSFERENCIA';
-                $suma3 += $suma3;
+                $suma3 = $suma3 += $f['totalfactura'];
             }else if($f['idtipopago'] == 4){
                 $tabla = $tabla.'DEPOSITO';
-                $suma4 += $suma4;
+                $suma4 = $suma4 += $f['totalfactura'];
             }else if($f['idtipopago'] == 4){
                 $tabla = $tabla.'MIXTO';
-                $suma5 += $suma5;
+                $suma5 = $suma5 += $f['totalfactura'];
             }
             $tabla = $tabla.'</td>';
         }
