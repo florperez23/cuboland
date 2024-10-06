@@ -58,10 +58,14 @@
 				<input type="submit" value="Generar Reporte" class="btn btn-primary">
 			</div>
 		</div>
+		
     </div>
-
+	
     </form>	
-    </div>
+
+
+	
+   
 </div>
 
 

@@ -68,6 +68,28 @@ $tabla = $tabla.'<br><br><br><br><br>
     
 </table>';
 
+//GUARDAMOS EL HISTORIAL DE LOS PRODUCTOS QUE ESTAN EN TEMPORAL EN EL HISTORIAL
+
+$sq = "INSERT INTO historial_bajas (codproducto, cantidad, precio_venta,codcubo,descripcion,fecha)
+SELECT
+dts.codproducto,
+dts.cantidad,
+dts.precio_venta,
+dts.codcubo,
+p.descripcion, 
+now()
+FROM
+detalle_temp_salidas dts
+inner join producto p on p.codproducto = dts.codproducto
+LEFT OUTER JOIN rentas r on r.idcubo = p.codcubo
+LEFT OUTER JOIN arrendatarios a on a.idarrendatario = r.idarrendatario";
+$query1 = mysqli_query($conexion, $sq);
+$result1 = mysqli_num_rows($query1);
+
+if ($result1 > 0) {
+}
+
+
 //SI ENTRO AQUI QUIERE DECIR QUE YA SE HARÁ LA SALIDA, ES HORA DE ACTUALIZAR EL SCTOCK DEL INVENTARIO
 
    $sql = "SELECT * FROM detalle_temp_salidas WHERE token_user = '$token' ";

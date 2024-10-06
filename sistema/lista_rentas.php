@@ -82,21 +82,17 @@
 										//creamos la consulta para quenos traiga los datos del ticket
 										$sql = "SELECT nofactura, fecha,codcliente, totalfactura,idtipoventa,totalventa FROM factura WHERE cancelado = 0 and idtipoventa = 5 and CAST(fecha AS DATE) = '".$data['fechaultimopago']."' and observaciones = ".$data['idcubo']." ";
 										//echo $sql;
-										$query = mysqli_query($conexion, $sql);
-										mysqli_close($conexion);
-										$cli = mysqli_num_rows($query);
+										$query1 = mysqli_query($conexion, $sql);
+										//mysqli_close($conexion);
+										$cli = mysqli_num_rows($query1);
 										if ($cli > 0) {
-											while ($dato = mysqli_fetch_array($query)) {
+											while ($dato = mysqli_fetch_array($query1)) {
 										?>
 										<button type="button" class="btn btn-primary view_factura" cl="<?php echo $dato['codcliente'];  ?>" f="<?php echo $dato['nofactura']; ?>" p="<?php echo $dato['totalfactura']; ?>" t="<?php echo $dato['idtipoventa']; ?>">Ver</button>
 										<?php
 											}
-										}else{
-											?>
-											<button type="button" class="btn btn-primary view_factura" cl="<?php echo $dato['codcliente'];  ?>" f="<?php echo $dato['nofactura']; ?>" p="<?php echo $dato['totalfactura']; ?>" t="<?php echo $dato['idtipoventa']; ?>">Ver</button>
-
-										<?php
 										}
+				
 										?>
 									</td>
 									<?php } ?>

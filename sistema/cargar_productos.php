@@ -101,9 +101,22 @@
 			</div>
 		</div>
     </div>
-
     </form>	
     </div>
+
+	<!-- Content Row -->
+    <div class="row">
+        <!-- Elementos para crear el reporte -->
+        <form action="historial_bajas.php" method="post">
+			<div class="col" style='align:right;'>
+				<div class="d-sm-flex align-items-center justify-content-between mb-4">
+				
+				<input type='hidden' name="codcubo" value='<?php echo $codcubo ?>'>
+					<input type="submit" value="Historial Bajas" class="btn btn-primary">
+				</div>
+			</div>
+			</form>	
+	</div>
 </div>
 
 <form action="eliminar_producto.php" method="post" class="confirmar d-inline">
