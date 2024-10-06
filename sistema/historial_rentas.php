@@ -3,6 +3,8 @@
 $anio = '';
 if (isset($_POST['ano'])) { // <= true
 	$anio = $_POST['ano'];
+}else{
+	$anio = date("Y");
 }
 ?>
 
@@ -86,47 +88,74 @@ if (isset($_POST['ano'])) { // <= true
 
 						$query = mysqli_query($conexion, $sql);
 						//echo $sql;
+
+						
 					
-						if (!empty($result) AND  mysqli_num_rows($query) > 0) { 
+						if (!empty($query) AND  mysqli_num_rows($query) > 0) { 
+							$myarr = '';
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
 									<td><?php echo $data['mes']; ?></td>
 									<td><?php echo $data['num']; ?></td>
 									<td><?php echo $data['total']; ?></td>
-									
-								
 								</tr>
-						<?php }
-						} ?>
+								
+						<?php 
+
+								if ($data['total'] == "") {
+									$myarr = $myarr.'0,';
+								}else{
+									$myarr = $myarr.$data['total'].',';
+								}
+								
+							}
+						} 
+						$myarr = substr($myarr, 0, -1);
+						
+						?>
+						
 					</tbody>
 
 				</table>
+				
 			</div>
-
 		</div>
+		
 	</div>
 
 	</div>
+	<canvas id="grafica"></canvas>
+	
 
+	</div>
 
 </div>
 <!-- /.container-fluid -->
 <script>
-  	function filtro(){
-		var tipo = $('#tipo').val();
 
-		$.ajax({
-			url: "cargar_rentas.php",
-			type: "post",
-			data: {tipo: tipo},
-			success: function(data){
 
-				$('#respuesta').html(data+"\n");
-			}
-		});
-	}
-    
+/*var arr = $("#totales").val();*/
 
-  </script>
+const labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+
+const graph = document.querySelector("#grafica");
+
+const data = {
+    labels: labels,
+    datasets: [{
+        label:"Historial de Rentas",
+        data: [<?php echo $myarr ?>],
+        backgroundColor: 'rgba(9, 129, 176, 0.2)'
+    }]
+};
+
+const config = {
+    type: 'bar',
+    data: data,
+};
+
+new Chart(graph, config);
+
+</script>
 
 <?php include_once "includes/footer.php"; ?>
