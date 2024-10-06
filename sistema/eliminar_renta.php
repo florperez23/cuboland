@@ -11,6 +11,16 @@ if (!empty($_GET['id'])) {
         $sql = mysqli_query($conexion, $q2);
         if ($sql) {
 
+
+            //ELIMINAMOS TAMBIEN LAS BAJAS QUE HUBO DURANTE SU ESTANCIA
+            $q3 = "DELETE FROM historial_bajas WHERE codcubo = $idcubo";
+            //echo $q3;
+            $sql1 = mysqli_query($conexion, $q3);
+            if ($sql1) {
+                
+            }
+
+
             //SI ELIMINA UNA RENTA QUIERE DECIR QUE YA SE VA, ASI QUE CREAMOS UN PDF DE SALIDA DE PRODUCTOS CON FIRMA
             echo "<div>";
                 echo "<iframe id='frameSalida' name='frameSalida' src='salida_definitiva.php?idcubo=".$idcubo."&idrenta=".$id."' style='width:100%; height:800px; border:0; border:none;'>Tu navegador no soporta iframes...</iframe>";
