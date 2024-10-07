@@ -90,9 +90,9 @@ if (isset($_POST['ano'])) { // <= true
 						//echo $sql;
 
 						
-					
+						$myarr = '';
 						if (!empty($query) AND  mysqli_num_rows($query) > 0) { 
-							$myarr = '';
+							
 							while ($data = mysqli_fetch_assoc($query)) { ?>
 								<tr>
 									<td><?php echo $data['mes']; ?></td>
