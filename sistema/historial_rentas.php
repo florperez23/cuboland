@@ -57,34 +57,81 @@ if (isset($_POST['ano'])) { // <= true
 							<th>Mes</th>
 							<th>No. Cubos Rentdos</th>
 							<th>Total</th>
+							<th>Acciones</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
 						include "../conexion.php";
-						$sql = "SELECT 'ENERO' as mes, count(*) as num, sum(precio) as total FROM historial_rentas WHERE YEAR(fecha_renta) = '2024' and month(fecha_renta) = 1
+						$sql = "SELECT 'ENERO' as mes, count(*) as num, sum(f.totalfactura) as total, 1 as nmes FROM rentas r
+						LEFT JOIN cubos on cubos.codcubo = r.idcubo
+						LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
+						WHERE f.cancelado = 0 and r.cancelado = 0 and YEAR(r.fechaultimopago) = '$anio' and month(r.fechaultimopago) = 1
+						UNION 
+						SELECT 'FEBRERO' as mes, count(*) as num, sum(f.totalfactura) as total, 2 as nmes FROM rentas r
+						LEFT JOIN cubos on cubos.codcubo = r.idcubo
+						LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
+						WHERE f.cancelado = 0 and r.cancelado = 0 and YEAR(r.fechaultimopago) = '$anio' and month(r.fechaultimopago) = 2
+
+						UNION 
+						SELECT 'MARZO' as mes, count(*) as num, sum(f.totalfactura) as total, 3 as nmes FROM rentas r
+						LEFT JOIN cubos on cubos.codcubo = r.idcubo
+						LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
+						WHERE f.cancelado = 0 and r.cancelado = 0 and YEAR(r.fechaultimopago) = '$anio' and month(r.fechaultimopago) = 3
+
 						UNION
-						SELECT 'FEBRERO' as mes, count(*) as num, sum(precio) as total  FROM historial_rentas WHERE YEAR(fecha_renta) = '$anio' and month(fecha_renta) = 2
+						SELECT 'ABRIL' as mes, count(*) as num, sum(f.totalfactura) as total, 4 as nmes FROM rentas r
+						LEFT JOIN cubos on cubos.codcubo = r.idcubo
+						LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
+						WHERE f.cancelado = 0 and r.cancelado = 0 and YEAR(r.fechaultimopago) = '$anio' and month(r.fechaultimopago) = 4
+
 						UNION
-						SELECT 'MARZO' as mes, count(*) as num, sum(precio) as total FROM historial_rentas WHERE YEAR(fecha_renta) = '$anio' and month(fecha_renta) = 3
+						SELECT 'MAYO' as mes, count(*) as num, sum(f.totalfactura) as total, 5 as nmes FROM rentas r
+						LEFT JOIN cubos on cubos.codcubo = r.idcubo
+						LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
+						WHERE f.cancelado = 0 and r.cancelado = 0 and YEAR(r.fechaultimopago) = '$anio' and month(r.fechaultimopago) = 5
+
 						UNION
-						SELECT 'ABRIL' as mes, count(*) as num, sum(precio) as total FROM historial_rentas WHERE YEAR(fecha_renta) = '$anio' and month(fecha_renta) = 4
+						SELECT 'JUNIO' as mes, count(*) as num, sum(f.totalfactura) as total, 6 as nmes FROM rentas r
+						LEFT JOIN cubos on cubos.codcubo = r.idcubo
+						LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
+						WHERE f.cancelado = 0 and r.cancelado = 0 and YEAR(r.fechaultimopago) = '$anio' and month(r.fechaultimopago) = 6
+
 						UNION
-						SELECT 'MAYO' as mes, count(*) as num, sum(precio) as total  FROM historial_rentas WHERE YEAR(fecha_renta) = '$anio' and month(fecha_renta) = 5
+						SELECT 'JULIO' as mes, count(*) as num, sum(f.totalfactura) as total, 7 as nmes FROM rentas r
+						LEFT JOIN cubos on cubos.codcubo = r.idcubo
+						LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
+						WHERE f.cancelado = 0 and r.cancelado = 0 and YEAR(r.fechaultimopago) = '$anio' and month(r.fechaultimopago) = 7
+
 						UNION
-						SELECT 'JUNIO' as mes, count(*) as num, sum(precio) as total FROM historial_rentas WHERE YEAR(fecha_renta) = '$anio' and month(fecha_renta) = 6
+						SELECT 'AGOSTO' as mes, count(*) as num, sum(f.totalfactura) as total, 8 as nmes FROM rentas r
+						LEFT JOIN cubos on cubos.codcubo = r.idcubo
+						LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
+						WHERE f.cancelado = 0 and r.cancelado = 0 and YEAR(r.fechaultimopago) = '$anio' and month(r.fechaultimopago) = 8
+
 						UNION
-						SELECT 'JULIO' as mes, count(*) as num, sum(precio) as total  FROM historial_rentas WHERE YEAR(fecha_renta) = '$anio' and month(fecha_renta) = 7
+						SELECT 'SEPTIEMBRE' as mes, count(*) as num, sum(f.totalfactura) as total, 9 as nmes FROM rentas r
+						LEFT JOIN cubos on cubos.codcubo = r.idcubo
+						LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
+						WHERE f.cancelado = 0 and r.cancelado = 0 and YEAR(r.fechaultimopago) = '$anio' and month(r.fechaultimopago) = 9
+
 						UNION
-						SELECT 'AGOSTO' as mes, count(*) as num, sum(precio) as total FROM historial_rentas WHERE YEAR(fecha_renta) = '$anio' and month(fecha_renta) = 8
+						SELECT 'OCTUBRE' as mes, count(*) as num, sum(f.totalfactura) as total, 10 as nmes FROM rentas r
+						LEFT JOIN cubos on cubos.codcubo = r.idcubo
+						LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
+						WHERE f.cancelado = 0 and r.cancelado = 0 and YEAR(r.fechaultimopago) = '$anio' and month(r.fechaultimopago) = 10
+
 						UNION
-						SELECT 'SEPTIEMBRE' as mes, count(*) as num, sum(precio) as total  FROM historial_rentas WHERE YEAR(fecha_renta) = '$anio' and month(fecha_renta) = 9
+						SELECT 'NOVIEMBRE' as mes, count(*) as num, sum(f.totalfactura) as total, 11 as nmes FROM rentas r
+						LEFT JOIN cubos on cubos.codcubo = r.idcubo
+						LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
+						WHERE f.cancelado = 0 and r.cancelado = 0 and YEAR(r.fechaultimopago) = '$anio' and month(r.fechaultimopago) = 11
+
 						UNION
-						SELECT 'OCTUBRE' as mes, count(*) as num, sum(precio) as total  FROM historial_rentas WHERE YEAR(fecha_renta) = '$anio' and month(fecha_renta) = 10
-						UNION
-						SELECT 'NOVIEMBRE' as mes, count(*) as num, sum(precio) as total  FROM historial_rentas WHERE YEAR(fecha_renta) = '$anio' and month(fecha_renta) = 11
-						UNION
-						SELECT 'DICIEMBRE' as mes, count(*) as num, sum(precio) as total  FROM historial_rentas WHERE YEAR(fecha_renta) = '$anio' and month(fecha_renta) = 12 ";
+						SELECT 'DICIEMBRE' as mes, count(*) as num, sum(f.totalfactura) as total, 12 as nmes FROM rentas r
+						LEFT JOIN cubos on cubos.codcubo = r.idcubo
+						LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
+						WHERE f.cancelado = 0 and r.cancelado = 0 and YEAR(r.fechaultimopago) = '$anio' and month(r.fechaultimopago) = 12; ";
 
 						$query = mysqli_query($conexion, $sql);
 						//echo $sql;
@@ -97,7 +144,14 @@ if (isset($_POST['ano'])) { // <= true
 								<tr>
 									<td><?php echo $data['mes']; ?></td>
 									<td><?php echo $data['num']; ?></td>
-									<td><?php echo $data['total']; ?></td>
+									<td><?php echo '$'.number_format($data['total'], 2, '.', ',') ?></td>
+									<td><form action="reporteRentasHistorial.php" method="post">
+										<input type="hidden" id="mes" name="mes" value="<?php echo $data['nmes'];  ?>" >
+										<input type="hidden" id="anio" name="anio" value="<?php echo $anio; ?>" >
+										<button type="submit" class="btn btn-primary " >Ver</button>
+										</form>	
+									</td>
+</td>
 								</tr>
 								
 						<?php 
