@@ -23,7 +23,7 @@ if($tipo == 0){
     $sql = 'SELECT
 	r.*,
 	a.nombre,
-	c.cubo, c.renta, f.totalfactura, f.idtipopago
+	c.cubo, c.renta, f.totalfactura, f.idtipopago, f.efectivo, f.tarjeta, f.transferencia, f.deposito
 FROM
 	rentas r
 	LEFT JOIN arrendatarios a ON a.idarrendatario = r.idarrendatario
@@ -51,6 +51,11 @@ $suma2 = 0;
 $suma3 = 0;
 $suma4 = 0;
 $suma5 = 0;
+
+$mix1 = 0;
+$mix2 = 0;
+$mix3 = 0;
+$mix4 = 0;
 if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8">';
@@ -84,6 +89,7 @@ if ($r -> num_rows >0){
 
         $fechaultimopago = date("d/m/Y", strtotime($f['fechaultimopago']));
         $tabla = $tabla.'<td>'.$fechaultimopago.'</td>';
+       
         if($tipo == 1){
             $tabla = $tabla.'<td> $'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
             $suma = $suma += $f['totalfactura'];
@@ -101,11 +107,28 @@ if ($r -> num_rows >0){
             }else if($f['idtipopago'] == 4){
                 $tabla = $tabla.'DEPOSITO';
                 $suma4 = $suma4 += $f['totalfactura'];
-            }else if($f['idtipopago'] == 4){
+            }else if($f['idtipopago'] == 5){
                 $tabla = $tabla.'MIXTO';
                 $suma5 = $suma5 += $f['totalfactura'];
+
+                 //HACER RESUMEN DE LOS MIXTOS
+                 if ($f['efectivo'] <> 0){
+                    $mix1 = $mix1 += $f['efectivo'];
+                }
+                if ($f['tarjeta'] <> 0){
+                    $mix2 = $mix2 += $f['tarjeta'];
+                }
+                if ($f['transferencia'] <> 0){
+                    $mix3 = $mix3 += $f['transferencia'];
+                }
+                if ($f['deposito'] <> 0){
+                    $mix4 = $mix4 += $f['deposito'];
+                }
             }
             $tabla = $tabla.'</td>';
+        }else{
+            $suma = $suma += $f['renta'];
+           
         }
         $tabla = $tabla."</tr>";  
         $vuelta++;               
@@ -127,6 +150,46 @@ if($tipo == 1){
                 TRANSFERENCIA $'.number_format($suma3, 2, '.', ',').'<BR>
                 DEPOSITO $'.number_format($suma4, 2, '.', ',').'<BR>
                 MIXTO $'.number_format($suma5, 2, '.', ',').'<BR>
+            </td>
+            <td>
+                
+            </td>
+        </tr>
+        
+    </table>';
+
+    $tabla = $tabla.'<br><br><br>
+    <P  >DESGLOSE DE PAGOS MIXTOS:</P>
+    <table  bgcolor="#D7E9F0" >
+        
+        <tr>
+            <th>EFECTIVO</th>
+            <th>TARJETA</th>
+            <th>TRANSFERENCIA</th> 
+            <th>DEPOSITO</th>
+        </tr>
+        <tr>
+            <td>$'.number_format($mix1, 2, '.', ',').'</td>
+            <td>$'.number_format($mix2, 2, '.', ',').'</td>
+            <td>$'.number_format($mix3, 2, '.', ',').'</td>
+            <td>$'.number_format($mix4, 2, '.', ',').'</td>
+        </tr>
+
+       
+    </table>
+    ';
+}else{
+    $tabla = $tabla.'<br><br><br>
+    <table  align = "center" >
+        <tr>
+            <td>
+                
+            </td>
+            <td  bgcolor="#D7E9F0">
+                SALDO PENDIENTE EN RENTAS $'.number_format($suma, 2, '.', ',').'<BR>
+            </td>
+            <td>
+                
             </td>
         </tr>
         

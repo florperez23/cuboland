@@ -47,7 +47,7 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     echo "caso 2";
     $sql = 'select *,f.fecha as fecha1, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
-    ,GROUP_CONCAT(df.codproducto) AS codproducto,GROUP_CONCAT(p.descripcion) AS concepto
+    ,GROUP_CONCAT(df.codproducto) AS codproducto,GROUP_CONCAT(p.descripcion) AS concepto,f.efectivo, f.tarjeta, f.transferencia, f.deposito
     from factura f
     inner join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
@@ -87,7 +87,7 @@ if($tipopago == 0 and $tipoventa == 0 and $desde <> '' and $hasta <> ''){
     echo "caso 4";
     $sql = 'select *,f.fecha as fecha1, f.subtotal, u.usuario as nomusuario,	if(idtipoventa = 1, "CONTADO",if(idtipoventa = 2, "CREDITO", if(idtipoventa = 3, "DEVOLUCION", "GASTO"))) as tipoventa,
     if(idtipopago = 1, "EFECTIVO", if(idtipopago=2, "TARJETA",if(idtipopago=3, "TRANSFERENCIA",if(idtipopago=4,"DEPOSITO","MIXTO")))) as tipopago
-    ,GROUP_CONCAT(df.codproducto) AS codproducto,GROUP_CONCAT(p.descripcion) AS concepto
+    ,GROUP_CONCAT(df.codproducto) AS codproducto,GROUP_CONCAT(p.descripcion) AS concepto, f.efectivo, f.tarjeta, f.transferencia, f.deposito
     from factura f
     left join detallefactura df on df.nofactura = f.nofactura 
     inner join usuario u on f.usuario = u.idusuario
@@ -204,6 +204,10 @@ echo $sql;
 $r = $conexion -> query($sql);
 $tabla = "";
 $vuelta = 1;
+$mix1 = 0;
+$mix2 = 0;
+$mix3 = 0;
+$mix4 = 0;
 if ($r -> num_rows >0){
     $tabla = $tabla.'<table  align = "center">';
     $tabla = $tabla.'<tr border="1" bgcolor="#95C5D8">';
@@ -264,6 +268,8 @@ if ($r -> num_rows >0){
                      $suma = $suma += $f['totalfactura'];
                     $tabla = $tabla.'<td>$'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
                 }
+
+                
                 
             }else{
                 $suma = $suma += $f['totalfactura'];
@@ -283,6 +289,19 @@ if ($r -> num_rows >0){
                 $tabla = $tabla.'<td>$'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
             }
 
+             //HACER RESUMEN DE LOS MIXTOS
+            if ($f['efectivo'] <> 0){
+                $mix1 = $mix1 += $f['efectivo'];
+            }
+            if ($f['tarjeta'] <> 0){
+                $mix2 = $mix2 += $f['tarjeta'];
+            }
+            if ($f['transferencia'] <> 0){
+                $mix3 = $mix3 += $f['transferencia'];
+            }
+            if ($f['deposito'] <> 0){
+                $mix4 = $mix4 += $f['deposito'];
+            }
          
         }
         
@@ -307,6 +326,29 @@ if ($r -> num_rows >0){
         </tr>
         
     </table>';
+
+    if($tipopago == 5){
+        $tabla = $tabla.'<br><br><br>
+        <P  >DESGLOSE DE PAGOS MIXTOS:</P>
+        <table  bgcolor="#D7E9F0" >
+            
+            <tr>
+                <th>EFECTIVO</th>
+                <th>TARJETA</th>
+                <th>TRANSFERENCIA</th> 
+                <th>DEPOSITO</th>
+            </tr>
+            <tr>
+                <td>$'.number_format($mix1, 2, '.', ',').'</td>
+                <td>$'.number_format($mix2, 2, '.', ',').'</td>
+                <td>$'.number_format($mix3, 2, '.', ',').'</td>
+                <td>$'.number_format($mix4, 2, '.', ',').'</td>
+            </tr>
+    
+           
+        </table>
+        ';
+    }
 }else{
     $tabla = $tabla.'<br><br><br>
     <table  align = "center" >
