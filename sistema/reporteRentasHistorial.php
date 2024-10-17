@@ -12,7 +12,7 @@ $anio = $_POST['anio'];
     $sql = 'SELECT
 	r.*,
 	a.nombre,
-	c.cubo, c.renta, f.totalfactura, f.idtipopago, f.efectivo, f.tarjeta, f.transferencia, f.deposito
+	c.cubo, c.renta, f.totalfactura, f.totalventa, f.idtipopago, f.efectivo, f.tarjeta, f.transferencia, f.deposito
 FROM
 	rentas r
 	LEFT JOIN arrendatarios a ON a.idarrendatario = r.idarrendatario
@@ -72,8 +72,13 @@ if ($r -> num_rows >0){
         $fechaultimopago = date("d/m/Y", strtotime($f['fechaultimopago']));
         $tabla = $tabla.'<td>'.$fechaultimopago.'</td>';
       
-            $tabla = $tabla.'<td> $'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
-            $suma = $suma += $f['totalfactura'];
+            if($f['idtipopago'] == 5){
+                $tabla = $tabla.'<td> $'.number_format($f['totalventa'], 2, '.', ',').'</td>';
+                $suma = $suma += $f['totalventa'];
+            }else{
+                $tabla = $tabla.'<td> $'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
+                $suma = $suma += $f['totalfactura'];
+            }
             echo "tipo pago".$f['idtipopago'].'<br>';
             $tabla = $tabla.'<td>';
             if($f['idtipopago'] == 1){
@@ -90,7 +95,7 @@ if ($r -> num_rows >0){
                 $suma4 = $suma4 += $f['totalfactura'];
             }else if($f['idtipopago'] == 5){
                 $tabla = $tabla.'MIXTO';
-                $suma5 = $suma5 += $f['totalfactura'];
+                $suma5 = $suma5 += $f['totalventa'];
 
                 //HACER RESUMEN DE LOS MIXTOS
                 if ($f['efectivo'] <> 0){
