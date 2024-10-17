@@ -138,18 +138,26 @@ if ($r -> num_rows >0){
 
 if($tipo == 1){
     $tabla = $tabla.'<br><br><br>
-    <table  align = "center" >
+    <table   >
         <tr>
             <td>
                 
             </td>
-            <td  bgcolor="#D7E9F0">
-                MONTO TOTAL GENERADO $'.number_format($suma, 2, '.', ',').'<BR>
-                EFECTIVO $'.number_format($suma1, 2, '.', ',').'<BR>
-                TARJETA $'.number_format($suma2, 2, '.', ',').'<BR>
-                TRANSFERENCIA $'.number_format($suma3, 2, '.', ',').'<BR>
-                DEPOSITO $'.number_format($suma4, 2, '.', ',').'<BR>
-                MIXTO $'.number_format($suma5, 2, '.', ',').'<BR>
+            <td  align = "center" bgcolor="#D7E9F0">
+                MONTO TOTAL GENERADO <BR>
+                EFECTIVO  <BR>
+                TARJETA  <BR>
+                TRANSFERENCIA <BR>
+                DEPOSITO   <BR>
+                MIXTO  <BR>
+            </td>
+            <td align = "right"  bgcolor="#D7E9F0">
+                $'.number_format($suma, 2, '.', ',').'<BR>
+                $'.number_format($suma1, 2, '.', ',').'<BR>
+                $'.number_format($suma2, 2, '.', ',').'<BR>
+                $'.number_format($suma3, 2, '.', ',').'<BR>
+                $'.number_format($suma4, 2, '.', ',').'<BR>
+                $'.number_format($suma5, 2, '.', ',').'<BR>
             </td>
             <td>
                 
