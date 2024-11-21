@@ -701,9 +701,17 @@ function total_rentas($desde, $hasta){
 	include "../conexion.php";
 	
 //traer total rentas
-$sql = 'select sum(totalfactura) as totalrentas
+/*$sql = 'select sum(totalfactura) as totalrentas
 from factura f
-WHERE f.idtipoventa = 5 and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and cancelado = 0';	
+WHERE f.idtipoventa = 5 and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and cancelado = 0';	*/
+
+$sql = 'SELECT sum( f.totalventa) as totalrentas
+FROM rentas r
+LEFT JOIN arrendatarios a ON a.idarrendatario = r.idarrendatario
+LEFT JOIN cubos c ON c.codcubo = r.idcubo 
+LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
+WHERE f.cancelado = 0 and r.cancelado = 0
+AND r.fechaultimopago BETWEEN  "'.$desde.'" and "'.$hasta.'"' ;
 	//echo $sql;		
 
 	$rc= $conexion -> query($sql);
