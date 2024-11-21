@@ -73,7 +73,8 @@ if ($r -> num_rows >0){
    
     $tabla = $tabla."</tr>";
     while($f = $r -> fetch_array())
-    {                  
+    {            
+              
         if (($vuelta % 2) == 0) {
             $tabla = $tabla.'<tr bgcolor="#FFFFFF">';
         }else{

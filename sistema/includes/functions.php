@@ -705,7 +705,7 @@ function total_rentas($desde, $hasta){
 from factura f
 WHERE f.idtipoventa = 5 and f.fecha BETWEEN "'.$desde.'" and "'.$hasta.'" and cancelado = 0';	*/
 
-$sql = 'SELECT sum( f.totalventa) as totalrentas
+$sql = 'SELECT SUM(case when  idtipopago = 5 then  f.totalventa else  f.totalfactura end ) as totalrentas
 FROM rentas r
 LEFT JOIN arrendatarios a ON a.idarrendatario = r.idarrendatario
 LEFT JOIN cubos c ON c.codcubo = r.idcubo 
