@@ -235,6 +235,11 @@ if ($r -> num_rows >0){
        // $tabla = $tabla.'<td>'.$f['fecha1'].'</td>';
         $tabla = $tabla.'<td>'.$f['nomusuario'].'</td>';
 	      // echo $suma.'<br>';
+        if ($f['idtipoventa']==2){
+            $suma = $suma += $f['totalfactura'];
+            $tabla = $tabla.'<td>$'.number_format($f['totalfactura'], 2, '.', ',').'</td>';
+        }else{
+
         if($tipopago <> 5){
             //if($f['efectivo']<> 0){
             if($f['idtipopago'] == 1){
@@ -304,6 +309,7 @@ if ($r -> num_rows >0){
             }
          
         }
+    }
         
         $tabla = $tabla.'<td>'.$f['tipopago'].'</td>';
         $tabla = $tabla.'<td>'.$f['tipoventa'].'</td>';

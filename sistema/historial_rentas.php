@@ -63,10 +63,11 @@ if (isset($_POST['ano'])) { // <= true
 					<tbody>
 						<?php
 						include "../conexion.php";
-						$sql = "SELECT 'ENERO' as mes, count(*) as num, sum(f.totalfactura) as total, 1 as nmes FROM rentas r
+						/*$sql = "SELECT 'ENERO' as mes, count(*) as num, sum(f.totalfactura) as total, 1 as nmes FROM rentas r
 						LEFT JOIN cubos on cubos.codcubo = r.idcubo
 						LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
 						WHERE f.cancelado = 0 and r.cancelado = 0 and YEAR(r.fechaultimopago) = '$anio' and month(r.fechaultimopago) = 1
+						
 						UNION 
 						SELECT 'FEBRERO' as mes, count(*) as num, sum(f.totalfactura) as total, 2 as nmes FROM rentas r
 						LEFT JOIN cubos on cubos.codcubo = r.idcubo
@@ -131,7 +132,71 @@ if (isset($_POST['ano'])) { // <= true
 						SELECT 'DICIEMBRE' as mes, count(*) as num, sum(f.totalfactura) as total, 12 as nmes FROM rentas r
 						LEFT JOIN cubos on cubos.codcubo = r.idcubo
 						LEFT JOIN factura f on f.observaciones = r.idcubo  and date(f.fecha) = r.fechaultimopago
-						WHERE f.cancelado = 0 and r.cancelado = 0 and YEAR(r.fechaultimopago) = '$anio' and month(r.fechaultimopago) = 12; ";
+						WHERE f.cancelado = 0 and r.cancelado = 0 and YEAR(r.fechaultimopago) = '$anio' and month(r.fechaultimopago) = 12; ";*/
+
+						$sql = "
+						select 'ENERO' as mes, count(*) as num, sum(f.totalfactura) as total, 1 as nmes  
+						from factura f
+						left join rentas r on f.observaciones = r.idcubo
+						WHERE f.idtipoventa = 5 and f.cancelado = 0 and YEAR(F.fecha) = '$anio' and month(f.fecha) = 1
+						UNION 
+						SELECT 'FEBRERO' as mes, count(*) as num, sum(f.totalfactura) as total, 2 as nmes 
+						from factura f
+						left join rentas r on f.observaciones = r.idcubo
+						WHERE f.idtipoventa = 5 and f.cancelado = 0 and YEAR(F.fecha) = '$anio' and month(f.fecha) = 2
+
+						UNION 
+						SELECT 'MARZO' as mes, count(*) as num, sum(f.totalfactura) as total, 3 as nmes
+						from factura f
+						left join rentas r on f.observaciones = r.idcubo
+						WHERE f.idtipoventa = 5 and f.cancelado = 0 and YEAR(F.fecha) = '$anio' and month(f.fecha) = 3
+
+						UNION
+						SELECT 'ABRIL' as mes, count(*) as num, sum(f.totalfactura) as total, 4 as nmes from factura f
+						left join rentas r on f.observaciones = r.idcubo
+						WHERE f.idtipoventa = 5 and f.cancelado = 0 and YEAR(F.fecha) = '$anio' and month(f.fecha) = 4
+
+						UNION
+						SELECT 'MAYO' as mes, count(*) as num, sum(f.totalfactura) as total, 5 as nmes from factura f
+						left join rentas r on f.observaciones = r.idcubo
+						WHERE f.idtipoventa = 5 and f.cancelado = 0 and YEAR(F.fecha) = '$anio' and month(f.fecha) = 5
+
+						UNION
+						SELECT 'JUNIO' as mes, count(*) as num, sum(f.totalfactura) as total, 6 as nmes from factura f
+						left join rentas r on f.observaciones = r.idcubo
+						WHERE f.idtipoventa = 5 and f.cancelado = 0 and YEAR(F.fecha) = '$anio' and month(f.fecha) = 6
+
+						UNION
+						SELECT 'JULIO' as mes, count(*) as num, sum(f.totalfactura) as total, 7 as nmes from factura f
+						left join rentas r on f.observaciones = r.idcubo
+						WHERE f.idtipoventa = 5 and f.cancelado = 0 and YEAR(F.fecha) = '$anio' and month(f.fecha) = 7
+
+						UNION
+						SELECT 'AGOSTO' as mes, count(*) as num, sum(f.totalfactura) as total, 8 as nmes from factura f
+						left join rentas r on f.observaciones = r.idcubo
+						WHERE f.idtipoventa = 5 and f.cancelado = 0 and YEAR(F.fecha) = '$anio' and month(f.fecha) = 8
+
+						UNION
+						SELECT 'SEPTIEMBRE' as mes, count(*) as num, sum(f.totalfactura) as total, 9 as nmes from factura f
+						left join rentas r on f.observaciones = r.idcubo
+						WHERE f.idtipoventa = 5 and f.cancelado = 0 and YEAR(F.fecha) = '$anio' and month(f.fecha) = 9
+
+						UNION
+						SELECT 'OCTUBRE' as mes, count(*) as num, sum(f.totalfactura) as total, 10 as nmes from factura f
+						left join rentas r on f.observaciones = r.idcubo
+						WHERE f.idtipoventa = 5 and f.cancelado = 0 and YEAR(F.fecha) = '$anio' and month(f.fecha) = 10
+
+						UNION
+						SELECT 'NOVIEMBRE' as mes, count(*) as num, sum(f.totalfactura) as total, 11 as nmes from factura f
+						left join rentas r on f.observaciones = r.idcubo
+						WHERE f.idtipoventa = 5 and f.cancelado = 0 and YEAR(F.fecha) = '$anio' and month(f.fecha) = 11
+
+						UNION
+						SELECT 'DICIEMBRE' as mes, count(*) as num, sum(f.totalfactura) as total, 12 as nmes from factura f
+						left join rentas r on f.observaciones = r.idcubo
+						WHERE f.idtipoventa = 5 and f.cancelado = 0 and YEAR(F.fecha) = '$anio' and month(f.fecha) = 12;
+
+						";
 
 						$query = mysqli_query($conexion, $sql);
 						//echo $sql;
