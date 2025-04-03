@@ -89,12 +89,12 @@ $sumadep = 0;
                 $tabla = $tabla.'<td>$'.number_format($f['precio_venta'], 2, '.', ',').'</td>';
                 $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
                 //$tabla = $tabla.'<td>$'.number_format($f['pagocon'], 2, '.', ',').'</td>';
-                $precio = ($f['precio_promocion']*$f['cantidad']);
+                $precio = ($f['pagocon']*$f['cantidad']);
                 if ($f['numcredito'] <> 0 and $f['estado'] == 0){
                     $tabla = $tabla.'<td>$'.number_format($precio, 2, '.', ',').'</td>';
                     $suma = $suma += $precio;
                 }else{
-                    $tabla = $tabla.'<td>$'.number_format($f['precio_promocion'], 2, '.', ',').'</td>';
+                    $tabla = $tabla.'<td>$'.number_format($precio, 2, '.', ',').'</td>';
                     $suma = $suma += $precio;
                 }
                 
